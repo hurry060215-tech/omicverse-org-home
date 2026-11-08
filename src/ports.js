@@ -446,32 +446,57 @@
     if (row) row.scrollIntoView({ block: "start", behavior: "smooth" });
   }
 
-  // ─── GitHub star count (index + about) ─────────────────────────────────
+  // ─── GitHub repository card (index) + star count (about) ─────────────────
+  async function ghJson(url, cacheKey) {
+    let v = null;
+    try { v = JSON.parse(sessionStorage.getItem(cacheKey)); } catch (_) { /* ignore */ }
+    if (v != null) return v;
+    const res = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    v = await res.json();
+    try { sessionStorage.setItem(cacheKey, JSON.stringify(v)); } catch (_) { /* quota */ }
+    return v;
+  }
+  function compact(n) { return n >= 1000 ? `${(n / 1000).toFixed(1).replace(/\.0$/, "")}k` : fmtInt(n); }
+  function ago(iso) {
+    const d = (Date.now() - new Date(iso).getTime()) / 86400000;
+    if (!Number.isFinite(d)) return "";
+    if (d < 1) return "updated today";
+    if (d < 30) return `updated ${Math.round(d)}d ago`;
+    return `updated ${Math.round(d / 30)}mo ago`;
+  }
+  function setText(sel, text) { document.querySelectorAll(sel).forEach((n) => { n.textContent = text; n.hidden = false; }); }
   async function fillGithubStars() {
-    const nodes = document.querySelectorAll("[data-gh-stars]");
-    if (!nodes.length) return;
-    const key = "gh:stars:omicverse/omicverse";
-    let stars = null;
-    try { stars = JSON.parse(sessionStorage.getItem(key)); } catch (_) { /* ignore */ }
-    if (stars == null) {
-      try {
-        const res = await fetch("https://api.github.com/repos/omicverse/omicverse", { headers: { Accept: "application/vnd.github+json" } });
-        if (res.ok) {
-          stars = (await res.json()).stargazers_count;
-          try { sessionStorage.setItem(key, JSON.stringify(stars)); } catch (_) { /* quota */ }
-        }
-      } catch (_) { /* offline / rate-limited: keep the static fallback */ }
-    }
-    if (typeof stars === "number") {
-      const text = stars >= 1000 ? `${(stars / 1000).toFixed(1).replace(/\.0$/, "")}k` : fmtInt(stars);
-      nodes.forEach((n) => { n.textContent = text; });
-    }
+    if (!document.querySelector("[data-gh-stars], [data-gh-spark]")) return;
+    const REPO = "omicverse/omicverse";
+    try {
+      const r = await ghJson(`https://api.github.com/repos/${REPO}`, `gh:repo:${REPO}`);
+      if (typeof r.stargazers_count === "number") setText("[data-gh-stars]", compact(r.stargazers_count));
+      if (typeof r.forks_count === "number") setText("[data-gh-forks]", compact(r.forks_count));
+      if (typeof r.open_issues_count === "number") setText("[data-gh-issues]", fmtInt(r.open_issues_count));
+      if (r.license && r.license.spdx_id && r.license.spdx_id !== "NOASSERTION") setText("[data-gh-license]", r.license.spdx_id);
+      if (r.pushed_at) setText("[data-gh-pushed]", ago(r.pushed_at));
+    } catch (_) { /* offline / rate-limited: keep the static fallbacks */ }
+    const spark = document.querySelector("[data-gh-spark]");
+    if (!spark) return;
+    try {
+      const p = await ghJson(`https://api.github.com/repos/${REPO}/stats/participation`, `gh:part:${REPO}`);
+      const weeks = (p && p.all) || [];
+      const max = Math.max(1, ...weeks);
+      const ns = "http://www.w3.org/2000/svg";
+      weeks.forEach((n, i) => {
+        const h = Math.max(0.8, (24 * n) / max);
+        const rect = document.createElementNS(ns, "rect");
+        rect.setAttribute("x", String(i)); rect.setAttribute("y", (24 - h).toFixed(2));
+        rect.setAttribute("width", "0.72"); rect.setAttribute("height", h.toFixed(2)); rect.setAttribute("rx", "0.2");
+        rect.setAttribute("fill", "url(#ghBar)"); rect.setAttribute("opacity", n ? "1" : "0.35");
+        const title = document.createElementNS(ns, "title"); title.textContent = `${n} commit${n === 1 ? "" : "s"}`; rect.appendChild(title);
+        spark.appendChild(rect);
+      });
+      spark.classList.add("is-ready");
+    } catch (_) { spark.hidden = true; }
   }
 
-  // ─── Port sticker honeycomb (index) ─────────────────────────────────────
-  // Pointy-top hexagons: the sticker's hex occupies 78.9% of the cell width and
-  // 91.4% of its height, so neighbours interlock when the horizontal pitch is
-  // ~0.80 cell and the vertical pitch ~0.70 cell, with odd rows shifted half a pitch.
   const HEX_W = 0.789, HEX_H = 0.914;
   let wallItems = null;
   let wallResizeBound = false;

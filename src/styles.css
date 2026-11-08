@@ -1717,12 +1717,12 @@ a.tile:hover { background: var(--tile-hover); }
 .tile-arrow { font-size: 15px; line-height: 1; }
 
 /* Hero tile: copy on paper, ink-wash cover bleeding in from the right */
-.tile-hero { background: var(--tile-paper); padding: 0; justify-content: center; }
-.tile-hero .hero-cover-img {
-  position: absolute; right: 0; top: 0;
-  height: 100%; width: auto; max-width: none; display: block;
-  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, #000 32%);
-  mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, #000 32%);
+.tile-hero { background: var(--tile); padding: 0; justify-content: center; }
+.tile-hero .hero-art {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%; display: block;
+  object-fit: cover; object-position: right center;
+  mix-blend-mode: multiply;
 }
 .tile-hero .hero-copy { position: relative; z-index: 1; max-width: 470px; padding: 44px 40px; }
 .tile-hero h1 { font-size: clamp(34px, 4.1vw, 54px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 700; margin-bottom: 16px; max-width: none; }
@@ -1831,10 +1831,7 @@ a.tile:hover { background: var(--tile-hover); }
   .m-3 { grid-column: span 3; } .m-4 { grid-column: span 4; } .m-6 { grid-column: span 6; } .m-12 { grid-column: span 12; }
   .m-r1 { grid-row: auto; }
   .tile-hero { grid-column: span 12; grid-row: auto; justify-content: flex-start; }
-  .tile-hero .hero-cover-img {
-    position: static; order: 2; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: 100% 50%;
-    -webkit-mask-image: none; mask-image: none;
-  }
+  .tile-hero .hero-art { position: static; order: 2; width: 100%; height: auto; aspect-ratio: 16 / 7; object-fit: cover; object-position: right center; }
   .tile-hero .hero-copy { padding: 36px 32px 28px; max-width: 560px; }
   .tile-ports { grid-template-columns: 1fr; padding: 28px; }
 }
@@ -1845,7 +1842,7 @@ a.tile:hover { background: var(--tile-hover); }
   .tile { padding: 20px; }
   .tile-hero .hero-copy { padding: 30px 22px 22px; }
   .tile-hero h1 { font-size: clamp(32px, 9.5vw, 40px); }
-  .tile-hero .hero-cover-img { aspect-ratio: 4 / 3; }
+  .tile-hero .hero-art { aspect-ratio: 4 / 3; }
   .tile-install .tile-code { font-size: 16px; }
   .tile-module { padding: 16px 16px 14px; }
   .tile-module .tile-art { width: 56px; height: 56px; }
@@ -1854,3 +1851,22 @@ a.tile:hover { background: var(--tile-hover); }
   .tile-ports { padding: 22px 20px; }
   .tile h2 { font-size: 22px; }
 }
+
+/* GitHub repository card (live data from ports.js) */
+.tile-gh .tile-kicker { text-transform: none; letter-spacing: 0; font-size: 12.5px; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 8px; }
+.tile-gh .tile-kicker .ico { width: 16px; height: 16px; color: var(--ink); }
+.gh-big { display: flex; align-items: center; gap: 10px; margin-top: auto; line-height: 1; }
+.gh-star { width: 34px; height: auto; flex: none; }
+.gh-big b { font-size: clamp(40px, 4vw, 56px); font-weight: 700; letter-spacing: -0.045em; font-variant-numeric: tabular-nums; color: var(--ink); }
+.gh-unit { align-self: flex-end; padding-bottom: 6px; font-size: 14px; font-weight: 500; color: var(--muted); }
+.gh-spark { display: block; width: 100%; height: 32px; margin-top: 14px; overflow: visible; opacity: 0; transition: opacity 0.5s; }
+.gh-spark.is-ready { opacity: 1; }
+.gh-meta { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 10px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em; color: var(--muted); }
+.gh-meta b { color: var(--ink); font-weight: 600; }
+.tile-gh:hover .gh-meta b { color: var(--accent-deep); }
+
+/* Install tile: flat terminal glyph top-right, Copy sits beside the kicker */
+.tile-install .tile-art-corner { position: absolute; right: 22px; top: 18px; width: 72px; height: auto; z-index: 0; }
+.tile-install .tile-kicker { display: inline-flex; align-items: center; gap: 8px; position: relative; z-index: 1; }
+.tile-install .tile-kicker .copy-btn { position: static; margin-left: 4px; padding: 5px 10px; font-size: 11px; letter-spacing: 0; text-transform: none; }
+@media (max-width: 640px) { .tile-install .tile-art-corner { width: 56px; right: 18px; top: 16px; } }
