@@ -481,13 +481,30 @@
     const gap = 3;
     const dx = cell * HEX_W + gap;
     const dy = cell * HEX_H * 0.75 + gap * 0.87;
-    const cols = Math.max(3, Math.floor((width - cell * (1 - HEX_W)) / dx));
-    const rows = [];
-    let left = count, r = 0;
-    while (left > 0) {
-      const cap = r % 2 === 0 ? cols : cols - 1;
-      const take = Math.min(cap, left);
-      rows.push(take); left -= take; r += 1;
+    const maxCols = Math.max(3, Math.floor((width - cell * (1 - HEX_W)) / dx));
+    const splitRows = (cols) => {
+      const out = [];
+      let left = count, r = 0;
+      while (left > 0) {
+        const cap = r % 2 === 0 ? cols : cols - 1;
+        const take = Math.min(cap, left);
+        out.push(take); left -= take; r += 1;
+      }
+      return out;
+    };
+    // Avoid a near-empty last row: try one or two fewer columns and keep the
+    // narrowest layout whose last row is at least ~60% full, else the fullest.
+    let rows = splitRows(maxCols), cols = maxCols;
+    const fill = (rs, c) => (rs.length ? rs[rs.length - 1] / ((rs.length - 1) % 2 === 0 ? c : c - 1) : 1);
+    if (fill(rows, cols) < 0.6) {
+      let best = { rows, cols, score: fill(rows, cols) };
+      for (let c = maxCols - 1; c >= Math.max(3, maxCols - 2); c -= 1) {
+        const rs = splitRows(c);
+        const sc = fill(rs, c);
+        if (sc > best.score) best = { rows: rs, cols: c, score: sc };
+        if (sc >= 0.6) break;
+      }
+      rows = best.rows; cols = best.cols;
     }
     const positions = [];
     let maxW = 0;

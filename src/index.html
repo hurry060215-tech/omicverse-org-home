@@ -12,9 +12,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=2026-10-13c" />
-  <script src="script.js?v=2026-10-13c" defer></script>
-  <script src="ports.js?v=2026-10-13c" defer></script>
+  <link rel="stylesheet" href="styles.css?v=2026-11-08" />
+  <script src="script.js?v=2026-11-08" defer></script>
+  <script src="ports.js?v=2026-11-08" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -35,12 +35,12 @@
     </nav>
   </header>
 
-  <main>
-    <section class="org-hero cover-hero">
-      <div class="hero-cover" aria-hidden="true">
-        <img src="assets/art/cover-1.jpg" alt="" width="1536" height="1024" fetchpriority="high" />
-      </div>
-      <div class="page-width wide cover-hero-inner">
+  <main class="bento-main page-width wide">
+    <div class="bento">
+
+      <!-- Hero -->
+      <section class="tile tile-hero s-8 r-2" aria-label="Introduction">
+        <img class="hero-cover-img" src="assets/art/cover-1.jpg" alt="" width="1536" height="1024" fetchpriority="high" />
         <div class="hero-copy">
           <h1>Bio Infra for <em>Future AI</em></h1>
           <p class="lede">Open-source, open AI infrastructure, built together — OmicVerse.</p>
@@ -48,167 +48,94 @@
             <a class="btn btn-primary" href="packages.html">Browse packages</a>
             <a class="btn btn-link" href="ports.html">R-port catalog</a>
           </div>
-          <p class="install-line"><span class="prompt">$</span><code>pip install omicverse</code></p>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="page-width wide">
-      <div class="stat-strip stat-strip-flat">
-        <a class="stat" href="https://github.com/omicverse/omicverse" target="_blank" rel="noopener">
-          <span class="stat-num" data-gh-stars>1k+</span><span class="stat-label">GitHub stars</span>
-        </a>
-        <a class="stat" href="ports.html">
-          <span class="stat-num" data-ports-stat="packages">70</span><span class="stat-label">R packages rebuilt</span>
-        </a>
-        <a class="stat" href="ports.html">
-          <span class="stat-num" data-ports-stat="functions_total">1,490</span><span class="stat-label">R ↔ Python function mappings</span>
-        </a>
-        <a class="stat" href="#modules">
-          <span class="stat-num">10</span><span class="stat-label">analysis modules</span>
-        </a>
-      </div>
-    </section>
+      <a class="tile tile-stat s-4 m-6 sm-12" href="https://github.com/omicverse/omicverse" target="_blank" rel="noopener">
+        <span class="tile-kicker">GitHub stars</span>
+        <span class="tile-big" data-gh-stars>1k+</span>
+        <span class="tile-foot">omicverse/omicverse · Apache-2.0 <span class="tile-arrow">↗</span></span>
+      </a>
 
-    <section class="band page-width wide">
-      <div class="section-heading">
-        <p class="overline">Why OmicVerse</p>
-        <h2>One surface. Verified methods. Ready for agents.</h2>
+      <div class="tile tile-dark tile-install s-4 m-6 sm-12">
+        <span class="tile-kicker">Install</span>
+        <button class="copy-btn" type="button" data-copy="pip install omicverse" aria-label="Copy install command">Copy</button>
+        <code class="tile-code"><span class="prompt">$</span>pip install omicverse</code>
+        <a class="tile-foot" href="https://omicverse.readthedocs.io/en/latest/Installation_guild/" target="_blank" rel="noopener">Installation guide <span class="tile-arrow">›</span></a>
       </div>
-      <div class="pillars">
-        <article class="pillar">
-          <span class="pillar-art"><img src="assets/art/pillar-api.png" alt="" loading="lazy" width="420" height="420" /></span>
-          <h3>One API, AnnData throughout</h3>
-          <p>The same <code>ov.pp / ov.tl / ov.pl</code> calls for every modality. scanpy pipelines plug in unchanged.</p>
-        </article>
-        <article class="pillar">
-          <span class="pillar-art"><img src="assets/art/pillar-port.png" alt="" loading="lazy" width="420" height="420" /></span>
-          <h3>Trusted R methods, rebuilt</h3>
-          <p>Pure-Python and Rust ports of CRAN and Bioconductor packages. No rpy2, no R install.</p>
-        </article>
-        <article class="pillar">
-          <span class="pillar-art"><img src="assets/art/pillar-verify.png" alt="" loading="lazy" width="420" height="420" /></span>
-          <h3>Checked against the original</h3>
-          <p>Every port pre-registers a parity gate and runs it against the R reference before release.</p>
-        </article>
-        <article class="pillar">
-          <span class="pillar-art"><img src="assets/art/pillar-agent.png" alt="" loading="lazy" width="420" height="420" /></span>
-          <h3>Agent-ready</h3>
-          <p>Skills, tutorials and report templates let analysis agents run the stack end to end.</p>
-        </article>
-      </div>
-    </section>
 
-    <section class="band page-width wide" id="modules">
-      <div class="section-heading section-heading-row">
-        <div>
-          <p class="overline">Ecosystem coverage</p>
-          <h2>Every omics layer, one import.</h2>
-        </div>
-        <p class="section-aside"><code>import omicverse as ov</code> — then pick a layer.</p>
-      </div>
-      <div class="module-grid">
-        <a class="module-tile" href="https://omicverse.readthedocs.io/" style="--mc:#2f8f45">
-          <span class="module-art"><img src="assets/modules/align.png" alt="" loading="lazy" width="360" height="360" /></span>
-          <span class="module-name">Assay</span>
-          <span class="module-desc">FASTA, counts, VCF and alignments in.</span>
-          <span class="module-path">ov.align</span>
-        </a>
-        <a class="module-tile" href="https://omicverse.readthedocs.io/" style="--mc:#1f7a36">
-          <span class="module-art"><img src="assets/modules/pp.png" alt="" loading="lazy" width="360" height="360" /></span>
-          <span class="module-name">Preprocess</span>
-          <span class="module-desc">QC, normalization, PCA, batch correction.</span>
-          <span class="module-path">ov.pp</span>
-        </a>
-        <a class="module-tile" href="https://omicverse.readthedocs.io/" style="--mc:#345aa8">
-          <span class="module-art"><img src="assets/modules/single.png" alt="" loading="lazy" width="360" height="360" /></span>
-          <span class="module-name">Single-cell</span>
-          <span class="module-desc">Annotation, velocity, trajectories, NMF.</span>
-          <span class="module-path">ov.single</span>
-        </a>
-        <a class="module-tile" href="https://omicverse.readthedocs.io/" style="--mc:#8848a4">
-          <span class="module-art"><img src="assets/modules/space.png" alt="" loading="lazy" width="360" height="360" /></span>
-          <span class="module-name">Spatial</span>
-          <span class="module-desc">Clustering, deconvolution, segmentation.</span>
-          <span class="module-path">ov.space</span>
-        </a>
-        <a class="module-tile" href="https://omicverse.readthedocs.io/" style="--mc:#d9712b">
-          <span class="module-art"><img src="assets/modules/bulk.png" alt="" loading="lazy" width="360" height="360" /></span>
-          <span class="module-name">Bulk</span>
-          <span class="module-desc">Differential analysis, deconvolution, pathways.</span>
-          <span class="module-path">ov.bulk</span>
-        </a>
-        <a class="module-tile" href="https://omicverse.readthedocs.io/" style="--mc:#347ec4">
-          <span class="module-art"><img src="assets/modules/fm.png" alt="" loading="lazy" width="360" height="360" /></span>
-          <span class="module-name">Foundation</span>
-          <span class="module-desc">Cell embeddings and perturbation models.</span>
-          <span class="module-path">ov.fm</span>
-        </a>
-        <a class="module-tile" href="https://omicverse.readthedocs.io/" style="--mc:#2d7a4b">
-          <span class="module-art"><img src="assets/modules/mol.png" alt="" loading="lazy" width="360" height="360" /></span>
-          <span class="module-name">Molecular</span>
-          <span class="module-desc">Structures, docking, structure-aware analysis.</span>
-          <span class="module-path">ov.mol</span>
-        </a>
-        <a class="module-tile" href="https://omicverse.readthedocs.io/" style="--mc:#34418f">
-          <span class="module-art"><img src="assets/modules/epi.png" alt="" loading="lazy" width="360" height="360" /></span>
-          <span class="module-name">Epigenomics</span>
-          <span class="module-desc">ATAC, ChIP, Hi-C, CUT&amp;Tag.</span>
-          <span class="module-path">ov.epi</span>
-        </a>
-        <a class="module-tile" href="https://omicverse.readthedocs.io/" style="--mc:#d73986">
-          <span class="module-art"><img src="assets/modules/micro.png" alt="" loading="lazy" width="360" height="360" /></span>
-          <span class="module-name">Microbiome</span>
-          <span class="module-desc">16S workflows, diversity, abundance.</span>
-          <span class="module-path">ov.micro</span>
-        </a>
-        <a class="module-tile" href="https://omicverse.readthedocs.io/" style="--mc:#7f48a6">
-          <span class="module-art"><img src="assets/modules/metabol.png" alt="" loading="lazy" width="360" height="360" /></span>
-          <span class="module-name">Metabolomics</span>
-          <span class="module-desc">ID mapping, MSEA, biomarkers.</span>
-          <span class="module-path">ov.metabol</span>
-        </a>
-      </div>
-    </section>
-
-    <section class="band band-tint">
-      <div class="page-width wide">
-        <div class="split">
-          <div class="split-copy">
-            <p class="overline">R ports</p>
-            <h2>R packages, rebuilt <em>function by function</em>.</h2>
-            <p>Every port maps the upstream R functions to their Python or Rust counterparts and is checked against the R reference on a fixed fixture. Click a sticker to see its map.</p>
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="ports.html">Open the catalog</a>
-              <a class="btn btn-link" href="https://github.com/omicverse/omicverse-rebuildr" target="_blank" rel="noopener">How we port</a>
-            </div>
+      <!-- R ports -->
+      <section class="tile tile-sage tile-ports s-12" aria-labelledby="ports-title">
+        <div class="tile-ports-copy">
+          <span class="tile-kicker">R ports</span>
+          <h2 id="ports-title">R packages, rebuilt <em>function by function</em>.</h2>
+          <p>Every port maps the upstream R functions to Python or Rust and is checked against the R reference on a fixed fixture. Click a sticker to see its map.</p>
+          <div class="mini-stats" data-ports-stats aria-live="polite">
+            <div><b data-ports-stat="packages">70</b><span>packages</span></div>
+            <div><b data-ports-stat="functions_total">1,490</b><span>function mappings</span></div>
+            <div><b data-ports-stat="ported_pct">84%</b><span>ported</span></div>
           </div>
-          <div class="split-art" aria-hidden="true">
-            <img src="assets/art/ports.png" alt="" loading="lazy" width="900" height="386" />
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="ports.html">Open the catalog</a>
+            <a class="btn btn-link" href="https://github.com/omicverse/omicverse-rebuildr" target="_blank" rel="noopener">How we port</a>
           </div>
         </div>
         <div class="ports-logo-wall" data-ports-logos aria-label="Ported package stickers"></div>
-        <div class="ports-stats compact" data-ports-stats aria-live="polite">
-          <div class="stat"><span class="stat-num" data-ports-stat="packages">—</span><span class="stat-label">packages</span></div>
-          <div class="stat"><span class="stat-num" data-ports-stat="functions_total">—</span><span class="stat-label">function mappings</span></div>
-          <div class="stat"><span class="stat-num" data-ports-stat="ported_pct">—</span><span class="stat-label">ported</span></div>
-          <div class="stat"><span class="stat-num" data-ports-stat="upstream_bioc">—</span><span class="stat-label">from Bioconductor</span></div>
-          <div class="stat"><span class="stat-num" data-ports-stat="upstream_cran">—</span><span class="stat-label">from CRAN</span></div>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="band band-dark">
-      <div class="page-width wide split">
-        <div class="split-copy">
-          <p class="overline">Quickstart</p>
-          <h2>Count matrix to clusters in eight lines.</h2>
-          <p>Read, QC, normalize, embed and cluster with the same calls for every data type. The object stays AnnData the whole way, so scanpy, exports or an agent can take over at any step.</p>
-          <div class="hero-actions">
-            <a class="btn btn-light" href="https://omicverse.readthedocs.io/">Read the docs</a>
-            <a class="btn btn-link-light" href="blog.html">Tutorials</a>
-          </div>
-        </div>
+      <!-- Modules -->
+      <div class="tile tile-intro s-4 m-6 sm-12" id="modules">
+        <span class="tile-kicker">Ecosystem</span>
+        <h2>Every omics layer, one import.</h2>
+        <p>Ten modules share one AnnData-first API. scanpy pipelines plug in unchanged.</p>
+        <code class="tile-code-inline">import omicverse as ov</code>
+      </div>
+      <a class="tile tile-module s-2 m-3 sm-6" href="https://omicverse.readthedocs.io/" title="FASTA, counts, VCF and alignments in.">
+        <span class="tile-art"><img src="assets/modules/align.png" alt="" loading="lazy" width="360" height="360" /></span>
+        <span class="tile-name">Assay</span><span class="tile-path">ov.align</span>
+      </a>
+      <a class="tile tile-module s-2 m-3 sm-6" href="https://omicverse.readthedocs.io/" title="QC, normalization, PCA, batch correction.">
+        <span class="tile-art"><img src="assets/modules/pp.png" alt="" loading="lazy" width="360" height="360" /></span>
+        <span class="tile-name">Preprocess</span><span class="tile-path">ov.pp</span>
+      </a>
+      <a class="tile tile-module s-2 m-3 sm-6" href="https://omicverse.readthedocs.io/" title="Annotation, velocity, trajectories, NMF.">
+        <span class="tile-art"><img src="assets/modules/single.png" alt="" loading="lazy" width="360" height="360" /></span>
+        <span class="tile-name">Single-cell</span><span class="tile-path">ov.single</span>
+      </a>
+      <a class="tile tile-module s-2 m-3 sm-6" href="https://omicverse.readthedocs.io/" title="Clustering, deconvolution, segmentation.">
+        <span class="tile-art"><img src="assets/modules/space.png" alt="" loading="lazy" width="360" height="360" /></span>
+        <span class="tile-name">Spatial</span><span class="tile-path">ov.space</span>
+      </a>
+      <a class="tile tile-module s-2 m-3 sm-6" href="https://omicverse.readthedocs.io/" title="Differential analysis, deconvolution, pathways.">
+        <span class="tile-art"><img src="assets/modules/bulk.png" alt="" loading="lazy" width="360" height="360" /></span>
+        <span class="tile-name">Bulk</span><span class="tile-path">ov.bulk</span>
+      </a>
+      <a class="tile tile-module s-2 m-3 sm-6" href="https://omicverse.readthedocs.io/" title="Cell embeddings and perturbation models.">
+        <span class="tile-art"><img src="assets/modules/fm.png" alt="" loading="lazy" width="360" height="360" /></span>
+        <span class="tile-name">Foundation</span><span class="tile-path">ov.fm</span>
+      </a>
+      <a class="tile tile-module s-2 m-3 sm-6" href="https://omicverse.readthedocs.io/" title="Structures, docking, structure-aware analysis.">
+        <span class="tile-art"><img src="assets/modules/mol.png" alt="" loading="lazy" width="360" height="360" /></span>
+        <span class="tile-name">Molecular</span><span class="tile-path">ov.mol</span>
+      </a>
+      <a class="tile tile-module s-2 m-3 sm-6" href="https://omicverse.readthedocs.io/" title="ATAC, ChIP, Hi-C, CUT&amp;Tag.">
+        <span class="tile-art"><img src="assets/modules/epi.png" alt="" loading="lazy" width="360" height="360" /></span>
+        <span class="tile-name">Epigenomics</span><span class="tile-path">ov.epi</span>
+      </a>
+      <a class="tile tile-module s-2 m-3 sm-6" href="https://omicverse.readthedocs.io/" title="16S workflows, diversity, abundance.">
+        <span class="tile-art"><img src="assets/modules/micro.png" alt="" loading="lazy" width="360" height="360" /></span>
+        <span class="tile-name">Microbiome</span><span class="tile-path">ov.micro</span>
+      </a>
+      <a class="tile tile-module s-2 m-3 sm-6" href="https://omicverse.readthedocs.io/" title="ID mapping, MSEA, biomarkers.">
+        <span class="tile-art"><img src="assets/modules/metabol.png" alt="" loading="lazy" width="360" height="360" /></span>
+        <span class="tile-name">Metabolomics</span><span class="tile-path">ov.metabol</span>
+      </a>
+
+      <!-- Quickstart + pillars -->
+      <section class="tile tile-dark tile-quick s-6 r-2 m-12 m-r1" aria-labelledby="quick-title">
+        <span class="tile-kicker">Quickstart</span>
+        <h2 id="quick-title">Count matrix to clusters in eight lines.</h2>
+        <p>The object stays AnnData the whole way, so scanpy, exports or an agent can take over at any step.</p>
         <div class="qs-terminal">
 <pre><span class="tk-prompt">$</span> <span class="tk-id">pip install omicverse</span>
 
@@ -221,50 +148,79 @@ ov.pp.<span class="tk-fn">neighbors</span>(adata, use_rep=<span class="tk-str">"
 ov.pp.<span class="tk-fn">umap</span>(adata); ov.pp.<span class="tk-fn">leiden</span>(adata)
 <span class="tk-com"># adata.obs["leiden"] · adata.obsm["X_umap"]</span></pre>
         </div>
-      </div>
-    </section>
+        <div class="hero-actions">
+          <a class="btn btn-light" href="https://omicverse.readthedocs.io/">Read the docs</a>
+          <a class="btn btn-link-light" href="blog.html">Tutorials</a>
+        </div>
+      </section>
 
-    <section class="band page-width wide">
-      <div class="section-heading">
-        <p class="overline">From the blog</p>
-        <h2>Notes from the bench.</h2>
-        <a class="text-link" href="blog.html">All posts</a>
-      </div>
-      <div class="post-grid">
-        <a class="post-card" href="blog/nanostring-cosmx-workflow.html">
-          <span class="post-thumb"><img src="assets/blog/nanostring-cosmx-workflow/cell-013-1.png" alt="" loading="lazy" /></span>
-          <span class="post-chip">Spatial</span>
+      <article class="tile tile-pillar s-3 m-6 sm-6">
+        <span class="tile-art"><img src="assets/art/pillar-api.png" alt="" loading="lazy" width="420" height="420" /></span>
+        <h3>One API, AnnData throughout</h3>
+        <p>The same <code>ov.pp / ov.tl / ov.pl</code> calls for every modality.</p>
+      </article>
+      <article class="tile tile-pillar s-3 m-6 sm-6">
+        <span class="tile-art"><img src="assets/art/pillar-verify.png" alt="" loading="lazy" width="420" height="420" /></span>
+        <h3>Checked against the original</h3>
+        <p>Every port pre-registers a parity gate and runs it against the R reference.</p>
+      </article>
+      <article class="tile tile-pillar s-3 m-6 sm-6">
+        <span class="tile-art"><img src="assets/art/pillar-port.png" alt="" loading="lazy" width="420" height="420" /></span>
+        <h3>Pure Python and Rust</h3>
+        <p>CRAN and Bioconductor methods without rpy2 or an R install.</p>
+      </article>
+      <article class="tile tile-pillar s-3 m-6 sm-6">
+        <span class="tile-art"><img src="assets/art/pillar-agent.png" alt="" loading="lazy" width="420" height="420" /></span>
+        <h3>Agent-ready</h3>
+        <p>Skills, tutorials and report templates let analysis agents run the stack end to end.</p>
+      </article>
+
+      <!-- Blog -->
+      <a class="tile tile-post s-4 m-4 sm-12" href="blog/nanostring-cosmx-workflow.html">
+        <span class="post-thumb"><img src="assets/blog/nanostring-cosmx-workflow/cell-013-1.png" alt="" loading="lazy" /></span>
+        <span class="post-body">
+          <span class="tile-kicker">Blog · Spatial</span>
           <span class="post-title">Analyzing NanoString CosMx data</span>
           <span class="post-desc">FOV-aware loading, segmentation checks and inputs for downstream spatial models.</span>
-        </a>
-        <a class="post-card" href="blog/cellpose-visium-hd.html">
-          <span class="post-thumb"><img src="assets/blog/cellpose-visium-hd/cell-020-1.png" alt="" loading="lazy" /></span>
-          <span class="post-chip">Segmentation</span>
+        </span>
+      </a>
+      <a class="tile tile-post s-4 m-4 sm-12" href="blog/cellpose-visium-hd.html">
+        <span class="post-thumb"><img src="assets/blog/cellpose-visium-hd/cell-020-1.png" alt="" loading="lazy" /></span>
+        <span class="post-body">
+          <span class="tile-kicker">Blog · Segmentation</span>
           <span class="post-title">Cell segmentation for Visium HD with Cellpose</span>
           <span class="post-desc">From 2 µm bins and H&amp;E to cells, in pure Python.</span>
-        </a>
-        <a class="post-card" href="blog/plot1cell-python.html">
-          <span class="post-thumb"><img src="assets/blog/plot1cell-python/cell-007-1.png" alt="" loading="lazy" /></span>
-          <span class="post-chip">Visualization</span>
+        </span>
+      </a>
+      <a class="tile tile-post s-4 m-4 sm-12" href="blog/plot1cell-python.html">
+        <span class="post-thumb"><img src="assets/blog/plot1cell-python/cell-007-1.png" alt="" loading="lazy" /></span>
+        <span class="post-body">
+          <span class="tile-kicker">Blog · Visualization</span>
           <span class="post-title">Circular UMAPs with plot1cell</span>
           <span class="post-desc">Cells in a ring, metadata around it, one call.</span>
-        </a>
-      </div>
-    </section>
+        </span>
+      </a>
 
-    <section class="band band-cta">
-      <div class="page-width wide cta-inner">
-        <div>
-          <p class="overline">Contribute</p>
-          <h2>Bring a method. We'll help you port it.</h2>
-          <p>Nominate an R package, follow the porting protocol, ship a verified wheel. The repository stays yours.</p>
-        </div>
+      <!-- Contribute + learn -->
+      <section class="tile tile-green tile-cta s-8 m-12" aria-labelledby="cta-title">
+        <span class="tile-kicker">Contribute</span>
+        <h2 id="cta-title">Bring a method. We'll help you port it.</h2>
+        <p>Nominate an R package, follow the porting protocol, ship a verified wheel. The repository stays yours.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="join.html">How to contribute</a>
           <a class="btn btn-ghost" href="https://github.com/omicverse/omicverse/discussions" target="_blank" rel="noopener">Discussions ↗</a>
         </div>
-      </div>
-    </section>
+      </section>
+      <nav class="tile tile-links s-4 m-12" aria-label="Learn more">
+        <span class="tile-kicker">Learn</span>
+        <a href="https://omicverse.readthedocs.io/" target="_blank" rel="noopener">Documentation <span>↗</span></a>
+        <a href="https://github.com/omicverse/omicverse-tutorials" target="_blank" rel="noopener">Tutorials <span>↗</span></a>
+        <a href="blog.html">Blog <span>›</span></a>
+        <a href="events.html">Events <span>›</span></a>
+        <a href="people.html">People <span>›</span></a>
+      </nav>
+
+    </div>
   </main>
 
   <footer class="footer">

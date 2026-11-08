@@ -261,3 +261,16 @@ function renderOtherRepoMaintainers() {
     });
 }
 renderOtherRepoMaintainers();
+
+// ─── Copy-to-clipboard buttons ([data-copy]) ───────
+document.querySelectorAll("[data-copy]").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(btn.dataset.copy || "");
+      const label = btn.textContent;
+      btn.textContent = "Copied";
+      btn.classList.add("is-copied");
+      window.setTimeout(() => { btn.textContent = label; btn.classList.remove("is-copied"); }, 1400);
+    } catch (_) { /* clipboard unavailable: leave the button as is */ }
+  });
+});
