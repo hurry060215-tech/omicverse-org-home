@@ -1,0 +1,133 @@
+{
+ "generated_at": "2026-11-08T19:38:21Z",
+ "repo": "omicverse/omicverse",
+ "stars": 1395,
+ "forks": 150,
+ "open_issues": 20,
+ "watchers": 9,
+ "license": "GPL-3.0",
+ "pushed_at": "2026-11-06T18:14:33Z",
+ "created_at": "2021-03-22T15:43:03Z",
+ "latest_release": {
+  "tag": "v2.3.2",
+  "published_at": "2026-09-23T05:36:41Z"
+ },
+ "contributors": 37,
+ "commits_by_week": [
+  94,
+  22,
+  11,
+  2,
+  1,
+  1,
+  2,
+  1,
+  6,
+  1,
+  14,
+  20,
+  13,
+  14,
+  22,
+  22,
+  36,
+  82,
+  38,
+  226,
+  66,
+  74,
+  79,
+  131,
+  61,
+  13,
+  0,
+  129,
+  101,
+  40,
+  30,
+  4,
+  5,
+  9,
+  22,
+  8,
+  19,
+  40,
+  0,
+  12,
+  0,
+  19,
+  21,
+  9,
+  16,
+  10,
+  0,
+  4,
+  7,
+  2,
+  9,
+  5
+ ],
+ "stars_by_month": [
+  {
+   "month": "2025-12",
+   "added": 23,
+   "total": 794
+  },
+  {
+   "month": "2026-01",
+   "added": 25,
+   "total": 819
+  },
+  {
+   "month": "2026-02",
+   "added": 7,
+   "total": 826
+  },
+  {
+   "month": "2026-03",
+   "added": 93,
+   "total": 919
+  },
+  {
+   "month": "2026-04",
+   "added": 38,
+   "total": 957
+  },
+  {
+   "month": "2026-05",
+   "added": 45,
+   "total": 1002
+  },
+  {
+   "month": "2026-06",
+   "added": 87,
+   "total": 1089
+  },
+  {
+   "month": "2026-07",
+   "added": 76,
+   "total": 1165
+  },
+  {
+   "month": "2026-08",
+   "added": 23,
+   "total": 1188
+  },
+  {
+   "month": "2026-09",
+   "added": 21,
+   "total": 1209
+  },
+  {
+   "month": "2026-10",
+   "added": 182,
+   "total": 1391
+  },
+  {
+   "month": "2026-11",
+   "added": 4,
+   "total": 1395
+  }
+ ],
+ "stars_counted": 1395
+}
