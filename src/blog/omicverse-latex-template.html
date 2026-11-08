@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A LaTeX Template for OmicVerse Papers — OmicVerse</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/brand/favicon-180.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css?v=2026-11-08e" />
+  <script src="../script.js?v=2026-11-08e" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../index.html" aria-label="OmicVerse home">
+      <img class="brand-logo" src="../assets/brand/mark.svg" alt="" width="28" height="28" />
+      <span>OmicVerse</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <nav class="nav-links" id="nav-links" aria-label="Primary navigation">
+      <a href="../packages.html">Packages</a>
+      <a href="../ports.html">Ports</a>
+      <a href="https://omicverse.readthedocs.io/">Learn</a>
+      <a aria-current="page" href="../blog.html">Blog</a>
+      <a href="../people.html">People</a>
+      <a href="../about.html">About</a>
+      <a href="../join.html">Join</a>
+      <a class="nav-cta" href="https://github.com/omicverse" target="_blank" rel="noopener"><svg class="nav-gh" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+    </nav>
+  </header>
+
+  <main class="article page-width">
+    <a class="article-back" href="../blog.html">← Back to blog</a>
+    <p class="overline">Resources</p>
+    <h1>A LaTeX Template for OmicVerse Papers</h1>
+<p>Most OmicVerse projects end in a manuscript, and until now each group set its preprints in its own style. The new <a href="https://github.com/omicverse/omicverse-latex-template" target="_blank" rel="noopener">omicverse-latex-template</a> repository gives community papers, preprints and reports one shared look. It holds a single LaTeX class, <code>pdarticle</code>, a numbered reference style, vector logos and worked examples in English and Chinese.</p>
+<div class="article-actions"><a class="btn btn-primary" href="https://github.com/omicverse/omicverse-latex-template/archive/refs/heads/main.zip">Download ZIP</a><a class="btn btn-ghost" href="https://github.com/omicverse/omicverse-latex-template" target="_blank" rel="noopener">View on GitHub</a></div>
+<figure><img src="../assets/blog/latex-template/rail-pages.jpg" alt="Pages 1 and 2 of the English example in the default rail design" loading="lazy" /><figcaption>Pages 1 and 2 of the English example in the default rail design</figcaption></figure>
+<h2>What is in the class</h2>
+<ul><li><strong>Two layouts.</strong> A single-column manuscript by default, and a two-column journal layout with the <code>twocolumn</code> option. Both use the same type sizes: body 8.5/11 pt, title 20/21 pt.</li><li><strong>Four page designs.</strong> <code>rail</code> (the default), <code>masthead</code>, <code>panel</code> and <code>classic</code>.</li><li><strong>Brand presets.</strong> <code>brand=omicverse</code> and <code>brand=primordecode</code>, each with its own logo, colors and corner graphic. Every color can be overridden from the class options.</li><li><strong>Chinese papers.</strong> The <code>zh</code> option, compiled with XeLaTeX.</li><li><strong>Review copies.</strong> The <code>lineno</code> option adds line numbers.</li><li><strong>Ready-made elements.</strong> Clickable figure and table mentions, numbered boxes, tinted table heads and two-part figure captions.</li></ul>
+<h2>Quick start</h2>
+<p>Download the ZIP above, or clone the repository:</p>
+<pre><code class="language-bash"><span class="tok-builtin">git</span> clone https://github.com/omicverse/omicverse-latex-template.<span class="tok-builtin">git</span></code></pre>
+<p>Copy <code>template.tex</code> and start writing. Keep <code>pdarticle.cls</code>, <code>numbered.bst</code> and the <code>logos/</code> folder next to your main <code>.tex</code> file, then compile:</p>
+<pre><code class="language-bash"><span class="tok-comment"># English papers: pdfLaTeX, XeLaTeX or LuaLaTeX</span>
+latexmk -pdf template.tex
+<span class="tok-comment"># Chinese papers (the zh option) need XeLaTeX</span>
+latexmk -xelatex example-zh.tex</code></pre>
+<p>On Overleaf, upload <code>pdarticle.cls</code>, <code>numbered.bst</code> and <code>logos/</code> together with your <code>.tex</code> and <code>.bib</code> files. pdfLaTeX works for English papers; set the compiler to XeLaTeX for <code>zh</code>.</p>
+<p>A minimal paper looks like this:</p>
+<pre><code class="language-latex">\documentclass[brand=omicverse]{pdarticle}
+
+\journalname{OmicVerse}
+\articletype{Research Article}
+\journalinfo{OmicVerse Preprint, \today}
+\copyrightholder{\the\year\ OmicVerse}
+
+\title{Title of the paper}
+\author{First Author,\affmark{1} and Last Author\affmark{1,*}}
+\affiliation{1}{[Department, Institution, City, Country]}
+\correspondence{author@example.com}
+
+\summary{Summary text.}
+\keywords{keyword one, keyword two}
+\bibliographystyle{numbered}
+
+\begin{document}
+\maketitle
+\section{Introduction}
+Text.\cite{zeng2024omicverse}
+\bibliography{example}
+\end{document}</code></pre>
+<h2>Page designs</h2>
+<p>Pick a design with <code>design=</code>. Each image below is page 1 of the same example.</p>
+<figure><img src="../assets/blog/latex-template/designs.jpg" alt="Page 1 in the rail, masthead and panel designs" loading="lazy" /><figcaption>Page 1 in the rail, masthead and panel designs</figcaption></figure>
+<ul><li><code>rail</code> puts a brand-color rail down the left edge of every page, with the journal line and article type set vertically in it. The summary sits between two rules.</li><li><code>masthead</code> runs a tinted band across the top of page 1 for the logo and the brand graphic, and puts the summary in a tinted box.</li><li><code>panel</code> sets a tinted panel behind the title block on page 1 and a thin tinted strip on later pages.</li><li><code>classic</code> keeps the earlier design for compatibility. It is not recommended for new papers.</li></ul>
+<p>Later pages in every design carry a small logo at the top left, the page number at the top right and a hairline rule.</p>
+<h2>Two columns and line numbers</h2>
+<figure><img src="../assets/blog/latex-template/layouts.jpg" alt="Page 1 of the two-column layout, and page 2 of the single-column layout with line numbers" loading="lazy" /><figcaption>Page 1 of the two-column layout, and page 2 of the single-column layout with line numbers</figcaption></figure>
+<p><code>twocolumn</code> sets two columns with a 13 pt gap. A full-width <code>figure*</code> floats to the top of the next page, so define it one page before the place it should appear. <code>lineno</code> puts small gray line numbers in the right margin, or on the outer side of each column in the two-column layout.</p>
+<h2>Your own colors and logo</h2>
+<figure><img src="../assets/blog/latex-template/brands.jpg" alt="The OmicVerse and PrimorDecode brand presets" loading="lazy" /><figcaption>The OmicVerse and PrimorDecode brand presets</figcaption></figure>
+<p>Each preset has three color roles: <code>tab</code> for the rail, <code>primary</code> for the summary, headings, figure titles and links, and <code>secondary</code> for the article type and the marker before each heading. Override any of them from the class options, for example <code>primary=1F6F8B, secondary=B23A48, tab=1F6F8B</code>. Roles you leave out keep the preset. <code>\brandlogo[height=0.4in]{path/to/logo}</code> swaps the logo, and <code>\brandgraphic{...}</code> replaces the TikZ corner graphic. For OmicVerse that graphic is a DNA helix that fades into a scatter of points, like a single-cell embedding.</p>
+<h2>Chinese papers</h2>
+<figure><img src="../assets/blog/latex-template/chinese.jpg" alt="The English example and the Chinese example, page 1" loading="lazy" /><figcaption>The English example and the Chinese example, page 1</figcaption></figure>
+<p>With <code>zh</code>, headings are never upper-cased, the labels become 摘要, 图, 表, 专栏, 通讯作者 and 参考文献, and line spacing widens by 1.08×. The CJK font is the first one installed of Source Han Sans SC, Noto Sans CJK SC, Hiragino Sans GB and PingFang SC.</p>
+<h2>License</h2>
+<p><code>pdarticle.cls</code> and the example and template files are distributed under the LaTeX Project Public License 1.3c or later. <code>numbered.bst</code> is based on <code>model6-num-names.bst</code> from Elsevier&#x27;s elsarticle bundle, also under the LPPL. The OmicVerse and PrimorDecode logos belong to their owners and are not covered by the LPPL.</p>
+<p>Questions and improvements are welcome as issues or pull requests on the <a href="https://github.com/omicverse/omicverse-latex-template" target="_blank" rel="noopener">repository</a>.</p>
+<div class="article-actions"><a class="btn btn-primary" href="https://github.com/omicverse/omicverse-latex-template/archive/refs/heads/main.zip">Download ZIP</a><a class="btn btn-ghost" href="https://github.com/omicverse/omicverse-latex-template#readme" target="_blank" rel="noopener">Read the full README</a></div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner page-width wide">
+      <div class="footer-brand-col">
+        <span class="footer-brand"><img src="../assets/brand/mark.svg" alt="" width="20" height="20" /> OmicVerse</span>
+        <p>Open-source multi-omics in Python, with Rust and Torch underneath. Trusted R methods, rebuilt and verified.</p>
+        <p class="footer-install"><code>pip install omicverse</code></p>
+      </div>
+      <div class="footer-col"><span class="footer-col-title">Project</span><ul><li><a href="../packages.html">Packages</a></li><li><a href="../ports.html">R-port catalog</a></li><li><a href="https://omicverse.readthedocs.io/" target="_blank" rel="noopener">Documentation</a></li><li><a href="../blog.html">Blog</a></li></ul></div>
+      <div class="footer-col"><span class="footer-col-title">Community</span><ul><li><a href="../people.html">People</a></li><li><a href="../events.html">Events</a></li><li><a href="../join.html">Join</a></li><li><a href="https://github.com/omicverse/omicverse/discussions" target="_blank" rel="noopener">Discussions ↗</a></li></ul></div>
+      <div class="footer-col"><span class="footer-col-title">Resources</span><ul><li><a href="../about.html">About & citation</a></li><li><a href="https://github.com/omicverse/omicverse-rebuildr" target="_blank" rel="noopener">Porting protocol ↗</a></li><li><a href="https://github.com/omicverse/omicverse-tutorials" target="_blank" rel="noopener">Tutorials ↗</a></li><li><a href="https://github.com/omicverse" target="_blank" rel="noopener">GitHub ↗</a></li></ul></div>
+    </div>
+    <div class="footer-bottom page-width wide">
+      <span>© OmicVerse contributors · Apache-2.0</span>
+      <span>Built with <a href="https://github.com/omicverse/omicverse-org-home" target="_blank" rel="noopener">omicverse-org-home</a></span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -838,6 +838,10 @@ section.band {
   border: 1px solid var(--line);
   border-radius: 4px;
 }
+.article-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 28px; }
+.article .article-actions a { border-bottom: 0; }
+.article .article-actions a.btn-primary { color: #faf9f3; }
+.article .article-actions a.btn-ghost { color: var(--ink); }
 .article figcaption {
   margin-top: 8px;
   color: var(--muted);
