@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 
 # Bump when styles.css / script.js / ports.js change in a way cached clients must pick up.
-ASSET_VERSION = "2026-11-08c"
+ASSET_VERSION = "2026-11-08d"
 
 NAV = [
     ("packages", "Packages", "packages.html"),
