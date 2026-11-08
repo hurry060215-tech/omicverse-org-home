@@ -447,6 +447,8 @@
   }
 
   // ─── GitHub repository card (index) + star count (about) ─────────────────
+  // Charts come from assets/github.json (built daily by scripts/build_github_stats.py);
+  // the headline numbers are then refreshed from the live API when it answers.
   async function ghJson(url, cacheKey) {
     let v = null;
     try { v = JSON.parse(sessionStorage.getItem(cacheKey)); } catch (_) { /* ignore */ }
@@ -458,43 +460,57 @@
     return v;
   }
   function compact(n) { return n >= 1000 ? `${(n / 1000).toFixed(1).replace(/\.0$/, "")}k` : fmtInt(n); }
-  function ago(iso) {
-    const d = (Date.now() - new Date(iso).getTime()) / 86400000;
-    if (!Number.isFinite(d)) return "";
-    if (d < 1) return "updated today";
-    if (d < 30) return `updated ${Math.round(d)}d ago`;
-    return `updated ${Math.round(d / 30)}mo ago`;
-  }
   function setText(sel, text) { document.querySelectorAll(sel).forEach((n) => { n.textContent = text; n.hidden = false; }); }
+  const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function monthLabel(key) { const [y, m] = key.split("-"); return `${MONTHS[Number(m) - 1]} ${y.slice(2)}`; }
+  function renderGithubCard(d) {
+    if (typeof d.stars === "number") setText("[data-gh-stars]", compact(d.stars));
+    if (typeof d.forks === "number") setText("[data-gh-forks]", compact(d.forks));
+    if (typeof d.open_issues === "number") setText("[data-gh-issues]", fmtInt(d.open_issues));
+    if (d.license) setText("[data-gh-license]", d.license);
+    if (d.contributors) setText("[data-gh-contrib]", `${fmtInt(d.contributors)} contributors`);
+    if (d.latest_release && d.latest_release.tag) setText("[data-gh-release]", d.latest_release.tag);
+    const series = Array.isArray(d.stars_by_month) ? d.stars_by_month : [];
+    const bars = document.querySelector("[data-gh-bars]");
+    if (bars && series.length) {
+      const max = Math.max(1, ...series.map((s) => s.added));
+      bars.innerHTML = series.map((s, i) => {
+        const h = Math.max(3, Math.round((100 * s.added) / max));
+        const cur = i === series.length - 1 ? " is-current" : "";
+        return `<i class="gh-bar${cur}" style="height:${h}%" title="${esc(monthLabel(s.month))} · +${fmtInt(s.added)} stars · ${fmtInt(s.total)} total"></i>`;
+      }).join("");
+      const months = document.querySelector("[data-gh-months]");
+      if (months) {
+        const pick = [0, Math.floor((series.length - 1) / 2), series.length - 1];
+        months.innerHTML = pick.map((i) => `<span>${esc(monthLabel(series[i].month))}</span>`).join("");
+      }
+      const last = series[series.length - 1];
+      if (last) setText("[data-gh-delta]", `+${fmtInt(last.added)} this month`);
+      document.querySelector("[data-gh-chart]").hidden = false;
+    }
+    const weeks = Array.isArray(d.commits_by_week) ? d.commits_by_week : [];
+    const strip = document.querySelector("[data-gh-strip-bars]");
+    if (strip && weeks.length) {
+      const max = Math.max(1, ...weeks);
+      strip.innerHTML = weeks.map((n) => `<i style="height:${Math.max(6, Math.round((100 * n) / max))}%" title="${fmtInt(n)} commit${n === 1 ? "" : "s"}"></i>`).join("");
+      document.querySelector("[data-gh-strip]").hidden = false;
+    }
+  }
   async function fillGithubStars() {
-    if (!document.querySelector("[data-gh-stars], [data-gh-spark]")) return;
+    if (!document.querySelector("[data-gh-stars]")) return;
     const REPO = "omicverse/omicverse";
+    if (document.querySelector("[data-gh-chart]")) {
+      try {
+        const res = await fetch("assets/github.json", { cache: "no-cache" });
+        if (res.ok) renderGithubCard(await res.json());
+      } catch (_) { /* no snapshot: keep the static fallbacks */ }
+    }
     try {
       const r = await ghJson(`https://api.github.com/repos/${REPO}`, `gh:repo:${REPO}`);
       if (typeof r.stargazers_count === "number") setText("[data-gh-stars]", compact(r.stargazers_count));
       if (typeof r.forks_count === "number") setText("[data-gh-forks]", compact(r.forks_count));
       if (typeof r.open_issues_count === "number") setText("[data-gh-issues]", fmtInt(r.open_issues_count));
-      if (r.license && r.license.spdx_id && r.license.spdx_id !== "NOASSERTION") setText("[data-gh-license]", r.license.spdx_id);
-      if (r.pushed_at) setText("[data-gh-pushed]", ago(r.pushed_at));
-    } catch (_) { /* offline / rate-limited: keep the static fallbacks */ }
-    const spark = document.querySelector("[data-gh-spark]");
-    if (!spark) return;
-    try {
-      const p = await ghJson(`https://api.github.com/repos/${REPO}/stats/participation`, `gh:part:${REPO}`);
-      const weeks = (p && p.all) || [];
-      const max = Math.max(1, ...weeks);
-      const ns = "http://www.w3.org/2000/svg";
-      weeks.forEach((n, i) => {
-        const h = Math.max(0.8, (24 * n) / max);
-        const rect = document.createElementNS(ns, "rect");
-        rect.setAttribute("x", String(i)); rect.setAttribute("y", (24 - h).toFixed(2));
-        rect.setAttribute("width", "0.72"); rect.setAttribute("height", h.toFixed(2)); rect.setAttribute("rx", "0.2");
-        rect.setAttribute("fill", "url(#ghBar)"); rect.setAttribute("opacity", n ? "1" : "0.35");
-        const title = document.createElementNS(ns, "title"); title.textContent = `${n} commit${n === 1 ? "" : "s"}`; rect.appendChild(title);
-        spark.appendChild(rect);
-      });
-      spark.classList.add("is-ready");
-    } catch (_) { spark.hidden = true; }
+    } catch (_) { /* offline / rate-limited */ }
   }
 
   const HEX_W = 0.789, HEX_H = 0.914;
