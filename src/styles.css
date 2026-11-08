@@ -1812,8 +1812,19 @@ a.tile:hover { background: var(--tile-hover); }
 .tile-post:hover .post-title { color: var(--accent-deep); }
 
 /* Contribute tile */
+/* Contribute card: flat honeycomb line art docked on the right, behind the copy */
+.tile-cta .cta-bg {
+  position: absolute; top: 0; right: 0; bottom: 0; z-index: 0;
+  height: 100%; width: auto; max-width: 62%;
+  object-fit: cover; object-position: left center;
+  pointer-events: none;
+}
+.tile-cta > :not(.cta-bg) { position: relative; z-index: 1; }
+.tile-cta h2 { max-width: 430px; }
+.tile-cta p { max-width: 400px; }
+@media (max-width: 640px) { .tile-cta .cta-bg { opacity: 0.2; max-width: none; } }
 .tile-cta h2 { color: #fff; }
-.tile-cta p { color: rgba(255, 255, 255, 0.82); max-width: 520px; }
+.tile-cta p { color: rgba(255, 255, 255, 0.82); }
 .tile-cta .btn-primary { background: #faf9f3; border-color: #faf9f3; color: var(--accent-deep); }
 .tile-cta .btn-primary:hover { background: #fff; border-color: #fff; }
 .tile-cta .btn-ghost { background: rgba(255, 255, 255, 0.14); color: #fff; }
