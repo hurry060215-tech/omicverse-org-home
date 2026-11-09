@@ -24,6 +24,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from urllib.parse import urlparse
 
 import yaml
 from PIL import Image
@@ -323,7 +324,8 @@ def article_page(meta, body_html, toc, figs, pdf_info, n_refs) -> str:
     if links.get("api"):
         side_links.append(f'<li><span>In OmicVerse</span><code>{html.escape(links["api"])}</code></li>')
     if links.get("tutorial"):
-        side_links.append(f'<li><span>Tutorial</span><a href="{html.escape(links["tutorial"])}" target="_blank" rel="noopener">omicverse.readthedocs.io</a></li>')
+        host = urlparse(links["tutorial"]).netloc or links["tutorial"]      # show where the link goes
+        side_links.append(f'<li><span>Tutorial</span><a href="{html.escape(links["tutorial"])}" target="_blank" rel="noopener">{html.escape(host)}</a></li>')
     doi = meta.get("doi")
     pre = meta.get("preprint") or {}
     doi_url = f"https://doi.org/{doi}" if doi else ""
