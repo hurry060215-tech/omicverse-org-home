@@ -4,8 +4,8 @@
     python3 scripts/sync_chrome.py          # rewrite src/**/*.html in place
     python3 scripts/sync_chrome.py --check  # exit 1 if any page is out of date
 
-`build_blog.py` imports `header_html` / `footer_html` from here so generated
-blog pages get the same chrome.
+`build_blog.py` imports `header_html` / `footer_html` / `BACKDROP` from here so
+generated blog pages get the same chrome.
 """
 
 from __future__ import annotations
@@ -31,6 +31,10 @@ NAV = [
     ("about", "About", "about.html"),
     ("join", "Join", "join.html"),
 ]
+
+# The sparse chip-lattice backdrop that fills the gutters beside the content column
+# (styled by `.bg-grid` in styles.css). Every page carries it right after <body>.
+BACKDROP = '  <div class="bg-grid" aria-hidden="true"></div>'
 
 FOOTER_COLUMNS = [
     ("Project", [
@@ -106,6 +110,7 @@ def footer_html(prefix: str = "") -> str:
 HEADER_RE = re.compile(r"  <header class=\"site-header\">.*?</header>", re.S)
 FOOTER_RE = re.compile(r"  <footer class=\"footer[^\"]*\">.*?</footer>", re.S)
 ASSET_RE = re.compile(r'((?:href|src)="(?:\.\./)?(?:styles\.css|script\.js|ports\.js|packages\.js|articles\.js))(?:\?v=[^"]*)?"')
+BODY_RE = re.compile(r"<body[^>]*>\n")
 ICON_RE = re.compile(r'  <link rel="icon"[^\n]*\n(?:  <link rel="apple-touch-icon"[^\n]*\n)?')
 
 
@@ -126,6 +131,8 @@ def render(path: Path, text: str) -> str:
     icons = (f'  <link rel="icon" type="image/png" sizes="32x32" href="{prefix}assets/brand/favicon-32.png" />\n'
              f'  <link rel="apple-touch-icon" sizes="180x180" href="{prefix}assets/brand/favicon-180.png" />\n')
     text = ICON_RE.sub(lambda m: icons, text, count=1)
+    if 'class="bg-grid"' not in text:
+        text = BODY_RE.sub(lambda m: m.group(0) + BACKDROP + "\n", text, count=1)
     return text
 
 

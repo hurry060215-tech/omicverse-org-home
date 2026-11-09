@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from sync_chrome import ASSET_VERSION, footer_html, header_html  # noqa: E402
+from sync_chrome import ASSET_VERSION, BACKDROP, footer_html, header_html  # noqa: E402
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -660,6 +660,7 @@ def article_shell(post, article_html):
   <script src="../script.js?v={ASSET_VERSION}" defer></script>
 </head>
 <body>
+{BACKDROP}
 {header_html("blog", "../")}
 
   <main class="article page-width">
@@ -715,6 +716,7 @@ def blog_index(posts):
   <script src="script.js?v={ASSET_VERSION}" defer></script>
 </head>
 <body>
+{BACKDROP}
 {header_html("blog")}
 
   <main>
