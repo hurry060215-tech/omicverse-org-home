@@ -619,9 +619,9 @@ def tex_document(meta, body: str, variant: str = "site") -> str:
     summary = t_inline(re.sub(r"\s+", " ", meta["abstract"]).strip())
     doi_tex = f"\\articledoi{{{meta['doi']}}}\n" if meta.get("doi") else ""
     if variant == "preprint":
-        # Copy for preprint servers: single column, and no logo, corner graphic or venue name
+        # Copy for preprint servers: single column with line numbers, and no logo, corner graphic or venue name
         # (Preprints.org asks for journal branding to be removed). CC BY 4.0, as preprints are posted.
-        head = f"""\\documentclass[brand=omicverse]{{pdarticle}}
+        head = f"""\\documentclass[brand=omicverse, lineno]{{pdarticle}}
 
 \\makeatletter
 \\def\\pd@logo{{}}\\def\\pd@logosmall{{}}
