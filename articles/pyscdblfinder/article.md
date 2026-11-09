@@ -56,6 +56,13 @@ pyscdblfinder versus scDblFinder 1.16.0 on the 16 real datasets of the Xi and Li
 
 Python and R agreed with each other as closely as two R runs with different seeds (Fig. 1b, c). The median Spearman correlation of the doublet scores was 0.874 between Python and R and 0.874 between R seeds, and the ratio of the two was 1.00 at the median and 0.92 at the lowest. The cells called doublets overlapped with a median Jaccard index of 0.768 between Python and R and 0.770 between R seeds. The lowest agreement was on J293t-dm, the smallest dataset (500 cells, 16 doublets called by R), where the Jaccard index was 0.56 between Python and R and 0.72 between R seeds.
 
+On pbmc-2ctrl-dm, a dataset of 13,913 peripheral blood cells with 1,598 doublets annotated by demuxlet, the two packages mark the same cells in the embedding (Fig. 2). High scores from both packages fall on the annotated doublets scattered through the cell-type clusters (Spearman correlation of the scores 0.89), and 1,878 cells were called doublets by both packages, 93 by scDblFinder only and 69 by pyscdblfinder only.
+
+:::figure 2 fig2.jpg
+Doublets of pbmc-2ctrl-dm in a UMAP embedding.
+UMAP[@26] of the 13,913 cells, computed with scanpy from the counts. **(a)** Doublets annotated by demuxlet. **(b, c)** Doublet scores of scDblFinder 1.16.0 and pyscdblfinder (seed 1 each); cells with higher scores are drawn on top. **(d)** Cells called doublets by both packages, by one of them, or by neither.
+:::
+
 ## Called doublets and speed
 
 Both packages called 3 to 16% of cells doublets, and per dataset their called fractions differed by at most 0.8 percentage points (median 0.2; Fig. 1e). Where the annotated fraction was far above the expected doublet rate, as in HMEC-rep-MULTI and mkidney-ch, both called fewer doublets than were annotated.
@@ -70,7 +77,7 @@ Future work includes the parts of scDblFinder beyond the single-sample workflow:
 
 #* Data and code availability
 
-pyscdblfinder is released under GPL-3.0 on PyPI (`pip install pyscdblfinder`) and at https://github.com/omicverse/py-scDblFinder; this report describes version 0.3.2. The benchmark was run with release 0.3.1, whose `sc_dbl_finder` gives results identical to 0.3.2. The benchmark (`report/scripts` in the repository) reproduces every number and figure in this report. The Xi and Li real datasets were obtained from Zenodo (https://doi.org/10.5281/zenodo.4562782), accessed on 9 November 2026. Software: pyscdblfinder (Python 3.10, NumPy 2.2.6, SciPy 1.15.2, scikit-learn 1.7.2, xgboost 3.0.5); scDblFinder 1.16.0 with xgboost 1.7.6.1 on R 4.3.3 (bioconda). Hardware: one node of the Stanford Sherlock cluster (Intel Xeon Platinum 8462Y+, 20 cores allocated).
+pyscdblfinder is released under GPL-3.0 on PyPI (`pip install pyscdblfinder`) and at https://github.com/omicverse/py-scDblFinder; this report describes version 0.3.2. The benchmark was run with release 0.3.1, whose `sc_dbl_finder` gives results identical to 0.3.2. The benchmark (`report/scripts` in the repository) reproduces every number and figure in this report. The Xi and Li real datasets were obtained from Zenodo (https://doi.org/10.5281/zenodo.4562782), accessed on 9 November 2026. Software: pyscdblfinder (Python 3.10, NumPy 2.2.6, SciPy 1.15.2, scikit-learn 1.7.2, xgboost 3.0.5; scanpy 1.11.5 for Fig. 2); scDblFinder 1.16.0 with xgboost 1.7.6.1 on R 4.3.3 (bioconda). Hardware: one node of the Stanford Sherlock cluster (Intel Xeon Platinum 8462Y+, 20 cores allocated).
 
 #* Declaration of generative AI and AI-assisted technologies
 
@@ -107,6 +114,7 @@ Z.Z. and X.M. are affiliated with OmicVerse, Inc.
 23. Stoeckius M, Zheng S, Houck-Loomis B, et al. (2018). Cell Hashing with barcoded antibodies enables multiplexing and doublet detection for single cell genomics. Genome Biology 19, 224. 10.1186/s13059-018-1603-1
 24. McGinnis CS, Patterson DM, Winkler J, et al. (2019). MULTI-seq: sample multiplexing for single-cell RNA sequencing using lipid-tagged indices. Nature Methods 16, 619-626. 10.1038/s41592-019-0433-8
 25. Saito T, Rehmsmeier M (2015). The precision-recall plot is more informative than the ROC plot when evaluating binary classifiers on imbalanced datasets. PLOS ONE 10, e0118432. 10.1371/journal.pone.0118432
+26. Becht E, McInnes L, Healy J, et al. (2019). Dimensionality reduction for visualizing single-cell data using UMAP. Nature Biotechnology 37, 38-44. 10.1038/nbt.4314
 
 # Supplementary information
 
@@ -117,6 +125,8 @@ Z.Z. and X.M. are affiliated with OmicVerse, Inc.
 **Runs.** In R: `set.seed(seed)` and `scDblFinder(sce)` on a `SingleCellExperiment` with the counts, with default arguments. In Python: `sc_dbl_finder(counts, random_state=seed)` with default arguments. Each package ran once per dataset with seed 1 and once with seed 2.
 
 **Evaluation.** AUPRC (average precision) and AUROC were computed with scikit-learn from the doublet scores and the annotations. Agreement between Python and R is the mean over the four pairs of a Python seed and an R seed; agreement within R compares seed 1 with seed 2. Spearman correlations are over the scores of all cells of a dataset, and Jaccard indices over the sets of cells called doublets.
+
+**Embedding (Fig. 2).** Counts of pbmc-2ctrl-dm were normalised to 10,000 per cell and log-transformed with scanpy[@6]; the 2,000 most variable genes were reduced to 30 principal components, and UMAP was computed on a 15-nearest-neighbour graph. The embedding is for display only; both packages scored the raw counts.
 
 **Run time.** Run times are wall-clock times of the call above, without reading and writing files. Every run was pinned to its own processor core with BLAS and OpenMP limited to one thread; R and Python runs were spread over the same cores of one node at the same time, so that both packages were timed under the same load.
 
