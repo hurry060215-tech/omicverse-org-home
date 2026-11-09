@@ -1,0 +1,34 @@
+# Article metadata. The body lives in article.md; figures in figures/.
+# Build: python3 scripts/build_articles.py --pdf   (see docs/ARTICLES.md)
+# Numbers come from py-edgeR/report (scripts/01-05, figures/numbers.tex).
+slug: pyedger
+type: Technical Report
+title: "pyedger: a Python implementation of edgeR that reproduces Bioconductor results to numerical precision"
+short_title: pyedger
+published: 2026-11-09
+version: 1
+authors:
+  - {name: Zehua Zeng, affiliations: [1, 2], email: starlitnightly@gmail.com}
+  - {name: Meng Xu, affiliations: [3]}
+  - {name: Hongwu Du, affiliations: [4, 5], email: hongwudu@ustb.edu.cn}
+affiliations:
+  1: Department of Genetics, Stanford University, Stanford, CA 94305, USA
+  2: OmicVerse, Inc., San Francisco, CA, USA
+  3: Hubei Key Laboratory of Agricultural Bioinformatics, College of Informatics, Huazhong Agricultural University, Wuhan 430070, China
+  4: School of Chemistry and Biological Engineering, University of Science and Technology Beijing, Beijing 100083, China
+  5: Daxing Research Institute, University of Science and Technology Beijing, Beijing 100083, China
+abstract: >-
+  We present pyedger, a pure-Python implementation of the edgeR negative-binomial workflow for differential
+  expression of count data, covering TMM normalisation, filterByExpr, estimateDisp, the quasi-likelihood (QL)
+  F-test, the likelihood-ratio test and the classic exact test. Rather than aiming for similar results, pyedger
+  ports edgeR's compiled code paths and its limma and locfit dependencies step by step and is versioned against a
+  specific edgeR release. On eight TCGA tumour-normal comparisons (4,972 samples) and 60 small-sample analyses it
+  returns the same differentially expressed genes as edgeR 4.10.5 in all three tests, P-values within
+  1.2e-5 relative difference and identical gene-set enrichment results, while running 1.1-1.3 times faster than
+  edgeR on one thread and 3.4-3.5 times faster on eight. The benchmark also exposed a tail-probability underflow in
+  the exact test and several API differences from R in pyedger 0.2.2, which are fixed in 0.2.3.
+keywords: [edgeR, differential expression, RNA-seq, negative binomial, Python, reproducibility]
+links:
+  code: https://github.com/omicverse/py-edgeR
+  api: ov.bulk.pyDEG
+thumbnail: fig1

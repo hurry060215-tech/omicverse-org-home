@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>pyedger: a Python implementation of edgeR that reproduces Bioconductor results to numerical precision — OmicVerse Articles</title>
+  <meta name="description" content="We present pyedger, a pure-Python implementation of the edgeR negative-binomial workflow for differential expression of count data, covering TMM normalisation, filterByExpr, estimateDisp, the quasi-likelihood (QL) F-test, the likelihood-ratio test and the classic exact test. Rather than aiming for s" />
+  <meta property="og:title" content="pyedger: a Python implementation of edgeR that reproduces Bioconductor results to numerical precision" />
+  <meta property="og:description" content="We present pyedger, a pure-Python implementation of the edgeR negative-binomial workflow for differential expression of count data, covering TMM normalisation, filterByExpr, estimateDisp, the quasi-likelihood (QL) F-test, the likelihood-ratio test and the classic exact test. Rather than aiming for s" />
+  <meta name="citation_title" content="pyedger: a Python implementation of edgeR that reproduces Bioconductor results to numerical precision" />
+  <meta name="citation_author" content="Zehua Zeng" />
+  <meta name="citation_author" content="Meng Xu" />
+  <meta name="citation_author" content="Hongwu Du" />
+  <meta name="citation_publication_date" content="2026/11/09" />
+  <meta name="citation_journal_title" content="OmicVerse Technical Reports" />
+  <meta name="citation_pdf_url" content="https://omicverse.org/assets/articles/pyedger/pyedger.pdf" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/brand/favicon-180.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+  <link rel="stylesheet" href="../styles.css?v=2026-11-09b" />
+  <script src="../script.js?v=2026-11-09b" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" defer></script>
+  <script src="../articles.js?v=2026-11-09b" defer></script>
+</head>
+<body class="paper-page">
+  <div class="bg-grid" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="../index.html" aria-label="OmicVerse home">
+      <img class="brand-logo" src="../assets/brand/mark.svg" alt="" width="28" height="28" />
+      <span>OmicVerse</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <nav class="nav-links" id="nav-links" aria-label="Primary navigation">
+      <a href="../packages.html">Packages</a>
+      <a href="../ports.html">Ports</a>
+      <a aria-current="page" href="../articles.html">Articles</a>
+      <a href="https://omicverse.readthedocs.io/">Learn</a>
+      <a href="../blog.html">Blog</a>
+      <a href="../people.html">People</a>
+      <a href="../about.html">About</a>
+      <a href="../join.html">Join</a>
+      <a class="nav-cta" href="https://github.com/omicverse" target="_blank" rel="noopener"><svg class="nav-gh" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+    </nav>
+  </header>
+
+  <main class="paper page-width wide">
+    <nav class="paper-crumbs" aria-label="Breadcrumb"><a href="../index.html">OmicVerse</a><span aria-hidden="true">›</span><a href="../articles.html">Articles</a><span aria-hidden="true">›</span><span>Technical Report</span></nav>
+    <div class="paper-grid">
+      <article class="paper-main">
+        <p class="paper-meta"><span>Technical Report</span><span>Published: <time datetime="2026-11-09">09 November 2026</time></span><span>Version 1</span></p>
+        <h1 class="paper-title">pyedger: a Python implementation of edgeR that reproduces Bioconductor results to numerical precision</h1>
+        <ul class="paper-authors"><li><span class="au-name">Zehua Zeng</span><sup>1,2</sup> <a class="au-mail" href="mailto:starlitnightly@gmail.com" aria-label="Email Zehua Zeng"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M3 6h18v12H3z M3 6l9 7 9-7"/></svg></a></li><li><span class="au-name">Meng Xu</span><sup>3</sup></li><li><span class="au-name">Hongwu Du</span><sup>4,5</sup> <a class="au-mail" href="mailto:hongwudu@ustb.edu.cn" aria-label="Email Hongwu Du"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M3 6h18v12H3z M3 6l9 7 9-7"/></svg></a></li></ul>
+        <details class="paper-affil"><summary>Affiliations</summary><ol><li><sup>1</sup> Department of Genetics, Stanford University, Stanford, CA 94305, USA</li><li><sup>2</sup> OmicVerse, Inc., San Francisco, CA, USA</li><li><sup>3</sup> Hubei Key Laboratory of Agricultural Bioinformatics, College of Informatics, Huazhong Agricultural University, Wuhan 430070, China</li><li><sup>4</sup> School of Chemistry and Biological Engineering, University of Science and Technology Beijing, Beijing 100083, China</li><li><sup>5</sup> Daxing Research Institute, University of Science and Technology Beijing, Beijing 100083, China</li></ol></details>
+        <p class="paper-journal"><i>OmicVerse Technical Reports</i> (2026)<span class="sep" aria-hidden="true">|</span><a href="#cite">Cite this article</a></p>
+        
+        <a class="paper-pdf-inline btn btn-primary" href="../assets/articles/pyedger/pyedger.pdf" download><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19h14"/></svg>Download PDF</a>
+
+        <section class="paper-section" id="abstract" aria-labelledby="abstract-h">
+          <h2 id="abstract-h">Abstract</h2>
+          <p class="paper-abstract">We present pyedger, a pure-Python implementation of the edgeR negative-binomial workflow for differential expression of count data, covering TMM normalisation, filterByExpr, estimateDisp, the quasi-likelihood (QL) F-test, the likelihood-ratio test and the classic exact test. Rather than aiming for similar results, pyedger ports edgeR's compiled code paths and its limma and locfit dependencies step by step and is versioned against a specific edgeR release. On eight TCGA tumour-normal comparisons (4,972 samples) and 60 small-sample analyses it returns the same differentially expressed genes as edgeR 4.10.5 in all three tests, P-values within 1.2e-5 relative difference and identical gene-set enrichment results, while running 1.1-1.3 times faster than edgeR on one thread and 3.4-3.5 times faster on eight. The benchmark also exposed a tail-probability underflow in the exact test and several API differences from R in pyedger 0.2.2, which are fixed in 0.2.3.</p>
+          <ul class="paper-keywords" aria-label="Keywords"><li>edgeR</li><li>differential expression</li><li>RNA-seq</li><li>negative binomial</li><li>Python</li><li>reproducibility</li></ul>
+        </section>
+
+<section class="paper-section is-body" id="sec-introduction" aria-labelledby="sec-introduction-h">
+<h2 id="sec-introduction-h">Introduction</h2>
+<p>edgeR<sup class="cite"><a href="#ref-1">1</a>,<a href="#ref-2">2</a></sup> is one of the most widely used methods for differential expression (DE) analysis of RNA-seq and other count data. It is written in R and C, and Python users have so far reached it through <code>rpy2</code>, which requires a parallel R installation, converts data back and forth and hides edgeR's options behind a binding layer<sup class="cite"><a href="#ref-3">3</a></sup>. PyDESeq2<sup class="cite"><a href="#ref-3">3</a></sup> showed that a native re-implementation of DESeq2 is valuable, but also that it "yields similar, but not identical, results". For a method that users routinely run in both languages, and whose results end up in publications, the bar should be higher: a user who switches from R to Python should get the same genes, the same P-values and the same pathways.</p>
+<p>pyedger was written to meet that bar. This report documents what it implements, how its numerical agreement with edgeR was achieved, how it behaves on real data of very different sizes, what the benchmark found in the previous release, and what a user moving from R should know.</p>
+</section>
+<section class="paper-section is-body" id="sec-implementation" aria-labelledby="sec-implementation-h">
+<h2 id="sec-implementation-h">Implementation</h2>
+<h3 id="features-and-code-structure">Features and code structure</h3>
+<p>pyedger 0.2.3 implements edgeR 4.10's count-based DE workflow (Table 1): the <code>DGEList</code> container, TMM, TMMwsp, RLE and upper-quartile normalisation, <code>filterByExpr</code>, <code>cpm</code> and <code>aveLogCPM</code>, common, trended and tagwise dispersion estimation with and without a design matrix (Cox-Reid adjusted profile likelihood, weighted-likelihood empirical Bayes), robust dispersions, GLM fitting with the likelihood-ratio test, <code>glmTreat</code>, the classic exact test, and the QL pipeline in both its legacy form and the bias-adjusted form introduced in edgeR 4<sup class="cite"><a href="#ref-2">2</a></sup>. Functions are exported under Python names (<code>estimate_disp</code>) and their R names (<code>estimateDisp</code>), and results are pandas data frames with edgeR's column names.</p>
+<p>The package depends on NumPy, SciPy, pandas and numba, whose compiled kernels run the Levenberg GLM fits and the QL adjustments. Genes are processed in blocks on a thread pool; runs with one and eight threads give bit-identical results.</p>
+<figure class="paper-table" id="table-1"><figcaption class="fig-title"><b>Table 1:</b> edgeR functions and their pyedger counterparts (R names are exported as aliases).</figcaption><div class="table-scroll"><table><thead><tr><th>edgeR</th><th>pyedger</th><th>Largest difference from edgeR 4.10.5 on TCGA</th></tr></thead><tbody><tr><td>normLibSizes</td><td>calc_norm_factors</td><td>norm. factors $4.9 \times 10^{-15}$</td></tr><tr><td>filterByExpr</td><td>filter_by_expr</td><td>same genes kept</td></tr><tr><td>aveLogCPM</td><td>ave_log_cpm</td><td>$5 \times 10^{-12}$</td></tr><tr><td>estimateDisp</td><td>estimate_disp</td><td>tagwise dispersion $8.6 \times 10^{-10}$</td></tr><tr><td>glmFit, glmLRT</td><td>glm_fit, glm_lrt</td><td>P-value $3.8 \times 10^{-7}$</td></tr><tr><td>glmQLFit, glmQLFTest</td><td>glm_ql_fit, glm_qlf_test</td><td>P-value $1.2 \times 10^{-5}$</td></tr><tr><td>exactTest</td><td>exact_test</td><td>P-value $5.1 \times 10^{-8}$</td></tr></tbody></table></div></figure>
+<h3 id="how-numerical-parity-is-obtained">How numerical parity is obtained</h3>
+<p>Most of edgeR's numerical work happens in compiled code and in two other packages, limma (hyper-parameter estimation) and locfit (the dispersion trend). pyedger follows each of them step by step rather than re-deriving the statistics: edgeR's Levenberg-damped GLM fit and its one-way shortcut, the Cox-Reid adjusted profile likelihood with edgeR's LDL floor, the zero-fit handling with reduced designs, <code>q2qnbinom</code> with log-scale gamma tail probabilities, the adaptive locfit tree and vertex interpolation, limma's <code>squeezeVar</code> family (<code>fitFDist</code>, <code>fitFDistUnequalDF1</code>, <code>fitFDistRobustly</code>), R's Brent <code>optimize</code> and <code>uniroot</code>, and the edgeR 4 QL adjustments. Details that change results on real data were found by comparing against R on real data, not only on simulations; for example, TMM takes $\log_2$ through the C library because NumPy's SIMD $\log_2$ differs by one ulp and TMM's trimming on heavily tied log-ratios is sensitive to that ulp. The repository's 42 tests check each step against reference values regenerated from edgeR 4.10.5; regenerating the references for this report reproduced all pre-existing reference files byte for byte.</p>
+</section>
+<section class="paper-section is-body" id="sec-comparison-with-edger-on-tcga" aria-labelledby="sec-comparison-with-edger-on-tcga-h">
+<h2 id="sec-comparison-with-edger-on-tcga-h">Comparison with edgeR on TCGA</h2>
+<h3 id="data-and-protocol">Data and protocol</h3>
+<p>We used STAR gene counts of eight TCGA projects (BRCA, COAD, KIRC, LIHC, LUAD, LUSC, PRAD and THCA; UCSC Xena GDC hub) and compared primary tumours with solid-tissue normals, one aliquot per participant (421 to 1,208 samples per cohort, 4,972 in total). Xena stores $\log_2(\text{count}+1)$, from which the integer counts were recovered; samples whose values were averages of replicate aliquots, and therefore not integer counts, were removed. To cover the small-sample regime in which edgeR is mostly used, we also drew 20 random subsets each of 3, 5 and 10 normals versus as many tumours from TCGA-LUAD. Both packages ran the same default edgeR pipeline: <code>filterByExpr</code>, TMM, <code>estimateDisp</code> with design ~group, then <code>glmQLFit</code> and <code>glmQLFTest</code>, <code>glmFit</code> and <code>glmLRT</code>, and <code>exactTest</code> (22,730 to 27,801 genes retained per cohort). Genes were called DE at FDR ≤ 0.05 and $|\log_2 \text{FC}| \ge 1$.</p>
+<h3 id="the-same-genes">The same genes</h3>
+<p>The QL F-test called 61,578 DE genes in total across the eight cohorts with edgeR, and pyedger's calls were identical in every cohort (<a class="figref" href="#fig-1">Fig. 1a</a>); so were those of the likelihood-ratio test and the exact test. No gene crossed the FDR 0.05 threshold in one package but not the other in any test, and the $-\log_{10}P$ values lie on the identity line in every cohort (<a class="figref" href="#fig-S1">Fig. S1</a>).</p>
+<figure class="paper-fig" id="fig-1"><figcaption class="fig-title"><b>Fig. 1:</b> pyedger 0.2.3 versus edgeR 4.10.5 on TCGA tumour-normal comparisons.</figcaption><a class="fig-img" href="../assets/articles/pyedger/fig1.jpg" target="_blank" rel="noopener"><img src="../assets/articles/pyedger/fig1.jpg" alt="Fig. 1: pyedger 0.2.3 versus edgeR 4.10.5 on TCGA tumour-normal comparisons." loading="lazy" /></a><div class="fig-legend"><strong>(a)</strong> DE calls of the QL F-test (FDR ≤ 0.05, $|\log_2 \text{FC}| \ge 1$); numbers are genes, colour the percentage of the edgeR row. <strong>(b)</strong> Gene-set enrichment (fgsea<sup class="cite"><a href="#ref-4">4</a></sup>, MSigDB Hallmark, 50 sets × 8 cohorts), genes ranked by $\text{sign}(\log \text{FC})\sqrt{F}$. Each point is one cohort-pathway pair: its NES from edgeR's statistics (x) and the difference to it (y) of the NES from pyedger's statistics with the same seed (blue), or from edgeR's statistics with another seed (grey), which shows fgsea's own Monte-Carlo variation. <strong>(c)</strong> Cumulative distribution of per-gene relative differences between pyedger and edgeR, pooled over the eight cohorts; values below $10^{-17}$ are drawn at $10^{-17}$. <strong>(d)</strong> Wall time of the full pipeline (normalisation to all three tests), one run each; the single-threaded runs were made concurrently, one process per cohort, on the same node, and pyedger with eight threads ran alone. <strong>(e)</strong> Largest relative P-value difference per random draw in the small-sample regime (TCGA-LUAD).</div><a class="fig-full" href="../assets/articles/pyedger/fig1.jpg" target="_blank" rel="noopener">Full size image</a></figure>
+<h3 id="the-same-pathways">The same pathways</h3>
+<p>With the same fgsea seed, the two packages gave identical enrichment calls for all 400 cohort-pathway pairs (257 significant), with NES differing by at most $2.5 \times 10^{-8}$ (<a class="figref" href="#fig-1">Fig. 1b</a>, blue). As a reference for what "different" means here, re-running fgsea on edgeR's own statistics with another seed changed 8 calls and moved NES by up to 0.08 (<a class="figref" href="#fig-1">Fig. 1b</a>, grey): the difference between pyedger and edgeR is far below the Monte-Carlo noise of the downstream analysis.</p>
+<h3 id="numerical-agreement">Numerical agreement</h3>
+<p>Normalisation factors agree to $4.9 \times 10^{-15}$, common dispersions to $1.1 \times 10^{-12}$ and the empirical-Bayes prior degrees of freedom to $5.6 \times 10^{-10}$. Per gene, tagwise dispersions agree to $8.6 \times 10^{-10}$, exact-test P-values to $5.1 \times 10^{-8}$ and likelihood-ratio P-values to $3.8 \times 10^{-7}$ (<a class="figref" href="#fig-1">Fig. 1c</a>); log-fold changes differ by at most $3.3 \times 10^{-8}$ in absolute terms (relative differences look larger only for log-fold changes close to zero). QL P-values have a median relative difference of $3.7 \times 10^{-9}$ and a maximum of $1.2 \times 10^{-5}$; the larger tail comes from the QL dispersion, which edgeR estimates with <code>optimize(tol=1e-5)</code> on a transformed scale, so it is only defined to about four significant digits in R itself. In the 60 small-sample analyses the largest relative P-value difference was $1.3 \times 10^{-6}$ and no DE call differed (<a class="figref" href="#fig-1">Fig. 1e</a>).</p>
+<h3 id="speed">Speed</h3>
+<p>On one thread pyedger took 0.76 to 0.89 of edgeR's time, and with eight threads it ran the full pipeline 3.4 to 3.5 times faster than edgeR, which is single-threaded (BRCA, 1,208 samples: 277 s and 102 s against 351 s; <a class="figref" href="#fig-1">Fig. 1d</a>). Most of the gain comes from not repeating work that edgeR repeats: the 21-point dispersion grid of <code>estimateDisp</code> refits the same counts at 21 dispersions, and pyedger builds the group sub-matrices, $e^{\text{offset}}$, $\log\Gamma(y+1)$ and the per-gene dispersion terms of the adjusted profile likelihood once, uses $e^{\beta}e^{\text{offset}}$ instead of one exponential per observation in each Newton step, and skips the deviance, which the grid never uses. Timings are single runs on a node shared with other jobs, so differences of 10-20% should not be over-interpreted.</p>
+<h3 id="what-the-benchmark-found-in-pyedger-0-2-2">What the benchmark found in pyedger 0.2.2</h3>
+<p>The repository's parity tests, built mainly on a simulated 600-gene data set, all passed for pyedger 0.2.2. Running this benchmark on 0.2.2 found problems that only real data of this size reach:</p>
+<ol><li><strong>Exact test.</strong> Six genes in TCGA-BRCA with $\log_2$FC between −4.5 and −7 received $P = 1$ instead of edgeR's $P \approx 0$. edgeR maps counts to pseudo-counts with <code>q2qnbinom</code>, which calls <code>pgamma</code> and <code>qgamma</code> with <code>log.p = TRUE</code>; pyedger took the logarithm of SciPy's <code>gammainc</code>, which underflows to zero in the far tail, so the pseudo-count became infinite. pyedger 0.2.3 evaluates both functions in log space (series and continued-fraction expansions where SciPy underflows, Newton steps on the log scale for the inverse) and matches <code>q2qnbinom</code> to $10^{-8}$ on 2,000 extreme inputs. The same tails produced the <code>RuntimeWarning</code>s users saw from <code>log(gammainc)</code>; the test suite had silenced <code>RuntimeWarning</code>, which is why the problem went unnoticed. Separately, edgeR keeps negative pseudo-counts, so a group sum can exceed the total and R's <code>s1:s</code> then counts downwards; pyedger summed over an empty range and returned $P = 0$ for five TCGA-COAD genes whose edgeR P-values are $10^{-16}$ to $10^{-28}$.</li><li><strong>Speed.</strong> pyedger 0.2.2 took 1.16 to 1.25 times edgeR's time on one thread, and eight threads did not help (0.79 to 1.26 times; BRCA 443 s), because with a two-group design the GLMs go through the one-way shortcut, which in 0.2.2 ran serially and recomputed the same quantities at every grid point.</li><li><strong>API.</strong> The README example failed: <code>DGEList</code> could not be subset, and the second argument of <code>estimateDisp</code> was <code>group</code> rather than the design. <code>exactTest</code> rejected a numeric dispersion vector and <code>TMMwsp</code> normalisation raised an error. All four now behave as in edgeR.</li></ol>
+<p>Every fix comes with a regression test against edgeR 4.10.5, including the TCGA-BRCA and TCGA-COAD genes above, which fail on 0.2.2.</p>
+</section>
+<section class="paper-section is-body" id="sec-notes-for-users-coming-from-r" aria-labelledby="sec-notes-for-users-coming-from-r-h">
+<h2 id="sec-notes-for-users-coming-from-r-h">Notes for users coming from R</h2>
+<ol><li><strong>Versions.</strong> pyedger tracks a specific edgeR release (0.2.x: edgeR 4.10.5). Since edgeR 4.2 changed the default QL method, results from older edgeR versions differ from both edgeR 4.10 and pyedger; <code>glmQLFit(legacy=True)</code> reproduces the classic method. Use pyedger 0.2.3 or later.</li><li><strong>Indices are 0-based.</strong> <code>glmQLFTest(fit, coef=1)</code> in Python is <code>coef = 2</code> in R; coefficient names are also accepted.</li><li><strong>Subsetting.</strong> <code>y[keep]</code> keeps the original library sizes, as R's default does; the usual <code>y[keep, , keep.lib.sizes = FALSE]</code> after <code>filterByExpr</code> is <code>y.subset(keep, keep_lib_sizes=False)</code>.</li><li><strong>Results agree to the optimiser, not to the last bit.</strong> edgeR estimates several quantities with <code>optimize</code> or <code>uniroot</code> at fixed tolerances, so P-values agree to about $10^{-5}$ relative at worst, far below anything that changes a DE call.</li><li><strong>Scope.</strong> Count-based DE in edgeR is covered. edgeR's plotting functions, <code>voom</code>-style limma workflows, <code>diffSpliceDGE</code>, <code>goana</code>, <code>camera</code>, <code>roast</code> and the bisulfite methylation helpers are not part of pyedger.</li></ol>
+</section>
+<section class="paper-section is-body" id="sec-conclusion" aria-labelledby="sec-conclusion-h">
+<h2 id="sec-conclusion-h">Conclusion</h2>
+<p>pyedger gives Python users edgeR's results, not an approximation of them: on eight real cohorts of 421 to 1,208 samples and on 60 small-sample draws it reproduces edgeR's DE genes and pathways, and its statistics to the precision of edgeR's own optimisers, while running faster than edgeR on one thread and several times faster with eight. Validating on real data at scale, rather than on the small simulations of the unit tests, was what found the remaining defects. pyedger is the edgeR backend of OmicVerse (<code>ov.bulk.pyDEG</code> and Milo), which installs it from PyPI, so OmicVerse users run the package validated here.</p>
+</section>
+<section class="paper-section is-back" id="sec-data-and-code-availability" aria-labelledby="sec-data-and-code-availability-h">
+<h2 id="sec-data-and-code-availability-h">Data and code availability</h2>
+<p>pyedger is released under LGPL-3.0-or-later on PyPI (<code>pip install pyedger</code>) and at <a href="https://github.com/omicverse/py-edgeR" target="_blank" rel="noopener">https://github.com/omicverse/py-edgeR</a>. The benchmark (<code>report/scripts</code>) rebuilds every number and figure in this report. TCGA STAR counts were obtained from the UCSC Xena GDC hub (<a href="https://gdc-hub.s3.us-east-1.amazonaws.com" target="_blank" rel="noopener">https://gdc-hub.s3.us-east-1.amazonaws.com</a>) and MSigDB Hallmark 2020 gene sets from Enrichr, both accessed on 9 November 2026. Software: pyedger 0.2.3 (Python 3.10, NumPy 2.2.6, SciPy 1.15.2, numba 0.67.0); edgeR 4.10.5, limma 3.68.5, locfit 1.5-9.12 and fgsea 1.36.2 on R 4.5.3 (bioconda). Hardware: one node of the Stanford Sherlock cluster (Intel Xeon Platinum 8462Y+, 20 cores allocated), shared with other jobs.</p>
+</section>
+<section class="paper-section is-refs" id="references" aria-labelledby="references-h">
+<h2 id="references-h">References</h2>
+<ol class="paper-refs"><li id="ref-1"><span class="ref-n">1.</span><span class="ref-text">Robinson MD, McCarthy DJ, Smyth GK (2010). edgeR: a Bioconductor package for differential expression analysis of digital gene expression data. Bioinformatics 26, 139-140. <a href="https://doi.org/10.1093/bioinformatics/btp616" target="_blank" rel="noopener">10.1093/bioinformatics/btp616</a></span></li><li id="ref-2"><span class="ref-n">2.</span><span class="ref-text">Chen Y, Chen L, Lun ATL, Baldoni PL, Smyth GK (2025). edgeR v4: powerful differential analysis of sequencing data with expanded functionality and improved support for small counts and larger datasets. Nucleic Acids Research 53, gkaf018. <a href="https://doi.org/10.1093/nar/gkaf018" target="_blank" rel="noopener">10.1093/nar/gkaf018</a></span></li><li id="ref-3"><span class="ref-n">3.</span><span class="ref-text">Muzellec B, Teleńczuk M, Cabeli V, Andreux M (2023). PyDESeq2: a python package for bulk RNA-seq differential expression analysis. Bioinformatics 39, btad547. <a href="https://doi.org/10.1093/bioinformatics/btad547" target="_blank" rel="noopener">10.1093/bioinformatics/btad547</a></span></li><li id="ref-4"><span class="ref-n">4.</span><span class="ref-text">Korotkevich G, Sukhov V, Budin N, Shpak B, Artyomov MN, Sergushichev A (2021). Fast gene set enrichment analysis. bioRxiv. <a href="https://doi.org/10.1101/060012" target="_blank" rel="noopener">10.1101/060012</a></span></li></ol>
+</section>
+<section class="paper-section is-supp" id="supplementary" aria-labelledby="supplementary-h">
+<h2 id="supplementary-h">Supplementary information</h2>
+<figure class="paper-fig" id="fig-S1"><figcaption class="fig-title"><b>Fig. S1:</b> QL F-test P-values of pyedger against edgeR.</figcaption><a class="fig-img" href="../assets/articles/pyedger/figS1.jpg" target="_blank" rel="noopener"><img src="../assets/articles/pyedger/figS1.jpg" alt="Fig. S1: QL F-test P-values of pyedger against edgeR." loading="lazy" /></a><div class="fig-legend">$-\log_{10}P$ of pyedger 0.2.3 (y) against edgeR 4.10.5 (x) for every retained gene of the eight TCGA cohorts; the line is the identity and r the Pearson correlation.</div><a class="fig-full" href="../assets/articles/pyedger/figS1.jpg" target="_blank" rel="noopener">Full size image</a></figure>
+</section>
+
+        <section class="paper-section" id="author-information" aria-labelledby="author-information-h">
+          <h2 id="author-information-h">Author information</h2>
+          <h3>Affiliations</h3>
+          <ol class="paper-affil-list"><li><sup>1</sup> Department of Genetics, Stanford University, Stanford, CA 94305, USA</li><li><sup>2</sup> OmicVerse, Inc., San Francisco, CA, USA</li><li><sup>3</sup> Hubei Key Laboratory of Agricultural Bioinformatics, College of Informatics, Huazhong Agricultural University, Wuhan 430070, China</li><li><sup>4</sup> School of Chemistry and Biological Engineering, University of Science and Technology Beijing, Beijing 100083, China</li><li><sup>5</sup> Daxing Research Institute, University of Science and Technology Beijing, Beijing 100083, China</li></ol>
+          <h3>Corresponding authors</h3>
+          <p>Correspondence to <a href="mailto:starlitnightly@gmail.com">Zehua Zeng</a>, <a href="mailto:hongwudu@ustb.edu.cn">Hongwu Du</a>.</p>
+        </section>
+
+        <section class="paper-section" id="cite" aria-labelledby="cite-h">
+          <h2 id="cite-h">Cite this article</h2>
+          <p class="cite-text" id="cite-text">Zeng, Z., Xu, M. &amp; Du, H. pyedger: a Python implementation of edgeR that reproduces Bioconductor results to numerical precision. OmicVerse Technical Reports (2026). https://omicverse.org/articles/pyedger</p>
+          <dl class="cite-meta"><div><dt>Published</dt><dd>09 November 2026</dd></div></dl>
+          <div class="cite-actions"><button class="btn btn-ghost" type="button" data-copy-target="#cite-text">Copy citation</button><button class="btn btn-ghost" type="button" data-copy-target="#cite-bib">Copy BibTeX</button></div>
+          <pre class="cite-bib" id="cite-bib">@techreport{zeng2026pyedger,
+  title       = {pyedger: a Python implementation of edgeR that reproduces Bioconductor results to numerical precision},
+  author      = {Zeng, Zehua and Xu, Meng and Du, Hongwu},
+  institution = {OmicVerse},
+  type        = {Technical Report},
+  year        = {2026},
+  url         = {https://omicverse.org/articles/pyedger}
+}</pre>
+        </section>
+      </article>
+
+      <aside class="paper-side" aria-label="Article tools">
+        <div class="side-card side-pdf">
+          <a class="btn-pdf" href="../assets/articles/pyedger/pyedger.pdf" download>Download PDF <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19h14"/></svg></a>
+          <p>Two-column PDF · 5 pages · 1.2 MB · <a href="../assets/articles/pyedger/pyedger.pdf" target="_blank" rel="noopener">open in browser</a></p>
+        </div>
+        <div class="side-tabs" data-side-tabs>
+          <div class="side-tablist" role="tablist">
+            <button type="button" role="tab" aria-selected="true" data-tab="sections">Sections</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="figures">Figures</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="references">References</button>
+          </div>
+          <ol class="side-panel side-toc" data-panel="sections"><li><a href="#abstract">Abstract</a></li><li><a href="#sec-introduction">Introduction</a></li><li><a href="#sec-implementation">Implementation</a></li><li><a href="#sec-comparison-with-edger-on-tcga">Comparison with edgeR on TCGA</a></li><li><a href="#sec-notes-for-users-coming-from-r">Notes for users coming from R</a></li><li><a href="#sec-conclusion">Conclusion</a></li><li><a href="#references">References</a></li><li><a href="#supplementary">Supplementary information</a></li><li><a href="#cite">Cite this article</a></li></ol>
+          <ul class="side-panel side-figs" data-panel="figures" hidden><li><a href="#fig-1"><img src="../assets/articles/pyedger/fig1-thumb.jpg" alt="" loading="lazy" /><span>Fig. 1</span></a></li><li><a href="#fig-S1"><img src="../assets/articles/pyedger/figS1-thumb.jpg" alt="" loading="lazy" /><span>Fig. S1</span></a></li></ul>
+          <div class="side-panel" data-panel="references" hidden><p>4 references, numbered in order of citation.</p><a href="#references">Go to references</a></div>
+        </div>
+        <ul class="side-card side-links"><li><span>Code</span><a href="https://github.com/omicverse/py-edgeR" target="_blank" rel="noopener">github.com/omicverse/py-edgeR</a></li><li><span>In OmicVerse</span><code>ov.bulk.pyDEG</code></li></ul>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner page-width wide">
+      <div class="footer-brand-col">
+        <span class="footer-brand"><img src="../assets/brand/mark.svg" alt="" width="20" height="20" /> OmicVerse</span>
+        <p>Open-source multi-omics in Python, with Rust and Torch underneath. Trusted R methods, rebuilt and verified.</p>
+        <p class="footer-install"><code>pip install omicverse</code></p>
+      </div>
+      <div class="footer-col"><span class="footer-col-title">Project</span><ul><li><a href="../packages.html">Packages</a></li><li><a href="../ports.html">R-port catalog</a></li><li><a href="../articles.html">Articles</a></li><li><a href="https://omicverse.readthedocs.io/" target="_blank" rel="noopener">Documentation</a></li><li><a href="../blog.html">Blog</a></li></ul></div>
+      <div class="footer-col"><span class="footer-col-title">Community</span><ul><li><a href="../people.html">People</a></li><li><a href="../events.html">Events</a></li><li><a href="../join.html">Join</a></li><li><a href="https://github.com/omicverse/omicverse/discussions" target="_blank" rel="noopener">Discussions ↗</a></li></ul></div>
+      <div class="footer-col"><span class="footer-col-title">Resources</span><ul><li><a href="../about.html">About & citation</a></li><li><a href="https://github.com/omicverse/omicverse-rebuildr" target="_blank" rel="noopener">Porting protocol ↗</a></li><li><a href="https://github.com/omicverse/omicverse-tutorials" target="_blank" rel="noopener">Tutorials ↗</a></li><li><a href="https://github.com/omicverse" target="_blank" rel="noopener">GitHub ↗</a></li></ul></div>
+    </div>
+    <div class="footer-bottom page-width wide">
+      <span>© OmicVerse contributors · Apache-2.0</span>
+      <span>Built with <a href="https://github.com/omicverse/omicverse-org-home" target="_blank" rel="noopener">omicverse-org-home</a></span>
+    </div>
+  </footer>
+</body>
+</html>
