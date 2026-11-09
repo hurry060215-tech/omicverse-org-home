@@ -65,3 +65,7 @@ describe themselves with a root-level `port.yaml`; the schema lives in
 - https://github.com/omicverse
 - https://scverse.org/
 - https://virtualcellchallenge.org/
+
+## Articles
+
+`articles/<slug>/` holds technical reports (metadata, a Markdown body and figures). `python3 scripts/build_articles.py --pdf` builds the journal-style page under `src/articles/` and a two-column PDF with the OmicVerse LaTeX template. See [docs/ARTICLES.md](docs/ARTICLES.md).

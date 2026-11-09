@@ -1,0 +1,40 @@
+# Article metadata. The body lives in article.md; figures in figures/.
+# Build: python3 scripts/build_articles.py --pdf   (see docs/ARTICLES.md)
+slug: ft-kernel
+type: Technical Report
+title: "FT-Kernel: An innovative kernel for decoding cellular secrets related time"
+short_title: FT-Kernel
+published: 2026-11-08
+version: 1
+authors:
+  - {name: Cencan Xing, affiliations: [1, 2, 5]}
+  - {name: Yuqing Ma, affiliations: [3, 4, 5]}
+  - {name: Yanting Wang, affiliations: [2]}
+  - {name: Yixuan Wang, affiliations: [2]}
+  - {name: Peiwu Qin, affiliations: [3, 4], email: pwqin@sz.tsinghua.edu.cn}
+  - {name: Hongwu Du, affiliations: [1, 2], email: hongwudu@ustb.edu.cn}
+  - {name: Zehua Zeng, affiliations: [1, 2], email: starlitnightly@gmail.com}
+affiliations:
+  1: Daxing Research Institute, University of Science and Technology Beijing, Beijing 100083, China
+  2: School of Chemistry and Biological Engineering, University of Science and Technology Beijing, Beijing 100083, China
+  3: Center of Precision Medicine and Healthcare, Tsinghua-Berkeley Shenzhen Institute, Shenzhen, Guangdong Province 518055, China
+  4: Institute of Biopharmaceutics and Health Engineering, Tsinghua Shenzhen International Graduate School, Shenzhen, Guangdong Province 518055, China
+  5: These authors contributed equally to this work
+abstract: >-
+  The cell fate participants characterization based on single-cell RNA sequencing (scRNA-seq) data greatly
+  facilitates the mechanism understandings of cellular differentiation. However, inferring these fate factors
+  dynamics along the pseudotime is challenging. Based on cell-state density and pseudotime regression weights,
+  we present an algorithm TimeFactorKernel (FT-Kernel), to predict the key cell fate factors, not only the minimum
+  lineage transition genes, but also the related genesets/pathways, and cellular interaction dynamics along the
+  pseudotime. By extrapolating the pseudotime-related key genes from spectral data as a pseudotime-kernel,
+  FT-Kernel outperformed previous methods. Beyond time-related genes, FT-Kernel offered a comprehensive analysis
+  of the inferred cellular interactions dynamics and lineage pathways dynamics along the pseudotime, which were
+  limited in other methods. Additionally, it facilitated time-related fate factors prediction across various data
+  modalities. Our work developed an important pseudotime-kernel in predicting the fate factors, and provided
+  insights into the cellular hierarchies during development.
+keywords: [Cell fate factors, cell-state density, pseudotime-related genes, cellular interactions, lineage pathways, scRNA-seq]
+links:
+  code: https://github.com/Starlitnightly/TimeFactorKernel
+  api: ov.single.Fate
+  tutorial: https://omicverse.readthedocs.io/en/latest/Tutorials-single/t_cellfate_gene/
+thumbnail: fig1

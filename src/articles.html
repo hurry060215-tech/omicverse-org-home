@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Articles — OmicVerse</title>
+  <meta name="description" content="Technical reports for OmicVerse methods and rebuilt R packages: full methods, benchmarks and figures, typeset as papers." />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/brand/favicon-180.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=2026-11-09" />
+  <script src="script.js?v=2026-11-09" defer></script>
+  <script src="articles.js?v=2026-11-09" defer></script>
+</head>
+<body class="paper-page">
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="OmicVerse home">
+      <img class="brand-logo" src="assets/brand/mark.svg" alt="" width="28" height="28" />
+      <span>OmicVerse</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <nav class="nav-links" id="nav-links" aria-label="Primary navigation">
+      <a href="packages.html">Packages</a>
+      <a href="ports.html">Ports</a>
+      <a aria-current="page" href="articles.html">Articles</a>
+      <a href="https://omicverse.readthedocs.io/">Learn</a>
+      <a href="blog.html">Blog</a>
+      <a href="people.html">People</a>
+      <a href="about.html">About</a>
+      <a href="join.html">Join</a>
+      <a class="nav-cta" href="https://github.com/omicverse" target="_blank" rel="noopener"><svg class="nav-gh" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+    </nav>
+  </header>
+
+  <main class="articles-index page-width wide">
+    <nav class="paper-crumbs" aria-label="Breadcrumb"><a href="index.html">OmicVerse</a><span aria-hidden="true">›</span><span>Articles</span></nav>
+    <h1 class="articles-h1">Articles</h1>
+    <p class="articles-lede">Technical reports for OmicVerse methods and rebuilt R packages, with full methods, benchmarks and figures, typeset as papers with the <a href="https://github.com/omicverse/omicverse-latex-template" target="_blank" rel="noopener">OmicVerse LaTeX template</a>. Reports are released by their authors and are not peer reviewed.</p>
+    <form class="articles-filter" data-articles-filter>
+      <label><span>Article Type</span><select name="type"><option value="">All</option><option value="Technical Report">Technical Report</option></select></label>
+      <label><span>Year</span><select name="year"><option value="">All</option><option value="2026">2026</option></select></label>
+    </form>
+    <ol class="ar-list" data-articles-list>
+      <li class="ar-row" data-type="Technical Report" data-year="2026">
+        <div class="ar-meta"><span class="ar-type">Technical Report</span><time datetime="2026-11-08">08 Nov 2026</time></div>
+        <div class="ar-body">
+          <h2 class="ar-title"><a href="articles/ft-kernel.html">FT-Kernel: An innovative kernel for decoding cellular secrets related time</a></h2>
+          <p class="ar-authors">Cencan Xing, Yuqing Ma … Zehua Zeng</p>
+          <p class="ar-abstract">The cell fate participants characterization based on single-cell RNA sequencing (scRNA-seq) data greatly facilitates the mechanism understandings of cellular differentiation. However, inferring these fate factors dynamics along the pseudotime is …</p>
+        </div>
+        <a class="ar-thumb" href="articles/ft-kernel.html" tabindex="-1" aria-hidden="true"><img src="assets/articles/ft-kernel/fig1-thumb.jpg" alt="" loading="lazy" /></a>
+      </li>
+    </ol>
+    <p class="ar-empty" data-articles-empty hidden>No articles match these filters.</p>
+    <aside class="articles-submit">
+      <h2>Publish a technical report</h2>
+      <p>Write the report with the <a href="https://github.com/omicverse/omicverse-latex-template" target="_blank" rel="noopener">OmicVerse LaTeX template</a> in the two-column layout, then open a pull request that adds <code>articles/&lt;name&gt;/</code> to <a href="https://github.com/omicverse/omicverse-org-home" target="_blank" rel="noopener">omicverse-org-home</a>. The page and the PDF are built from that folder.</p>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner page-width wide">
+      <div class="footer-brand-col">
+        <span class="footer-brand"><img src="assets/brand/mark.svg" alt="" width="20" height="20" /> OmicVerse</span>
+        <p>Open-source multi-omics in Python, with Rust and Torch underneath. Trusted R methods, rebuilt and verified.</p>
+        <p class="footer-install"><code>pip install omicverse</code></p>
+      </div>
+      <div class="footer-col"><span class="footer-col-title">Project</span><ul><li><a href="packages.html">Packages</a></li><li><a href="ports.html">R-port catalog</a></li><li><a href="articles.html">Articles</a></li><li><a href="https://omicverse.readthedocs.io/" target="_blank" rel="noopener">Documentation</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div class="footer-col"><span class="footer-col-title">Community</span><ul><li><a href="people.html">People</a></li><li><a href="events.html">Events</a></li><li><a href="join.html">Join</a></li><li><a href="https://github.com/omicverse/omicverse/discussions" target="_blank" rel="noopener">Discussions ↗</a></li></ul></div>
+      <div class="footer-col"><span class="footer-col-title">Resources</span><ul><li><a href="about.html">About & citation</a></li><li><a href="https://github.com/omicverse/omicverse-rebuildr" target="_blank" rel="noopener">Porting protocol ↗</a></li><li><a href="https://github.com/omicverse/omicverse-tutorials" target="_blank" rel="noopener">Tutorials ↗</a></li><li><a href="https://github.com/omicverse" target="_blank" rel="noopener">GitHub ↗</a></li></ul></div>
+    </div>
+    <div class="footer-bottom page-width wide">
+      <span>© OmicVerse contributors · Apache-2.0</span>
+      <span>Built with <a href="https://github.com/omicverse/omicverse-org-home" target="_blank" rel="noopener">omicverse-org-home</a></span>
+    </div>
+  </footer>
+</body>
+</html>

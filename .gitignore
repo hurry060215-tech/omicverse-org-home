@@ -5,3 +5,7 @@ node_modules/
 *.log
 __pycache__/
 *.pyc
+
+# articles: LaTeX build products and the cloned template
+articles/_template/
+articles/*/build/

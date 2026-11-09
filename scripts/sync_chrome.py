@@ -19,11 +19,12 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 
 # Bump when styles.css / script.js / ports.js change in a way cached clients must pick up.
-ASSET_VERSION = "2026-11-08f"
+ASSET_VERSION = "2026-11-09"
 
 NAV = [
     ("packages", "Packages", "packages.html"),
     ("ports", "Ports", "ports.html"),
+    ("articles", "Articles", "articles.html"),
     ("learn", "Learn", "https://omicverse.readthedocs.io/"),
     ("blog", "Blog", "blog.html"),
     ("people", "People", "people.html"),
@@ -35,6 +36,7 @@ FOOTER_COLUMNS = [
     ("Project", [
         ("Packages", "packages.html"),
         ("R-port catalog", "ports.html"),
+        ("Articles", "articles.html"),
         ("Documentation", "https://omicverse.readthedocs.io/"),
         ("Blog", "blog.html"),
     ]),
@@ -103,13 +105,15 @@ def footer_html(prefix: str = "") -> str:
 
 HEADER_RE = re.compile(r"  <header class=\"site-header\">.*?</header>", re.S)
 FOOTER_RE = re.compile(r"  <footer class=\"footer[^\"]*\">.*?</footer>", re.S)
-ASSET_RE = re.compile(r'((?:href|src)="(?:\.\./)?(?:styles\.css|script\.js|ports\.js|packages\.js))(?:\?v=[^"]*)?"')
+ASSET_RE = re.compile(r'((?:href|src)="(?:\.\./)?(?:styles\.css|script\.js|ports\.js|packages\.js|articles\.js))(?:\?v=[^"]*)?"')
 ICON_RE = re.compile(r'  <link rel="icon"[^\n]*\n(?:  <link rel="apple-touch-icon"[^\n]*\n)?')
 
 
 def current_key(path: Path) -> str | None:
     if path.parent.name == "blog" or path.stem == "blog":
         return "blog"
+    if path.parent.name == "articles" or path.stem == "articles":
+        return "articles"
     return {"index": None, "packages": "packages", "ports": "ports", "people": "people",
             "about": "about", "join": "join", "events": None}.get(path.stem)
 
