@@ -3,7 +3,7 @@
 # Numbers come from py-edgeR/report (scripts/01-05, figures/numbers.tex).
 slug: pyedger
 type: Technical Report
-title: "pyedger: a Python implementation of edgeR that reproduces Bioconductor results to numerical precision"
+title: "pyedger: a Python implementation of edgeR for differential expression analysis"
 short_title: pyedger
 published: 2026-11-09
 version: 1
