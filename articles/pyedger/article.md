@@ -74,9 +74,9 @@ Future work includes the parts of edgeR beyond count-based DE: differential spli
 
 pyedger is released under LGPL-3.0-or-later on PyPI (`pip install pyedger`) and at https://github.com/omicverse/py-edgeR; this report describes version 0.2.3. The benchmark (`report/scripts` in the repository) reproduces every number and figure in this report. TCGA STAR counts were obtained from the UCSC Xena GDC hub (https://gdc-hub.s3.us-east-1.amazonaws.com) and MSigDB Hallmark 2020 gene sets from Enrichr, both accessed on 9 November 2026. Software: pyedger 0.2.3 (Python 3.10, NumPy 2.2.6, SciPy 1.15.2, numba 0.67.0); edgeR 4.10.5, limma 3.68.5, locfit 1.5-9.12 and fgsea 1.36.2 on R 4.5.3 (bioconda). Hardware: one node of the Stanford Sherlock cluster (Intel Xeon Platinum 8462Y+, 20 cores allocated).
 
-#* Use of AI tools
+#* Declaration of generative AI and AI-assisted technologies
 
-Claude (Anthropic) was used to assist with writing the pyedger code and the benchmark scripts, and with drafting and editing this manuscript. All code is tested against reference output of edgeR, and the authors reviewed the code, the results and the text and take full responsibility for the content.
+The authors used Claude Opus 5.5, GPT-6 Astra, and OmicOS to proofread grammar and syntax, improve readability. Any AI-assisted edits were reviewed by the authors, who take full responsibility for the content of this publication.
 
 #* Conflicts of interest
 
