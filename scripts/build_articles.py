@@ -221,7 +221,8 @@ def cite_text(meta) -> str:
         return f"{parts[-1]}, {'. '.join(p[0] for p in parts[:-1])}."
     names = [short(a["name"]) for a in meta["authors"]]
     who = ", ".join(names[:-1]) + " & " + names[-1] if len(names) > 1 else names[0]
-    return f"{who} {meta['title']}. {VENUE} ({meta['published'].year}). {SITE}/articles/{meta['slug']}"
+    where = f"https://doi.org/{meta['doi']}" if meta.get("doi") else f"{SITE}/articles/{meta['slug']}"
+    return f"{who} {meta['title']}. {VENUE} ({meta['published'].year}). {where}"
 
 
 def bibtex(meta) -> str:
@@ -229,7 +230,8 @@ def bibtex(meta) -> str:
     key = f"{meta['authors'][0]['name'].split()[-1].lower()}{meta['published'].year}{slugify(meta['short_title']).replace('-', '')}"
     return (f"@techreport{{{key},\n  title       = {{{meta['title']}}},\n  author      = {{{authors}}},\n"
             f"  institution = {{OmicVerse}},\n  type        = {{{meta['type']}}},\n  year        = {{{meta['published'].year}}},\n"
-            f"  url         = {{{SITE}/articles/{meta['slug']}}}\n}}")
+            + (f"  doi         = {{{meta['doi']}}},\n" if meta.get("doi") else "")
+            + f"  url         = {{{SITE}/articles/{meta['slug']}}}\n}}")
 
 
 def render_blocks_html(blocks, meta, fig_url) -> tuple[str, list[tuple[str, str]], list[dict]]:
@@ -322,13 +324,26 @@ def article_page(meta, body_html, toc, figs, pdf_info, n_refs) -> str:
         side_links.append(f'<li><span>In OmicVerse</span><code>{html.escape(links["api"])}</code></li>')
     if links.get("tutorial"):
         side_links.append(f'<li><span>Tutorial</span><a href="{html.escape(links["tutorial"])}" target="_blank" rel="noopener">omicverse.readthedocs.io</a></li>')
+    doi = meta.get("doi")
+    pre = meta.get("preprint") or {}
+    doi_url = f"https://doi.org/{doi}" if doi else ""
+    doi_line, cite_meta = "", [("Published", fmt_date(pub))]
+    if pre:
+        cite_meta.append(("Preprint", f"{html.escape(pre['server'])}, posted {fmt_date(pre['posted'])}"))
+    if doi:
+        posted = f'<span class="sep" aria-hidden="true">·</span>{html.escape(pre["server"])} preprint, posted {fmt_date(pre["posted"])}' if pre else ""
+        doi_line = f'<p class="paper-doi">DOI <a href="{doi_url}" target="_blank" rel="noopener">{doi_url}</a>{posted}</p>'
+        cite_meta.append(("DOI", f'<a href="{doi_url}" target="_blank" rel="noopener">{doi_url}</a>'))
+        side_links.insert(0, f'<li><span>DOI{" · " + html.escape(pre["server"]) if pre else ""}</span><a href="{doi_url}" target="_blank" rel="noopener">{html.escape(doi)}</a></li>')
+    cite_meta_html = "".join(f"<div><dt>{k}</dt><dd>{v}</dd></div>" for k, v in cite_meta)
     desc = html.escape(re.sub(r"\s+", " ", meta["abstract"])[:300], quote=True)
     citation_meta = "\n".join(
         [f'  <meta name="citation_title" content="{html.escape(title, quote=True)}" />']
         + [f'  <meta name="citation_author" content="{html.escape(a["name"], quote=True)}" />' for a in meta["authors"]]
         + [f'  <meta name="citation_publication_date" content="{pub:%Y/%m/%d}" />',
            f'  <meta name="citation_journal_title" content="{VENUE}" />',
-           f'  <meta name="citation_pdf_url" content="{SITE}/assets/articles/{slug}/{slug}.pdf" />'])
+           f'  <meta name="citation_pdf_url" content="{SITE}/assets/articles/{slug}/{slug}.pdf" />']
+        + ([f'  <meta name="citation_doi" content="{html.escape(doi, quote=True)}" />'] if doi else []))
     bib = html.escape(bibtex(meta))
     cite = html.escape(cite_text(meta))
     abstract_html = h_inline(re.sub(r"\s+", " ", meta["abstract"]).strip())
@@ -354,6 +369,7 @@ def article_page(meta, body_html, toc, figs, pdf_info, n_refs) -> str:
   <script src="../articles.js?v={ASSET_VERSION}" defer></script>
 </head>
 <body class="paper-page">
+  <div class="bg-grid" aria-hidden="true"></div>
 {header_html("articles", "../")}
 
   <main class="paper page-width wide">
@@ -365,6 +381,7 @@ def article_page(meta, body_html, toc, figs, pdf_info, n_refs) -> str:
         <ul class="paper-authors">{"".join(authors)}</ul>
         <details class="paper-affil"><summary>Affiliations</summary><ol>{affs}</ol></details>
         <p class="paper-journal"><i>{VENUE}</i> ({pub.year})<span class="sep" aria-hidden="true">|</span><a href="#cite">Cite this article</a></p>
+        {doi_line}
         <a class="paper-pdf-inline btn btn-primary" href="{pdf_href}" download>{ICON_DL}Download PDF</a>
 
         <section class="paper-section" id="abstract" aria-labelledby="abstract-h">
@@ -386,6 +403,7 @@ def article_page(meta, body_html, toc, figs, pdf_info, n_refs) -> str:
         <section class="paper-section" id="cite" aria-labelledby="cite-h">
           <h2 id="cite-h">Cite this article</h2>
           <p class="cite-text" id="cite-text">{cite}</p>
+          <dl class="cite-meta">{cite_meta_html}</dl>
           <div class="cite-actions"><button class="btn btn-ghost" type="button" data-copy-target="#cite-text">Copy citation</button><button class="btn btn-ghost" type="button" data-copy-target="#cite-bib">Copy BibTeX</button></div>
           <pre class="cite-bib" id="cite-bib">{bib}</pre>
         </section>
@@ -455,6 +473,7 @@ def index_page(entries) -> str:
   <script src="articles.js?v={ASSET_VERSION}" defer></script>
 </head>
 <body class="paper-page">
+  <div class="bg-grid" aria-hidden="true"></div>
 {header_html("articles")}
 
   <main class="articles-index page-width wide">
@@ -595,6 +614,7 @@ def tex_document(meta, body: str) -> str:
     affs = "\n".join(f"\\affiliation{{{k}}}{{{t_escape(v)}.}}" for k, v in meta["affiliations"].items())
     corr = ", ".join(f"\\href{{mailto:{a['email']}}}{{\\textcolor{{pdprimary}}{{{t_escape(a['email'])}}}}}" for a in meta["authors"] if a.get("email"))
     summary = t_inline(re.sub(r"\s+", " ", meta["abstract"]).strip())
+    doi_tex = f"\\articledoi{{{meta['doi']}}}\n" if meta.get("doi") else ""
     return f"""%% Generated by scripts/build_articles.py from articles/{meta['slug']}/ — edit article.md / meta.yaml, not this file.
 \\documentclass[brand=omicverse, twocolumn]{{pdarticle}}
 
@@ -604,7 +624,7 @@ def tex_document(meta, body: str) -> str:
 \\copyrightholder{{{pub.year} The Authors}}
 \\licenseline{{Published at \\href{{{SITE}/articles/{meta['slug']}}}{{omicverse.org/articles/{meta['slug']}}}, version {meta.get('version', 1)}.}}
 
-\\title{{{t_escape(meta['title'])}}}
+{doi_tex}\\title{{{t_escape(meta['title'])}}}
 \\author{{{' '.join(authors)}}}
 {affs}
 % full-width figures and tables: allow tall top floats, and start float-only pages at the top
@@ -698,6 +718,9 @@ def load(art_dir: Path) -> dict:
     if isinstance(meta["published"], str):
         meta["published"] = dt.date.fromisoformat(meta["published"])
     meta["affiliations"] = {str(k): v for k, v in meta["affiliations"].items()}
+    pre = meta.get("preprint")
+    if pre and isinstance(pre.get("posted"), str):
+        pre["posted"] = dt.date.fromisoformat(pre["posted"])
     return meta
 
 
