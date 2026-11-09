@@ -18,15 +18,15 @@ affiliations:
   4: School of Chemistry and Biological Engineering, University of Science and Technology Beijing, Beijing 100083, China
   5: Daxing Research Institute, University of Science and Technology Beijing, Beijing 100083, China
 abstract: >-
-  We present pyedger, a pure-Python implementation of the edgeR negative-binomial workflow for differential
-  expression of count data, covering TMM normalisation, filterByExpr, estimateDisp, the quasi-likelihood (QL)
-  F-test, the likelihood-ratio test and the classic exact test. Rather than aiming for similar results, pyedger
-  ports edgeR's compiled code paths and its limma and locfit dependencies step by step and is versioned against a
-  specific edgeR release. On eight TCGA tumour-normal comparisons (4,972 samples) and 60 small-sample analyses it
-  returns the same differentially expressed genes as edgeR 4.10.5 in all three tests, P-values within
-  1.2e-5 relative difference and identical gene-set enrichment results, while running 1.1-1.3 times faster than
-  edgeR on one thread and 3.4-3.5 times faster on eight. The benchmark also exposed a tail-probability underflow in
-  the exact test and several API differences from R in pyedger 0.2.2, which are fixed in 0.2.3.
+  We present pyedger, a Python implementation of the edgeR workflow for differential expression analysis of
+  count data, covering TMM normalisation, filterByExpr, dispersion estimation, the quasi-likelihood (QL) F-test,
+  the likelihood-ratio test and the classic exact test. pyedger follows edgeR's compiled code and its limma and
+  locfit dependencies step by step and is versioned against a specific edgeR release. On eight TCGA tumour–normal
+  comparisons (4,972 samples) and 60 small-sample analyses it returns the same differentially expressed genes as
+  edgeR 4.10.5 in all three tests, P-values within a relative difference of 1.2 × 10⁻⁵ and identical gene-set
+  enrichment results, while running 1.1–1.3 times faster than edgeR on one thread and 3.4–3.5 times faster on
+  eight. pyedger is the edgeR backend of OmicVerse and is released under LGPL-3.0-or-later at
+  https://github.com/omicverse/py-edgeR and on PyPI.
 keywords: [edgeR, differential expression, RNA-seq, negative binomial, Python, reproducibility]
 links:
   code: https://github.com/omicverse/py-edgeR

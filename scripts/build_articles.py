@@ -507,7 +507,8 @@ TEX_UNICODE = {
     "τ": r"$\tau$", "²": r"\textsuperscript{2}", "±": r"$\pm$", "≥": r"$\geq$", "≤": r"$\leq$", "×": r"$\times$",
     "→": r"$\rightarrow$", "’": "'", "‘": "`", "“": "``", "”": "''", "–": "--", "—": "---", "Å": r"\AA{}",
     "ϵ": r"$\epsilon$", "α": r"$\alpha$", "β": r"$\beta$", "γ": r"$\gamma$", "μ": r"$\mu$", "…": r"\ldots{}",
-    "\u00a0": "~", "✉": "",
+    "\u00a0": "~", "✉": "", "⁻": r"\textsuperscript{$-$}",
+    **{c: r"\textsuperscript{%d}" % i for i, c in enumerate("⁰¹²³⁴⁵⁶⁷⁸⁹")},
 }
 TEX_SPECIAL = {"\\": r"\textbackslash{}", "&": r"\&", "%": r"\%", "$": r"\$", "#": r"\#", "_": r"\_",
                "{": r"\{", "}": r"\}", "~": r"\textasciitilde{}", "^": r"\textasciicircum{}", "<": r"\textless{}", ">": r"\textgreater{}"}
