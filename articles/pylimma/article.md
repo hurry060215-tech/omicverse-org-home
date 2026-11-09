@@ -33,7 +33,7 @@ limma functions and their pylimma counterparts (R names are exported as aliases)
 
 ## Numerical parity with limma
 
-pylimma ports limma's algorithms instead of re-deriving the statistics. These include voom's choice of lowess span and its linear interpolation of the fitted trend, the per-gene weighted least-squares fits, `fitFDist` and the trigamma inversion that estimate the prior, the robust variant of `squeezeVar`[@16] and the limit on the total degrees of freedom. For the B-statistic, `tmixture` estimates the prior variance of non-zero coefficients from the largest t-statistics, bounded by `stdev.coef.lim`. As in limma, this bound enters only the B-statistic; the moderated t-statistic uses the unscaled standard deviations as fitted. Each step is tested against reference output of limma 3.68.5 (9 tests), including a design with a continuous covariate, and pylimma versions follow limma releases (0.1.x tracks limma 3.68.5).
+pylimma ports limma's algorithms instead of re-deriving the statistics. These include voom's choice of lowess span and its linear interpolation of the fitted trend, the per-gene weighted least-squares fits, `fitFDist` and the trigamma inversion that estimate the prior, the robust variant of `squeezeVar`[@16] and the limit on the total degrees of freedom. For the B-statistic, `tmixture` estimates the prior variance of non-zero coefficients from the largest t-statistics, bounded by `stdev.coef.lim`. As in limma, this bound enters only the B-statistic; the moderated t-statistic uses the unscaled standard deviations as fitted. Five tests check these steps against reference output of limma 3.68.5, including a design with a continuous covariate, and pylimma versions follow limma releases (0.1.x tracks limma 3.68.5).
 
 ## Use in OmicVerse
 
@@ -72,9 +72,9 @@ Future work includes the parts of limma beyond the core linear-model workflow: `
 
 pylimma is released under LGPL-3.0-or-later on PyPI (`pip install python-limma`; the import name is `pylimma`) and at https://github.com/omicverse/py-limma; this report describes version 0.1.1. The benchmark (`report/scripts` in the repository, with the task builder of py-edgeR) reproduces every number and figure in this report. TCGA STAR counts were obtained from the UCSC Xena GDC hub (https://gdc-hub.s3.us-east-1.amazonaws.com) and MSigDB Hallmark 2020 gene sets from Enrichr, both accessed on 9 November 2026. Software: pylimma 0.1.1 and pyedger 0.2.3 (Python 3.10, NumPy 2.2.6, SciPy 1.15.2); limma 3.68.5, edgeR 4.10.5 and fgsea 1.36.2 on R 4.5.3 (bioconda). Hardware: one node of the Stanford Sherlock cluster (Intel Xeon Platinum 8462Y+, 20 cores allocated).
 
-#* Use of AI tools
+#* Declaration of generative AI and AI-assisted technologies
 
-Claude Opus 5.5 (Anthropic) was used to write the benchmark scripts and parts of the pylimma 0.1.1 code and tests, and to draft and edit the text. The authors reviewed all code, results and text and take full responsibility for the content of this publication.
+The authors used Claude Opus 5.5, GPT-6 Astra, and OmicOS to proofread grammar and syntax, improve readability. Any AI-assisted edits were reviewed by the authors, who take full responsibility for the content of this publication.
 
 #* Conflicts of interest
 
@@ -122,7 +122,7 @@ Z.Z. is affiliated with OmicVerse, Inc. The other authors declare no conflicts o
 
 ## Notes for users coming from R
 
-1. **Installation.** The PyPI distribution is `python-limma` and the import name is `pylimma`. An unrelated project publishes a package called `pylimma` on PyPI; install with `pip install python-limma`.
+1. **Installation.** The PyPI distribution is `python-limma` and the import name is `pylimma`. An independent Python port of limma is distributed on PyPI under the name `pylimma` (https://github.com/john-mulvey/pylimma); the package described here is installed with `pip install python-limma`.
 2. **Versions.** pylimma 0.1.x tracks limma 3.68.5, including its defaults (for example voom's adaptive lowess span).
 3. **Indices are 0-based.** `topTable(fit, coef=1)` in Python is `coef = 2` in R; coefficient names are also accepted.
 4. **Library sizes.** `voom` takes counts and the effective library sizes (library size × normalisation factor), for example from pyedger's `effective_lib_sizes`, where limma's `voom` reads them from a `DGEList`.
