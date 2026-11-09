@@ -19,10 +19,15 @@ articles/<slug>/
 ```bash
 python3 scripts/build_articles.py --pdf   # pages, web figures and the PDF (needs latexmk + pdflatex)
 python3 scripts/build_articles.py         # pages only, reusing the committed PDF
+python3 scripts/build_articles.py --pdf --only <slug> --preprint   # also a single-column copy for a preprint server
 npm run build                             # copy src/ to dist/
 ```
 
 The build writes `src/articles.html`, `src/articles/<slug>.html` and `src/assets/articles/<slug>/` (web figures, thumbnails and `<slug>.pdf`), then runs `scripts/sync_chrome.py`. Commit those outputs together with the source folder.
+
+### Preprint copy
+
+`--preprint` (with `--only`) writes `articles/<slug>/preprint/` (ignored by git): `<slug>-preprint.pdf`, single column, with the OmicVerse logo, corner graphic and venue name removed and a CC BY 4.0 licence line, and `<slug>-preprint-latex.zip`, the `.tex`, class, bibliography style and figures needed to rebuild it. This is what preprint servers such as Preprints.org ask for. Preprints.org also requires a "Conflicts of interest" section before the references and a statement on the use of AI tools; write them as `#*` back-matter sections in `article.md`. Once the preprint is posted, add its `doi` and `preprint: {server, posted}` to `meta.yaml`.
 
 ## `meta.yaml`
 

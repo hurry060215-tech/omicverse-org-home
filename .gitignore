@@ -9,3 +9,4 @@ __pycache__/
 # articles: LaTeX build products and the cloned template
 articles/_template/
 articles/*/build/
+articles/*/preprint/
