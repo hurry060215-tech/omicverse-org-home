@@ -32,6 +32,8 @@ type: Technical Report            # shown on the list page and used by its "Arti
 title: "…"
 short_title: FT-Kernel            # used in the BibTeX key
 published: 2026-11-08
+doi: 10.1101/2025.03.01.640966    # optional; shown on the page, in the citation, BibTeX and the PDF
+preprint: {server: bioRxiv, posted: 2025-03-07}   # optional
 version: 1                        # bump when the report is revised
 authors:
   - {name: First Author, affiliations: [1, 2]}
