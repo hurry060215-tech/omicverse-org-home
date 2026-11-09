@@ -74,6 +74,14 @@ Future work includes the parts of edgeR beyond count-based DE: differential spli
 
 pyedger is released under LGPL-3.0-or-later on PyPI (`pip install pyedger`) and at https://github.com/omicverse/py-edgeR; this report describes version 0.2.3. The benchmark (`report/scripts` in the repository) reproduces every number and figure in this report. TCGA STAR counts were obtained from the UCSC Xena GDC hub (https://gdc-hub.s3.us-east-1.amazonaws.com) and MSigDB Hallmark 2020 gene sets from Enrichr, both accessed on 9 November 2026. Software: pyedger 0.2.3 (Python 3.10, NumPy 2.2.6, SciPy 1.15.2, numba 0.67.0); edgeR 4.10.5, limma 3.68.5, locfit 1.5-9.12 and fgsea 1.36.2 on R 4.5.3 (bioconda). Hardware: one node of the Stanford Sherlock cluster (Intel Xeon Platinum 8462Y+, 20 cores allocated).
 
+#* Declaration of generative AI and AI-assisted technologies
+
+The authors used Claude Opus 5.5, GPT-6 Astra, and OmicOS to proofread grammar and syntax, improve readability. Any AI-assisted edits were reviewed by the authors, who take full responsibility for the content of this publication.
+
+#* Conflicts of interest
+
+Z.Z. is affiliated with OmicVerse, Inc. The other authors declare no conflicts of interest.
+
 # References
 
 1. Stark R, Grzelak M, Hadfield J (2019). RNA sequencing: the teenage years. Nature Reviews Genetics 20, 631-656. 10.1038/s41576-019-0150-2
