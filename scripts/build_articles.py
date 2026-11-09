@@ -611,7 +611,7 @@ def tex_document(meta, body: str, variant: str = "site") -> str:
     authors = []
     for i, a in enumerate(meta["authors"]):
         marks = ",".join(str(x) for x in a["affiliations"]) + (",*" if a.get("email") else "")
-        sep = "" if i == len(meta["authors"]) - 1 else ","
+        sep = "," if i < len(meta["authors"]) - 1 and len(meta["authors"]) > 2 else ""   # no comma before "and" with two authors
         prefix = "and " if i == len(meta["authors"]) - 1 and len(meta["authors"]) > 1 else ""
         authors.append(f"{prefix}{t_escape(a['name'])}{sep}\\affmark{{{marks}}}")
     affs = "\n".join(f"\\affiliation{{{k}}}{{{t_escape(v)}.}}" for k, v in meta["affiliations"].items())
