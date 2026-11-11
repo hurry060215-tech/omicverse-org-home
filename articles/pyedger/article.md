@@ -80,7 +80,7 @@ The authors used Claude Opus 5.5, GPT-6 Astra, and OmicOS to proofread grammar a
 
 #* Conflicts of interest
 
-Z.Z. and X.M. are affiliated with OmicVerse, Inc.
+Contributors Zehua Zeng and Xu Meng are affiliated with OmicVerse, Inc.
 
 # References
 

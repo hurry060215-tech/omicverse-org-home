@@ -78,7 +78,7 @@ The authors used Claude Opus 5.5, GPT-6 Astra, and OmicOS to proofread grammar a
 
 #* Conflicts of interest
 
-Z.Z. and X.M. are affiliated with OmicVerse, Inc.
+Contributors Zehua Zeng and Xu Meng are affiliated with OmicVerse, Inc.
 
 # References
 
@@ -93,7 +93,7 @@ Z.Z. and X.M. are affiliated with OmicVerse, Inc.
 9. Gautier L. rpy2: Python interface to the R language. https://rpy2.github.io
 10. Muzellec B, Teleńczuk M, Cabeli V, Andreux M (2023). PyDESeq2: a python package for bulk RNA-seq differential expression analysis. Bioinformatics 39, btad547. 10.1093/bioinformatics/btad547
 11. Love MI, Huber W, Anders S (2014). Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biology 15, 550. 10.1186/s13059-014-0550-8
-12. Zeng Z, Meng X (2026). pyedger: a Python implementation of edgeR for differential expression analysis. OmicVerse Technical Reports. https://omicverse.org/articles/pyedger.html
+12. OmicVerse Team (2026). pyedger: a Python implementation of edgeR for differential expression analysis. OmicVerse Technical Reports. https://omicverse.org/articles/pyedger.html
 13. Robinson MD, McCarthy DJ, Smyth GK (2010). edgeR: a Bioconductor package for differential expression analysis of digital gene expression data. Bioinformatics 26, 139-140. 10.1093/bioinformatics/btp616
 14. McCarthy DJ, Smyth GK (2009). Testing significance relative to a fold-change threshold is a TREAT. Bioinformatics 25, 765-771. 10.1093/bioinformatics/btp053
 15. Cleveland WS (1979). Robust locally weighted regression and smoothing scatterplots. Journal of the American Statistical Association 74, 829-836. 10.1080/01621459.1979.10481038

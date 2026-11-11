@@ -212,23 +212,39 @@ def fmt_date(d: dt.date, short=False) -> str:
     return f"{d.day:02d} {MONTHS[d.month - 1][:3] if short else MONTHS[d.month - 1]} {d.year}"
 
 
+def aname(a) -> str:
+    """Display name of an author entry: a person (`name`) or a group author (`group`, e.g. OmicVerse Team)."""
+    return a.get("name") or a["group"]
+
+
 def author_names(meta, fmt="full") -> list[str]:
-    return [a["name"] for a in meta["authors"]]
+    return [aname(a) for a in meta["authors"]]
+
+
+def contributor_list(meta) -> list[dict]:
+    """People credited under a group author (`contributors:` in meta.yaml), in order."""
+    return meta.get("contributors") or []
 
 
 def cite_text(meta) -> str:
-    def short(n):
-        parts = n.split()
+    def short(a):
+        if a.get("group"):
+            return f"{a['group']}."
+        parts = a["name"].split()
         return f"{parts[-1]}, {'. '.join(p[0] for p in parts[:-1])}."
-    names = [short(a["name"]) for a in meta["authors"]]
+    names = [short(a) for a in meta["authors"]]
     who = ", ".join(names[:-1]) + " & " + names[-1] if len(names) > 1 else names[0]
     where = f"https://doi.org/{meta['doi']}" if meta.get("doi") else f"{SITE}/articles/{meta['slug']}"
     return f"{who} {meta['title']}. {VENUE} ({meta['published'].year}). {where}"
 
 
 def bibtex(meta) -> str:
-    authors = " and ".join(f"{a['name'].split()[-1]}, {' '.join(a['name'].split()[:-1])}" for a in meta["authors"])
-    key = f"{meta['authors'][0]['name'].split()[-1].lower()}{meta['published'].year}{slugify(meta['short_title']).replace('-', '')}"
+    def bib_name(a):   # a group author is braced so BibTeX keeps it as one corporate name
+        return f"{{{a['group']}}}" if a.get("group") else f"{a['name'].split()[-1]}, {' '.join(a['name'].split()[:-1])}"
+    authors = " and ".join(bib_name(a) for a in meta["authors"])
+    first = meta["authors"][0]
+    stem = slugify(first["group"]).replace("-", "") if first.get("group") else first["name"].split()[-1].lower()
+    key = f"{stem}{meta['published'].year}{slugify(meta['short_title']).replace('-', '')}"
     return (f"@techreport{{{key},\n  title       = {{{meta['title']}}},\n  author      = {{{authors}}},\n"
             f"  institution = {{OmicVerse}},\n  type        = {{{meta['type']}}},\n  year        = {{{meta['published'].year}}},\n"
             + (f"  doi         = {{{meta['doi']}}},\n" if meta.get("doi") else "")
@@ -306,11 +322,21 @@ def article_page(meta, body_html, toc, figs, pdf_info, n_refs) -> str:
     authors = []
     for a in meta["authors"]:
         sup = ",".join(str(x) for x in a["affiliations"])
-        mail = (f' <a class="au-mail" href="mailto:{html.escape(a["email"])}" aria-label="Email {html.escape(a["name"])}">{ICON_MAIL}</a>'
+        mail = (f' <a class="au-mail" href="mailto:{html.escape(a["email"])}" aria-label="Email {html.escape(aname(a))}">{ICON_MAIL}</a>'
                 if a.get("email") else "")
-        authors.append(f'<li><span class="au-name">{html.escape(a["name"])}</span><sup>{sup}</sup>{mail}</li>')
+        authors.append(f'<li><span class="au-name">{html.escape(aname(a))}</span><sup>{sup}</sup>{mail}</li>')
     affs = "".join(f'<li><sup>{k}</sup> {html.escape(v)}</li>' for k, v in meta["affiliations"].items())
-    corr = ", ".join(f'<a href="mailto:{html.escape(a["email"])}">{html.escape(a["name"])}</a>' for a in meta["authors"] if a.get("email"))
+    corr = ", ".join(
+        (f'{html.escape(a["group"])} (<a href="mailto:{html.escape(a["email"])}">{html.escape(a["email"])}</a>)' if a.get("group")
+         else f'<a href="mailto:{html.escape(a["email"])}">{html.escape(a["name"])}</a>')
+        for a in meta["authors"] if a.get("email"))
+    groups = [a["group"] for a in meta["authors"] if a.get("group")]
+    contribs = contributor_list(meta)
+    contrib_html = ""
+    if contribs:
+        people = ", ".join(f'{html.escape(c["name"])}<sup>{",".join(str(x) for x in c.get("affiliations", []))}</sup>' for c in contribs)
+        who = html.escape(groups[0]) if groups else "This report"
+        contrib_html = f"\n          <h3>Contributors</h3>\n          <p>{who} members who contributed to this report: {people}.</p>"
     kw = "".join(f"<li>{html.escape(k)}</li>" for k in meta.get("keywords", []))
     toc_items = [("abstract", "Abstract")] + toc + [("cite", "Cite this article")]
     toc_html = "".join(f'<li><a href="#{sid}">{html.escape(label)}</a></li>' for sid, label in toc_items)
@@ -341,7 +367,7 @@ def article_page(meta, body_html, toc, figs, pdf_info, n_refs) -> str:
     desc = html.escape(re.sub(r"\s+", " ", meta["abstract"])[:300], quote=True)
     citation_meta = "\n".join(
         [f'  <meta name="citation_title" content="{html.escape(title, quote=True)}" />']
-        + [f'  <meta name="citation_author" content="{html.escape(a["name"], quote=True)}" />' for a in meta["authors"]]
+        + [f'  <meta name="citation_author" content="{html.escape(aname(a), quote=True)}" />' for a in meta["authors"]]
         + [f'  <meta name="citation_publication_date" content="{pub:%Y/%m/%d}" />',
            f'  <meta name="citation_journal_title" content="{VENUE}" />',
            f'  <meta name="citation_pdf_url" content="{SITE}/assets/articles/{slug}/{slug}.pdf" />']
@@ -398,8 +424,8 @@ def article_page(meta, body_html, toc, figs, pdf_info, n_refs) -> str:
           <h2 id="author-information-h">Author information</h2>
           <h3>Affiliations</h3>
           <ol class="paper-affil-list">{affs}</ol>
-          <h3>Corresponding authors</h3>
-          <p>Correspondence to {corr}.</p>
+          <h3>{"Correspondence" if groups else "Corresponding authors"}</h3>
+          <p>Correspondence to {corr}.</p>{contrib_html}
         </section>
 
         <section class="paper-section" id="cite" aria-labelledby="cite-h">
@@ -443,7 +469,7 @@ def index_page(entries) -> str:
     rows = []
     for e in entries:
         m = e["meta"]
-        names = [a["name"] for a in m["authors"]]
+        names = [aname(a) for a in m["authors"]]
         who = ", ".join(names) if len(names) <= 3 else f"{names[0]}, {names[1]} … {names[-1]}"
         abstract = re.sub(r"\s+", " ", m["abstract"]).strip()
         abstract = abstract if len(abstract) < 260 else abstract[:abstract.rfind(" ", 0, 250)] + " …"
@@ -613,9 +639,16 @@ def tex_document(meta, body: str, variant: str = "site") -> str:
         marks = ",".join(str(x) for x in a["affiliations"]) + (",*" if a.get("email") else "")
         sep = "," if i < len(meta["authors"]) - 1 and len(meta["authors"]) > 2 else ""   # no comma before "and" with two authors
         prefix = "and " if i == len(meta["authors"]) - 1 and len(meta["authors"]) > 1 else ""
-        authors.append(f"{prefix}{t_escape(a['name'])}{sep}\\affmark{{{marks}}}")
+        authors.append(f"{prefix}{t_escape(aname(a))}{sep}\\affmark{{{marks}}}")
     affs = "\n".join(f"\\affiliation{{{k}}}{{{t_escape(v)}.}}" for k, v in meta["affiliations"].items())
     corr = ", ".join(f"\\href{{mailto:{a['email']}}}{{\\textcolor{{pdprimary}}{{{t_escape(a['email'])}}}}}" for a in meta["authors"] if a.get("email"))
+    groups = [a["group"] for a in meta["authors"] if a.get("group")]
+    contribs = contributor_list(meta)
+    contrib_tex = ""
+    if contribs:   # printed under the correspondence line of the title block
+        people = ", ".join(f"{t_escape(c['name'])}\\textsuperscript{{{','.join(str(x) for x in c.get('affiliations', []))}}}" for c in contribs)
+        who = t_escape(groups[0]) if groups else "This report"
+        contrib_tex = f"{who} members who contributed to this report: {people}.\\par"
     summary = t_inline(re.sub(r"\s+", " ", meta["abstract"]).strip())
     doi_tex = f"\\articledoi{{{meta['doi']}}}\n" if meta.get("doi") else ""
     if variant == "preprint":
@@ -660,7 +693,7 @@ def tex_document(meta, body: str, variant: str = "site") -> str:
 \\setlength{{\\@dblfptop}}{{0pt}}
 \\makeatother
 \\makeatletter
-\\def\\pd@corresp{{*Correspondence: {corr}\\par}}
+\\def\\pd@corresp{{*Correspondence: {corr}\\par {contrib_tex}}}
 \\makeatother
 
 \\summary{{{summary}}}
