@@ -43,6 +43,11 @@ version: 1                        # bump when the report is revised
 authors:
   - {name: First Author, affiliations: [1, 2]}
   - {name: Last Author, affiliations: [1], email: last@example.org}   # an email marks a corresponding author
+# Group author (used for R-port reports): one `group` entry plus the people credited under it.
+# authors:
+#   - {group: OmicVerse Team, affiliations: [2], email: contact@omicos.cn}
+# contributors:                   # listed under "Contributors" on the page and in the PDF title block
+#   - {name: First Person, affiliations: [1, 2]}
 affiliations:
   1: Department, Institution, City, Country
 abstract: >-
