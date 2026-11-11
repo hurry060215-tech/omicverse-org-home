@@ -6,6 +6,8 @@ type: Technical Report
 title: "pyedger: a Python implementation of edgeR for differential expression analysis"
 short_title: pyedger
 published: 2026-11-09
+doi: 10.20944/preprints202611.1133.v1   # Preprints.org preprint of this report
+preprint: {server: Preprints.org, posted: 2026-11-11}
 version: 1
 authors:
   - {name: Zehua Zeng, affiliations: [1, 2], email: starlitnightly@gmail.com}
