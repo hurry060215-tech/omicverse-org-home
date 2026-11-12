@@ -1,0 +1,35 @@
+# Article metadata. The body lives in article.md; figures in figures/.
+# Build: python3 scripts/build_articles.py --pdf   (see docs/ARTICLES.md)
+# Numbers come from py-DoubletFinder/report (scripts/01-05, figures/numbers.tex).
+slug: pydoubletfinder
+type: Technical Report
+title: "pydoubletfinder: a Python implementation of DoubletFinder for doublet detection in single-cell RNA-seq data"
+short_title: pydoubletfinder
+published: 2026-11-11
+version: 1
+authors:
+  - {group: OmicVerse Team, affiliations: [2], email: contact@omicos.cn}   # group author; people are credited under contributors
+contributors:
+  - {name: Zehua Zeng, affiliations: [1, 2]}
+  - {name: Xu Meng, affiliations: [2, 3]}
+affiliations:
+  1: Department of Genetics, Stanford University, Stanford, CA 94305, USA
+  2: OmicVerse, Inc., San Francisco, CA 94114, USA
+  3: Hubei Key Laboratory of Agricultural Bioinformatics, College of Informatics, Huazhong Agricultural University, Wuhan 430070, China
+abstract: >-
+  We present pydoubletfinder, a Python implementation of DoubletFinder for doublet detection in single-cell
+  RNA-seq data, covering artificial-doublet generation, the proportion of artificial nearest neighbours
+  (pANN), the pN–pK parameter sweep with the bimodality-coefficient criterion for choosing pK, homotypic-doublet
+  modelling and doublet classification. pydoubletfinder follows DoubletFinder's code paths step by step,
+  including Seurat's preprocessing of every merged real and artificial matrix and R's random number
+  generator, so that the same seed draws the same artificial doublets as in R. On the 16 real datasets of an
+  independent doublet-detection benchmark (168,239 cells, 3–37% doublets annotated experimentally),
+  pydoubletfinder chose the same pK as DoubletFinder 2.0.6 in all 32 runs, returned identical pANN values for
+  99.99% of cells and identical doublet calls in every dataset, and ran 1.7–3.5 times faster on one thread.
+  pydoubletfinder is used by OmicVerse quality control and is released under CC0 at
+  https://github.com/omicverse/py-DoubletFinder and on PyPI.
+keywords: [DoubletFinder, doublet detection, single-cell RNA-seq, quality control, Seurat, Python, reproducibility]
+links:
+  code: https://github.com/omicverse/py-DoubletFinder
+  api: ov.pp.qc
+thumbnail: fig1
