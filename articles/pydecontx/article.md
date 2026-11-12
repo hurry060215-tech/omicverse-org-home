@@ -35,13 +35,13 @@ pydecontx ports the code that decontX runs. decontX draws the initial proportion
 
 ## Use in OmicVerse
 
-pydecontx is the decontX backend of OmicVerse[@8] ambient-RNA removal: `ov.pp.ambient.remove_ambient(adata, method='decontx', cluster_key=...)` runs it on a filtered, clustered AnnData, once per sample when `batch_key` is given, and stores the contamination fractions and the decontaminated counts.
+pydecontx is the decontX backend of ambient-RNA removal in OmicVerse[@8]: the function `ov.pp.ambient.remove_ambient` with `method='decontx'` runs it on a filtered AnnData with cluster labels (`cluster_key=`), once per sample when `batch_key` is given. It replaces the counts with the decontaminated counts, keeps the original counts in a layer and records each cell's contamination fraction in `adata.obs`.
 
 # Comparison with decontX on human–mouse mixtures
 
 ## Data and design
 
-We used the five mixtures of human and mouse cells from 10x Genomics[@21] of the pysoupx report[@4]: hgmm 1k, 5k and 10k with v3 chemistry, and 6k and 12k with v2. Each comes with Cell Ranger's cells (1,046 to 12,820 per mixture, 37,494 in total), and one clustering of them was given to both packages. In a human cell, counts of mouse genes can only come from ambient RNA, and the reverse holds for mouse cells; relative to the share of the other species in the RNA of empty droplets, they give each cell's ground-truth contamination fraction (Supplementary methods). Both packages ran `decontX` with its defaults and the clusters. We compared the iterations, the contamination fractions and decontaminated counts, the agreement of both with the ground truth, and run time.
+We used the five mixtures of human and mouse cells from 10x Genomics[@21] of the pysoupx report[@22]: hgmm 1k, 5k and 10k with v3 chemistry, and 6k and 12k with v2. Each comes with Cell Ranger's cells (1,046 to 12,820 per mixture, 37,494 in total), and one clustering of them was given to both packages. In a human cell, counts of mouse genes can only come from ambient RNA, and the reverse holds for mouse cells; relative to the share of the other species in the RNA of empty droplets, they give each cell's ground-truth contamination fraction (Supplementary methods). Both packages ran `decontX` with its defaults and the clusters. We compared the iterations, the contamination fractions and decontaminated counts, the agreement of both with the ground truth, and run time.
 
 ## Contamination fractions and decontaminated counts
 
@@ -51,7 +51,7 @@ Both packages therefore relate to the ground truth in the same way. Averaged ove
 
 :::figure 1 fig1.jpg
 pydecontx versus decontX 1.8.0 on five human–mouse mixtures from 10x Genomics.
-**(a)** Contamination fraction of every cell of the five mixtures, pydecontx against decontX, on logarithmic axes (values below $10^{-4}$ drawn at $10^{-4}$). **(b)** Contamination per mixture, averaged over human and mouse cells weighted by their counts: decontX (orange), pydecontx (blue) and the cross-species ground truth (grey marks). **(c)** Estimated against ground-truth contamination of the human and mouse cells of hgmm 12k. **(d)** Share of cross-species counts in human and mouse cells removed by the correction. **(e)** Wall time of `decontX` on one thread (R and Python) and with eight threads (Python), the faster of two runs, against the number of cells. **(f–i)** UMAP[@22] of the 12,820 cells of hgmm 12k, computed with scanpy from the counts: **(f)** species of each cell; **(g–i)** share of a cell's counts from the other species before correction and after correction by decontX and by pydecontx (mixed cells grey).
+**(a)** Contamination fraction of every cell of the five mixtures, pydecontx against decontX, on logarithmic axes (values below $10^{-4}$ drawn at $10^{-4}$). **(b)** Contamination per mixture, averaged over human and mouse cells weighted by their counts: decontX (orange), pydecontx (blue) and the cross-species ground truth (grey marks). **(c)** Estimated against ground-truth contamination of the human and mouse cells of hgmm 12k. **(d)** Share of cross-species counts in human and mouse cells removed by the correction. **(e)** Wall time of `decontX` on one thread (R and Python) and with eight threads (Python), the faster of two runs, against the number of cells. **(f–i)** UMAP[@23] of the 12,820 cells of hgmm 12k, computed with scanpy from the counts: **(f)** species of each cell; **(g–i)** share of a cell's counts from the other species before correction and after correction by decontX and by pydecontx (mixed cells grey).
 :::
 
 ## Speed
@@ -81,7 +81,7 @@ Contributors Zehua Zeng and Xu Meng are affiliated with OmicVerse, Inc.
 1. Heumos L, Schaar AC, Lance C, et al. (2023). Best practices for single-cell analysis across modalities. Nature Reviews Genetics 24, 550-572. 10.1038/s41576-023-00586-w
 2. Janssen P, Kliesmete Z, Vieth B, et al. (2023). The effect of background noise and its removal on the analysis of single-cell expression data. Genome Biology 24, 140. 10.1186/s13059-023-02978-x
 3. Yang S, Corbett SE, Koga Y, et al. (2020). Decontamination of ambient RNA in single-cell RNA-seq with DecontX. Genome Biology 21, 57. 10.1186/s13059-020-1950-6
-4. OmicVerse Team (2026). pysoupx: a Python implementation of SoupX for ambient RNA removal in single-cell RNA-seq data. OmicVerse Technical Reports. https://omicverse.org/articles/pysoupx.html
+4. Young MD, Behjati S (2020). SoupX removes ambient RNA contamination from droplet-based single-cell RNA sequencing data. GigaScience 9, giaa151. 10.1093/gigascience/giaa151
 5. Fleming SJ, Chaffin MD, Arduini A, et al. (2023). Unsupervised removal of systematic background noise from droplet-based single-cell experiments using CellBender. Nature Methods 20, 1323-1335. 10.1038/s41592-023-01943-7
 6. Wolf FA, Angerer P, Theis FJ (2018). SCANPY: large-scale single-cell gene expression data analysis. Genome Biology 19, 15. 10.1186/s13059-017-1382-0
 7. Virshup I, Bredikhin D, Heumos L, et al. (2023). The scverse project provides a computational ecosystem for single-cell omics data analysis. Nature Biotechnology 41, 604-606. 10.1038/s41587-023-01733-8
@@ -99,13 +99,14 @@ Contributors Zehua Zeng and Xu Meng are affiliated with OmicVerse, Inc.
 19. Matsumoto M, Nishimura T (1998). Mersenne twister: a 623-dimensionally equidistributed uniform pseudo-random number generator. ACM Transactions on Modeling and Computer Simulation 8, 3-30. 10.1145/272991.272995
 20. Cheng RCH (1978). Generating beta variates with nonintegral shape parameters. Communications of the ACM 21, 317-322. 10.1145/359460.359482
 21. Zheng GXY, Terry JM, Belgrader P, et al. (2017). Massively parallel digital transcriptional profiling of single cells. Nature Communications 8, 14049. 10.1038/ncomms14049
-22. Becht E, McInnes L, Healy J, et al. (2019). Dimensionality reduction for visualizing single-cell data using UMAP. Nature Biotechnology 37, 38-44. 10.1038/nbt.4314
+22. OmicVerse Team (2026). pysoupx: a Python implementation of SoupX for ambient RNA removal in single-cell RNA-seq data. OmicVerse Technical Reports. https://omicverse.org/articles/pysoupx.html
+23. Becht E, McInnes L, Healy J, et al. (2019). Dimensionality reduction for visualizing single-cell data using UMAP. Nature Biotechnology 37, 38-44. 10.1038/nbt.4314
 
 # Supplementary information
 
 ## Supplementary methods
 
-**Data.** The tasks are those of the pysoupx benchmark[@4]: for each mixture, Cell Ranger's cells (for the v2 datasets, the union of the cells called with the human and the mouse reference), one Leiden clustering of them computed with scanpy (11 to 15 clusters), and species labels (human with at least 90% of counts from human genes, mouse with at most 10%). The same counts and clusters were given to both packages.
+**Data.** The tasks are those of the pysoupx benchmark[@22]: for each mixture, Cell Ranger's cells (for the v2 datasets, the union of the cells called with the human and the mouse reference), one Leiden clustering of them computed with scanpy (11 to 15 clusters), and species labels (human if at least 90% of a cell's counts come from human genes, mouse if at most 10% do, mixed otherwise). The same counts and clusters were given to both packages.
 
 **Runs.** In R: `decontX(counts, z = clusters)` with default arguments (500 iterations at most, convergence 0.001, prior (10, 10) re-estimated, seed 12345). In Python: `decontx(counts, z=clusters)` with the same defaults, on one thread, and with `n_jobs=8`.
 
