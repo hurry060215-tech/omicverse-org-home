@@ -1,0 +1,32 @@
+# Article metadata. The body lives in article.md; figures in figures/.
+# Build: python3 scripts/build_articles.py --pdf   (see docs/ARTICLES.md)
+# Numbers come from py-inferCNV/report (scripts/01-05, figures/numbers.tex).
+slug: pyinfercnv
+type: Technical Report
+title: "pyinfercnv: a Python implementation of inferCNV for copy-number inference from single-cell RNA-seq data"
+short_title: pyinfercnv
+published: 2026-11-12
+version: 1
+authors:
+  - {group: OmicVerse Team, affiliations: [2], email: contact@omicos.cn}   # group author; people are credited under contributors
+contributors:
+  - {name: Jieshen Xian, affiliations: [1]}
+affiliations:
+  1: School of Public Health, Guangzhou Medical University, Guangzhou 511436, China
+  2: OmicVerse, Inc., San Francisco, CA 94114, USA
+abstract: >-
+  We present pyinfercnv, a Python implementation of inferCNV, which infers copy-number alterations of single cells
+  from their expression relative to reference cells and calls copy-number states with a hidden Markov model.
+  pyinfercnv follows inferCNV's code path, including R's random number generator, R's smoothing spline and Seurat's
+  steps for subclustering, so that the same seed gives the same result as in R. On the oligodendroglioma example of
+  inferCNV, pyinfercnv returned the same subclusters and copy-number states as inferCNV 1.26.0 and recovered the 1p/19q
+  co-deletion. On six breast tumours from 10x Genomics (10,424 cells), its relative expression agreed with inferCNV's to
+  1.2 × 10⁻⁷ and 98.2 to 99.5% of its copy-number states were the same; the remaining differences arise from the
+  approximate nearest-neighbour search that inferCNV uses for subclustering. pyinfercnv ran 41 to 64 times faster than
+  inferCNV on one thread. It is used by OmicVerse for copy-number inference and is released at
+  https://github.com/omicverse/py-inferCNV and on PyPI.
+keywords: [inferCNV, copy-number variation, hidden Markov model, tumour heterogeneity, single-cell RNA-seq, Python, reproducibility]
+links:
+  code: https://github.com/omicverse/py-inferCNV
+  api: ov.single.CNV
+thumbnail: fig1
