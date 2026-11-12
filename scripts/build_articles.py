@@ -81,7 +81,8 @@ def parse_article(md: str) -> list[dict]:
             else:
                 rows = [[c.strip() for c in r.strip().strip("|").split("|")] for r in body[1:] if r.strip().startswith("|")]
                 rows = [r for r in rows if not all(set(c) <= set("-: ") for c in r)]
-                blocks.append({"t": "table", "id": ident, "title": body[0].strip(), "head": rows[0], "rows": rows[1:]})
+                blocks.append({"t": "table", "id": ident, "title": body[0].strip(), "head": rows[0], "rows": rows[1:],
+                               "supp": ident.startswith("S")})
             continue
         m = re.match(r"^(#\*?|##)\s+(.*)$", s)
         if m:
@@ -585,7 +586,8 @@ def render_blocks_tex(blocks, meta, fig_dir: str) -> str:
                 continue
             if b["kind"] == "supp":
                 supp_started = True
-                out.append("\\onecolumn\n\\section*{" + t_escape(b["text"]) + "}\n\\setcounter{figure}{0}\n\\renewcommand{\\thefigure}{S\\arabic{figure}}")
+                out.append("\\onecolumn\n\\section*{" + t_escape(b["text"]) + "}\n\\setcounter{figure}{0}\n\\renewcommand{\\thefigure}{S\\arabic{figure}}"
+                           "\n\\setcounter{table}{0}\n\\renewcommand{\\thetable}{S\\arabic{table}}")
                 continue
             star = "*" if b["kind"] == "back" else ""
             out.append(f"\\section{star}{{{t_inline(b['text'])}}}")
@@ -610,16 +612,23 @@ def render_blocks_tex(blocks, meta, fig_dir: str) -> str:
         elif t == "table":
             n = len(b["head"])
             rows = []
+            rag = "" if n == 3 else "\\raggedright "             # wide tables: ragged cells, \\tabularnewline ends
+            end = "\\\\" if n == 3 else "\\tabularnewline"
             for r in b["rows"]:
                 if all(not c for c in r[1:]):
-                    rows.append(f"\\multicolumn{{{n}}}{{@{{}}l}}{{\\textbf{{{t_inline(r[0])}}}}}\\\\")
+                    rows.append(f"\\multicolumn{{{n}}}{{@{{}}l}}{{\\textbf{{{t_inline(r[0])}}}}}" + end)
                 else:
-                    rows.append(" & ".join(t_inline(c) for c in r) + "\\\\")
-            head = "\\tablehead " + " & ".join(f"\\textbf{{{t_inline(c)}}}" for c in b["head"]) + "\\\\"
-            out.append("\\begin{table*}[tp]\n\\pdcaption{" + t_inline(b["title"]) + "}{}\n\\label{table:" + b["id"] + "}\n"
+                    rows.append(" & ".join(rag + t_inline(c) for c in r) + end)
+            head = "\\tablehead " + " & ".join(f"{rag}\\textbf{{{t_inline(c)}}}" for c in b["head"]) + end
+            # three columns keep the house layout; other tables get equal columns
+            colspec = ("p{0.28\\textwidth}p{0.24\\textwidth}p{0.42\\textwidth}" if n == 3 else
+                       "".join(f"p{{\\dimexpr(\\textwidth*98/100-{2 * (n - 1)}\\tabcolsep)*{w}/{10 * n + 4}\\relax}}"
+                               for w in [14] + [10] * (n - 1)))              # first column 1.4 times wider
+            env, place = ("table", "!htbp") if b.get("supp") else ("table*", "tp")
+            out.append(f"\\begin{{{env}}}[{place}]\n\\pdcaption{{" + t_inline(b["title"]) + "}{}\n\\label{table:" + b["id"] + "}\n"
                        "\\footnotesize\\renewcommand{\\arraystretch}{1.15}\n"
-                       "\\begin{tabular}{@{}p{0.28\\textwidth}p{0.24\\textwidth}p{0.42\\textwidth}@{}}\n\\toprule\n"
-                       + head + "\n\\midrule\n" + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n\\end{table*}")
+                       "\\begin{tabular}{@{}" + colspec + "@{}}\n\\toprule\n"
+                       + head + "\n\\midrule\n" + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n\\end{" + env + "}")
         elif t == "refs":
             items = "\n".join(f"\\bibitem{{r{n}}} {t_inline(txt)}" for n, txt in b["items"])
             out.append("\\begin{thebibliography}{" + str(len(b["items"])) + "}\n" + items + "\n\\end{thebibliography}")
