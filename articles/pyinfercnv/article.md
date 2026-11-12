@@ -74,7 +74,7 @@ The authors used Claude Opus 5.5, GPT-6 Astra, and OmicOS to proofread grammar a
 
 #* Conflicts of interest
 
-The OmicVerse Team is part of OmicVerse, Inc. Zehua Zeng and contributor Jieshen Xian are affiliated with OmicVerse, Inc.
+Contributors Jieshen Xian and Zehua Zeng are affiliated with OmicVerse, Inc.
 
 # References
 
