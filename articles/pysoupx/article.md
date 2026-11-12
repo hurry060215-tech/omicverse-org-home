@@ -55,13 +55,19 @@ pysoupx versus SoupX 1.6.2 on five human–mouse mixtures from 10x Genomics.
 **(a)** Contamination fraction estimated by `autoEstCont` in SoupX (orange) and pysoupx (blue), and the ground truth from cross-species counts (grey marks). **(b)** Share of cross-species counts in human and mouse cells removed by the correction. **(c)** Corrected counts of pysoupx against SoupX in hgmm 12k, a random sample of 200,000 nonzero entries; the line is the identity. **(d)** Wall time from building the channel to the corrected matrix on one thread, the faster of two runs, against the number of droplets in the raw matrix. **(e)** Share of a cell's counts from the other species before and after correction, for the human and mouse cells of hgmm 12k; SoupX (orange) is drawn under pysoupx (blue). **(f–i)** UMAP[@21] of the 12,820 cells of hgmm 12k, computed with scanpy from the counts: **(f)** species of each cell; **(g–i)** share of a cell's counts from the other species before correction and after correction by SoupX and by pysoupx (mixed cells grey).
 :::
 
+## Contamination across cells and gene-set estimates
+
+The contamination differed between cells. In every mixture, the cross-species contamination of a cell was higher the fewer counts it had (Spearman correlation −0.87 to −0.73), and mouse cells were more contaminated than human cells, for example 4.5 against 2.9% in hgmm 12k. SoupX corrects all cells of a channel with one contamination fraction, so in hgmm 12k both packages removed 92% of the cross-species counts in human cells and 64% in mouse cells (Fig. 1e–i, Table S1).
+
+When genes that some cells cannot express are known, SoupX can estimate the contamination fraction from them instead of from cluster markers. We gave both packages the five genes of each species most abundant in the soup as genes that cells of the other species do not express. These were MALAT1 and mitochondrial genes, which are 1.4 to 3.0 times more abundant in the soup of empty droplets than in the ambient RNA of cells, and the estimates, 0.6 to 2.8%, were below the truth. Without mitochondrial genes and MALAT1, the estimates were 2.1 to 3.7% (Table S1): 2.2% in hgmm 5k and 3.7% in hgmm 10k, where the ground truth was 2.3 and 3.5% and `autoEstCont` had estimated 1.5 and 1.0%, but 2.1% against 0.8% in hgmm 1k. In all five mixtures both packages selected the same genes and cells and returned the same estimates (relative difference at most $7 \times 10^{-10}$).
+
 ## Speed
 
 pysoupx ran the workflow 6.4 to 11.3 times faster than SoupX (median 7.2), both on one thread (Fig. 1d). For hgmm 10k (v3), the mixture with the most droplets, SoupX took 100 s and pysoupx 14 s.
 
 # Conclusion and future perspectives
 
-pysoupx brings SoupX to Python with the same results as R. On five human–mouse mixtures it estimates the same contamination fractions as SoupX 1.6.2, returns the same corrected counts to $2 \times 10^{-11}$, and runs several times faster on one thread. Because the stochastic rounding follows R's random numbers, rounded corrections can also be repeated across the two languages. Because pysoupx works with AnnData objects and is part of OmicVerse, ambient RNA can be removed in the same Python session as the rest of a single-cell workflow.
+pysoupx brings SoupX to Python with the same results as R. On five human–mouse mixtures it estimates the same contamination fractions as SoupX 1.6.2, returns the same corrected counts to $2 \times 10^{-11}$, and runs several times faster on one thread. Because the stochastic rounding follows R's random numbers, rounded corrections can also be repeated across the two languages. The mixtures also show what to check in either language. An automatic estimate at the edge of its range can be compared with a gene-set estimate that leaves out mitochondrial genes and MALAT1, and cells with few counts carry more ambient RNA than the channel average. Because pysoupx works with AnnData objects and is part of OmicVerse, ambient RNA can be removed in the same Python session as the rest of a single-cell workflow.
 
 Future work includes SoupX's diagnostic plots, such as the marker distribution and change maps, and the use of a reduced-dimension embedding stored with the channel. pysoupx will continue to follow SoupX releases, with each version pinned to the release it reproduces.
 
@@ -113,6 +119,8 @@ Contributors Zehua Zeng and Xu Meng are affiliated with OmicVerse, Inc.
 
 **Embedding (Fig. 1f–i).** The cells of hgmm 12k were embedded with the same scanpy processing as for the clustering, followed by UMAP; the embedding is for display only.
 
+**Gene-set estimates.** For each mixture and species, the five genes most abundant in the soup profile, either among all genes of the species or after leaving out mitochondrial genes and MALAT1, were given as a gene set that cells of the other species do not express. `estimateNonExpressingCells` with the clusters selected the cells used for the estimate, and `calculateContaminationFraction` returned one contamination fraction per mixture (`report/scripts/06_geneset`). The over-representation of the first gene sets is their share of the species' soup counts divided by their share of the species' counts in cells of the other species.
+
 **Run time.** Run times are wall-clock times from building the channel to the corrected matrix, without reading and writing files. Every run was pinned to its own idle processor core with BLAS and OpenMP limited to one thread; R and Python runs alternated over 10 cores of one node, so that both packages were timed under the same load. Each package ran twice per mixture, and the faster run is reported.
 
 **Other methods.** On hgmm 1k with a contamination fraction of 5%, the soupOnly and multinomial methods of pysoupx returned the corrected counts of SoupX, the gene-set estimate from mouse genes returned the same cells and contamination fraction, and stochastic rounding with the same seed returned the same integers.
@@ -123,3 +131,15 @@ Contributors Zehua Zeng and Xu Meng are affiliated with OmicVerse, Inc.
 2. **Input.** `SoupChannel(tod, toc, genes=..., cells=..., droplets=...)` takes genes × droplets and genes × cells matrices, as `SoupChannel(tod, toc)` in R; `SoupChannel.from_anndata(filtered, raw=raw)` takes cells × genes AnnData objects.
 3. **Seeds.** `adjust_counts(round_to_int=True, seed=s)` gives the same integers as `set.seed(s); adjustCounts(sc, roundToInt = TRUE)`.
 4. **Clusters.** As in R, `autoEstCont` needs clusters, and `adjustCounts` corrects at the cluster level when they are set.
+5. **Checking the contamination fraction.** An estimate at the lower end of `contamination_range` is a reason to estimate the fraction again from genes known not to be expressed in some cells, with `estimate_non_expressing_cells` and `calculate_contamination_fraction`. Mitochondrial genes and MALAT1 are better left out of such gene sets, because they are over-represented in empty droplets. Cells with few counts carry more ambient RNA than the channel average.
+
+:::table S1
+Contamination per mixture: ground truth, estimates and removal (SoupX 1.6.2; pysoupx returns the same values).
+| Mixture | Truth, all (%) | Truth, human cells (%) | Truth, mouse cells (%) | autoEstCont (%) | Gene set, top 5 (%) | Gene set, without MT and MALAT1 (%) | Removed, human cells (%) | Removed, mouse cells (%) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| hgmm 1k (v3) | 0.8 | 0.7 | 0.9 | 1.0 | 0.6 | 2.1 | 68 | 73 |
+| hgmm 5k (v3) | 2.3 | 1.7 | 3.0 | 1.5 | 0.8 | 2.2 | 75 | 48 |
+| hgmm 6k (v2) | 3.1 | 2.7 | 3.4 | 2.8 | 2.1 | 2.5 | 88 | 79 |
+| hgmm 10k (v3) | 3.5 | 2.9 | 4.0 | 1.0 | 1.1 | 3.7 | 33 | 24 |
+| hgmm 12k (v2) | 3.6 | 2.9 | 4.5 | 3.1 | 2.8 | 3.2 | 92 | 64 |
+:::
