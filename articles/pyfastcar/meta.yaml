@@ -1,0 +1,32 @@
+# Article metadata. The body lives in article.md; figures in figures/.
+# Build: python3 scripts/build_articles.py --pdf   (see docs/ARTICLES.md)
+# Numbers come from py-fastcar/report (scripts/01-05, figures/numbers.tex).
+slug: pyfastcar
+type: Technical Report
+title: "pyfastcar: a Python implementation of FastCAR for ambient RNA correction in single-cell RNA-seq data"
+short_title: pyfastcar
+published: 2026-11-12
+version: 1
+authors:
+  - {group: OmicVerse Team, affiliations: [2], email: contact@omicos.cn}   # group author; people are credited under contributors
+contributors:
+  - {name: Zehua Zeng, affiliations: [1, 2]}
+  - {name: Xu Meng, affiliations: [2, 3]}
+affiliations:
+  1: Department of Genetics, Stanford University, Stanford, CA 94305, USA
+  2: OmicVerse, Inc., San Francisco, CA 94114, USA
+  3: Hubei Key Laboratory of Agricultural Bioinformatics, College of Informatics, Huazhong Agricultural University, Wuhan 430070, China
+abstract: >-
+  We present pyfastcar, a Python implementation of FastCAR, which corrects droplet-based single-cell RNA-seq data
+  for ambient RNA by subtracting, for each gene that is frequent in empty droplets, its highest count in an empty
+  droplet from every cell. pyfastcar implements FastCAR's profile, correction and empty-droplet cutoff scan, and
+  computes the scan for all cutoffs in one pass over the raw matrix. On five human–mouse mixtures from 10x Genomics
+  (37,494 cells; 0.38 to 1.98 million droplets), pyfastcar returned the same cutoff tables, recommended cutoffs,
+  per-gene profiles and corrected counts as FastCAR 0.1.0, with no difference in any entry. It ran 2.3 to 12.5 times
+  faster than FastCAR at a fixed cutoff and 18 to 27 times faster when it also chose the cutoff. pyfastcar is used by
+  OmicVerse for ambient RNA correction and is released at https://github.com/omicverse/py-fastcar and on PyPI.
+keywords: [FastCAR, ambient RNA, contamination, empty droplets, single-cell RNA-seq, Python, reproducibility]
+links:
+  code: https://github.com/omicverse/py-fastcar
+  api: ov.pp.ambient.remove_ambient
+thumbnail: fig1
