@@ -9,13 +9,13 @@ published: 2026-11-12
 version: 1
 authors:
   - {group: OmicVerse Team, affiliations: [1], email: contact@omicos.cn}   # group author; people are credited under contributors
-  - {name: Zehua Zeng, affiliations: [1, 2], email: starlitnightly@gmail.com}   # corresponding author
 contributors:
-  - {name: Jieshen Xian, affiliations: [1, 3]}
+  - {name: Jieshen Xian, affiliations: [1, 2]}
+  - {name: Zehua Zeng, affiliations: [1, 3]}
 affiliations:
   1: OmicVerse, Inc., San Francisco, CA 94114, USA
-  2: Department of Genetics, Stanford University, Stanford, CA 94305, USA
-  3: School of Public Health, Guangzhou Medical University, Guangzhou 511436, China
+  2: School of Public Health, Guangzhou Medical University, Guangzhou 511436, China
+  3: Department of Genetics, Stanford University, Stanford, CA 94305, USA
 abstract: >-
   We present pyinfercnv, a Python implementation of inferCNV, which infers copy-number alterations of single cells
   from their expression relative to reference cells and calls copy-number states with a hidden Markov model.
