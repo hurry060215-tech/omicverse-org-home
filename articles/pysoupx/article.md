@@ -48,11 +48,11 @@ We used five mixtures of human and mouse cells from 10x Genomics[@19]: hgmm 1k, 
 
 pysoupx estimated the same contamination fraction as SoupX in all five mixtures, from 1.0 to 3.1%, with the same marker genes (Fig. 1a). The cross-species ground truth ranged from 0.8 to 3.6%. Both packages were close to it in the 1k, 6k and 12k mixtures; in the 5k mixture both estimated 1.5% against 2.3%, and in the 10k mixture both estimated 1.0%, the lower end of the default search range, against 3.5%.
 
-The soup profiles were identical, and the corrected count matrices differed by at most $2 \times 10^{-11}$ in absolute terms, for counts of up to several thousand per gene and cell (Fig. 1c). As a consequence, both packages removed the same share of cross-species counts, between 28 and 83% depending on the estimated contamination fraction, and kept the same 98.2 to 99.4% of the counts from the cell's own species (Fig. 1b, e).
+The soup profiles were identical, and the corrected count matrices differed by at most $2 \times 10^{-11}$ in absolute terms, for counts of up to several thousand per gene and cell (Fig. 1c). As a consequence, both packages removed the same share of cross-species counts, between 28 and 83% depending on the estimated contamination fraction, and kept the same 98.2 to 99.4% of the counts from the cell's own species (Fig. 1b, e). In the embedding of hgmm 12k, the correction lowers the other-species share in both human and mouse cells, more completely in human cells, and the corrected values of the two packages are the same in every cell (Fig. 1f–i).
 
 :::figure 1 fig1.jpg
 pysoupx versus SoupX 1.6.2 on five human–mouse mixtures from 10x Genomics.
-**(a)** Contamination fraction estimated by `autoEstCont` in SoupX (orange) and pysoupx (blue), and the ground truth from cross-species counts (grey marks). **(b)** Share of cross-species counts in human and mouse cells removed by the correction. **(c)** Corrected counts of pysoupx against SoupX in hgmm 12k, a random sample of 200,000 nonzero entries; the line is the identity. **(d)** Wall time from building the channel to the corrected matrix on one thread, the faster of two runs, against the number of droplets in the raw matrix. **(e)** Share of a cell's counts from the other species before and after correction, for the human and mouse cells of hgmm 12k; SoupX (orange) is drawn under pysoupx (blue).
+**(a)** Contamination fraction estimated by `autoEstCont` in SoupX (orange) and pysoupx (blue), and the ground truth from cross-species counts (grey marks). **(b)** Share of cross-species counts in human and mouse cells removed by the correction. **(c)** Corrected counts of pysoupx against SoupX in hgmm 12k, a random sample of 200,000 nonzero entries; the line is the identity. **(d)** Wall time from building the channel to the corrected matrix on one thread, the faster of two runs, against the number of droplets in the raw matrix. **(e)** Share of a cell's counts from the other species before and after correction, for the human and mouse cells of hgmm 12k; SoupX (orange) is drawn under pysoupx (blue). **(f–i)** UMAP[@21] of the 12,820 cells of hgmm 12k, computed with scanpy from the counts: **(f)** species of each cell; **(g–i)** share of a cell's counts from the other species before correction and after correction by SoupX and by pysoupx (mixed cells grey).
 :::
 
 ## Speed
@@ -67,7 +67,7 @@ Future work includes SoupX's diagnostic plots, such as the marker distribution a
 
 #* Data and code availability
 
-pysoupx is released under the Apache License 2.0 on PyPI (`pip install pysoupx`) and at https://github.com/omicverse/py-soupx; this report describes version 0.1.1. The benchmark (`report/scripts` in the repository) reproduces every number and figure in this report. The raw and filtered matrices of the 10x Genomics datasets hgmm_1k_v3, hgmm_5k_v3, hgmm_10k_v3, hgmm_6k and hgmm_12k were obtained from https://www.10xgenomics.com/datasets, accessed on 11 November 2026. Software: pysoupx 0.1.1 (Python 3.10, NumPy 2.2.6, SciPy 1.15.2; scanpy 1.11.5 for the clustering); SoupX 1.6.2 on R 4.5.3 (conda-forge). Hardware: one node of the Stanford Sherlock cluster (AMD EPYC 9754).
+pysoupx is released under the Apache License 2.0 on PyPI (`pip install pysoupx`) and at https://github.com/omicverse/py-soupx; this report describes version 0.1.1. The benchmark (`report/scripts` in the repository) reproduces every number and figure in this report. The raw and filtered matrices of the 10x Genomics datasets hgmm_1k_v3, hgmm_5k_v3, hgmm_10k_v3, hgmm_6k and hgmm_12k were obtained from https://www.10xgenomics.com/datasets, accessed on 11 November 2026. Software: pysoupx 0.1.1 (Python 3.10, NumPy 2.2.6, SciPy 1.15.2; scanpy 1.11.5 for the clustering and Fig. 1f–i); SoupX 1.6.2 on R 4.5.3 (conda-forge). Hardware: one node of the Stanford Sherlock cluster (AMD EPYC 9754).
 
 #* Declaration of generative AI and AI-assisted technologies
 
@@ -99,6 +99,7 @@ Contributors Zehua Zeng and Xu Meng are affiliated with OmicVerse, Inc.
 18. Matsumoto M, Nishimura T (1998). Mersenne twister: a 623-dimensionally equidistributed uniform pseudo-random number generator. ACM Transactions on Modeling and Computer Simulation 8, 3-30. 10.1145/272991.272995
 19. Zheng GXY, Terry JM, Belgrader P, et al. (2017). Massively parallel digital transcriptional profiling of single cells. Nature Communications 8, 14049. 10.1038/ncomms14049
 20. Traag VA, Waltman L, van Eck NJ (2019). From Louvain to Leiden: guaranteeing well-connected communities. Scientific Reports 9, 5233. 10.1038/s41598-019-41695-z
+21. Becht E, McInnes L, Healy J, et al. (2019). Dimensionality reduction for visualizing single-cell data using UMAP. Nature Biotechnology 37, 38-44. 10.1038/nbt.4314
 
 # Supplementary information
 
@@ -109,6 +110,8 @@ Contributors Zehua Zeng and Xu Meng are affiliated with OmicVerse, Inc.
 **Runs.** In R: `SoupChannel(tod, toc)`, `setClusters`, `autoEstCont(doPlot = FALSE)` and `adjustCounts` with default arguments. In Python: `SoupChannel(tod, toc, ...)`, `set_clusters`, `auto_est_cont` and `adjust_counts` with default arguments.
 
 **Ground truth.** For the human and mouse cells of a mixture, the cross-species counts (mouse-gene counts in human cells and human-gene counts in mouse cells) were divided by the counts expected if every cell had a contamination fraction of one, that is the cell's total counts times the share of the other species' genes in the soup profile; the ratio of the sums is the ground-truth contamination fraction. Ambient RNA from the cell's own species cannot be told apart from its own expression, so the share of cross-species counts removed and the share of own-species counts kept describe the correction.
+
+**Embedding (Fig. 1f–i).** The cells of hgmm 12k were embedded with the same scanpy processing as for the clustering, followed by UMAP; the embedding is for display only.
 
 **Run time.** Run times are wall-clock times from building the channel to the corrected matrix, without reading and writing files. Every run was pinned to its own idle processor core with BLAS and OpenMP limited to one thread; R and Python runs alternated over 10 cores of one node, so that both packages were timed under the same load. Each package ran twice per mixture, and the faster run is reported.
 
