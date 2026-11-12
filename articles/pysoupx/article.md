@@ -1,6 +1,6 @@
 # Introduction
 
-Droplet-based single-cell RNA sequencing captures, together with each cell, cell-free RNA from the suspension. These ambient transcripts add counts of genes a cell does not express, blur cell-type markers and can mislead clustering and differential expression, so the removal of ambient RNA is a routine quality-control step[@1,2]. SoupX[@3] estimates the ambient (soup) expression profile from empty droplets, estimates the fraction of each cell's counts that come from the soup, and subtracts the expected ambient counts gene by gene. Other methods model the contamination differently, such as DecontX[@4] and CellBender[@5]; in a comparison on genotype-resolved data, SoupX estimated background levels well and improved marker detection[@2].
+Droplet-based single-cell RNA sequencing captures, together with each cell, cell-free RNA from the suspension. These ambient transcripts add counts of genes a cell does not express, blur cell-type markers and can mislead clustering and differential expression, so the removal of ambient RNA is a routine quality-control step[@1,2]. SoupX[@3] estimates the ambient (soup) expression profile from empty droplets, estimates the fraction of each cell's counts that come from the soup, and subtracts the expected ambient counts gene by gene. Other methods model the contamination differently, such as DecontX[@4] and CellBender[@5]; the three have been compared on mouse kidney data in which counts from a second genotype reveal the background noise[@2].
 
 Single-cell analysis is increasingly done in Python. Workflows are built on scanpy and the scverse ecosystem[@6,7], and OmicVerse[@8] brings bulk, single-cell and spatial analyses together in one Python framework. SoupX, however, is available only in R.
 
@@ -16,7 +16,7 @@ SoupX takes the raw matrix of all droplets and the matrix of the droplets called
 
 ## Features and code structure
 
-pysoupx 0.1.1 implements SoupX 1.6.2 (Table 1): the `SoupChannel` with `estimateSoup`, `setClusters`, `quickMarkers`, `autoEstCont`, `estimateNonExpressingCells` and `calculateContaminationFraction` for gene sets given by the user, `setContaminationFraction`, and `adjustCounts` with its three methods and optional rounding. Matrices are genes × droplets and genes × cells, as in SoupX; `SoupChannel.from_anndata` builds a channel from AnnData objects[@14] and `load_10x` from a Cell Ranger output folder. pysoupx builds on NumPy[@15], SciPy[@16] and pandas[@17] and runs on one thread.
+pysoupx 0.1.1 implements SoupX 1.6.2 (Table 1): the `SoupChannel` object and the soup profile, the contamination fraction, estimated automatically with `autoEstCont`, from gene sets given by the user or set by hand, and `adjustCounts` with its three methods and optional rounding. Matrices are genes × droplets and genes × cells, as in SoupX; `SoupChannel.from_anndata` builds a channel from AnnData objects[@14] and `load_10x` from a Cell Ranger output folder. pysoupx builds on NumPy[@15], SciPy[@16] and pandas[@17] and runs on one thread.
 
 :::table 1
 SoupX steps and their pysoupx counterparts.
@@ -36,13 +36,13 @@ pysoupx ports SoupX's code paths step by step. These include the tf-idf statisti
 
 ## Use in OmicVerse
 
-pysoupx is the SoupX backend of OmicVerse[@8] ambient-RNA removal: `ov.pp.ambient.remove_ambient(adata, method='soupx', raw=raw_adata)` builds the channel from a filtered, clustered AnnData and its raw droplet matrix, estimates the contamination fraction with `autoEstCont` and stores the corrected counts.
+pysoupx is the SoupX backend of OmicVerse[@8] ambient-RNA removal. With `method='soupx'`, `ov.pp.ambient.remove_ambient` builds the channel from a filtered AnnData and its raw droplet matrix (`raw=`) and, given cluster labels (`cluster_key=`), estimates the contamination fraction with `autoEstCont`. It then replaces the counts with the corrected counts, keeps the original counts in a layer and records each cell's contamination fraction in `adata.obs`.
 
 # Comparison with SoupX on human–mouse mixtures
 
 ## Data and design
 
-We used five mixtures of human and mouse cells from 10x Genomics[@19]: hgmm 1k, 5k and 10k with v3 chemistry, and 6k and 12k with v2. Each comes with its raw droplet matrix (0.38 to 1.98 million droplets with counts) and Cell Ranger's cell calls (1,046 to 12,820 cells, 37,494 in total). Cells with at least 90% of counts from human genes were labelled human and those with at most 10% mouse. In a human cell, counts of mouse genes can only come from ambient RNA, and the reverse holds for mouse cells; their number relative to that expected from the soup profile gives a ground-truth contamination fraction for each mixture (Supplementary methods). Both packages ran SoupX's default workflow, `SoupChannel`, `setClusters`, `autoEstCont` and `adjustCounts`, with one clustering of the cells (Leiden[@20] on scanpy's default processing) given to both. We compared the contamination fractions, the corrected counts, the removal of cross-species counts and run time.
+We used five mixtures of human and mouse cells from 10x Genomics[@19]: hgmm 1k, 5k and 10k with v3 chemistry, and 6k and 12k with v2. Each comes with its raw droplet matrix (0.38 to 1.98 million droplets with counts) and Cell Ranger's cell calls (1,046 to 12,820 cells, 37,494 in total). Cells with at least 90% of counts from human genes were labelled human, those with at most 10% were labelled mouse, and the others mixed. In a human cell, counts of mouse genes can only come from ambient RNA, and the reverse holds for mouse cells; their number relative to that expected from the soup profile gives a ground-truth contamination fraction for each mixture (Supplementary methods). Both packages ran SoupX's default workflow, `SoupChannel`, `setClusters`, `autoEstCont` and `adjustCounts`, with one clustering of the cells (Leiden[@20] on scanpy's default processing) given to both. We compared the contamination fractions, the corrected counts, the removal of cross-species counts and run time.
 
 ## Contamination fraction and corrected counts
 
