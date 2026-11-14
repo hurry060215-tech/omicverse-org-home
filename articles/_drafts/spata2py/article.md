@@ -68,7 +68,7 @@ Sensitivity to the definition of spatial isolation.
 
 ## Scale and unit checks
 
-Multiplying all coordinates by 0.01, 0.1, 1, 10 or 100 produced no flag disagreements with the baseline automatic-radius result. This checks the intended behavior when epsilon is recomputed from the rescaled geometry. It does not validate arbitrary transformations such as anisotropic scaling or rotation with coordinate-dependent downstream features. Pixel-to-unit conversion followed by its inverse had maximum absolute round-trip error 5.69e-14 on the tested coordinates.
+Multiplying all coordinates by 0.01, 0.1, 1, 10 or 100 produced no flag disagreements with the baseline automatic-radius result. This checks the intended behavior when epsilon is recomputed from the rescaled geometry. It does not validate arbitrary transformations such as anisotropic scaling or rotation with coordinate-dependent downstream features. Pixel-to-unit conversion followed by its inverse had maximum absolute round-trip error 5.68e-14 on the tested coordinates.
 
 The scale checks and boundary metrics answer different questions. Numerical invariance under uniform rescaling cannot rescue an incorrect outline model; conversely, a real convex-versus-concave difference is not evidence that the unit conversion is broken. Keeping those outcomes separate helps users choose a helper appropriate to the operation they need.
 
@@ -84,6 +84,8 @@ One retained tissue section does not cover all spatial platforms or disconnected
 The current implementation does not reconstruct SPATA2 spatial gradients, trajectory statistics, image segmentation, annotations or its general S4 framework. Its convex outline remains intentionally different. Consequently the report and package should be described as selected SPATA2-inspired AnnData utilities, with demonstrated label agreement for a bounded case and measured differences elsewhere. This report makes no speed claim and no global package-equivalence claim.
 
 #* Data and code availability
+
+The evaluated Python implementation is preserved at [the pinned repair revision](https://github.com/hurry060215-tech/py-SPATA2/commit/4ca98f6f0d733b69f4ec7d4618751dd90313160d). The benchmark source hashes identify the exact tested files; inclusion in an upstream release is a separate status.
 
 Original package documentation and source are available at https://themilolab.github.io/SPATA2/ and https://github.com/theMILOlab/SPATA2. Python source is at https://github.com/omicverse/py-SPATA2. The internal experiment bundle includes the R geometry invocation, exported original labels/vertices, `spata_sensitivity.csv`, outline metrics, session information and the figure script. The serialized R object is retained for inspection. Dataset provenance and hashes accompany the earlier shared-coordinate fixture. Author affiliations are supplied, but this manuscript remains an internal draft.
 

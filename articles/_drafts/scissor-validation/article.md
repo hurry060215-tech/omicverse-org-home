@@ -47,7 +47,7 @@ These results support the matched selected models, but the original full Cox pat
 
 ## Tighter solves resolve the measured full-path discrepancy
 
-At solver threshold 1e-9, all 410,200 coefficient entries passed the same comparison tolerance. Maximum absolute R/Python coefficient difference decreased to 5.65e-7, and coefficient signs agreed at every path position. The maximum independently evaluated R KKT residual was 9.91e-10, with all R fits certified converged. Thus the tested full-path discrepancy was reduced by increasing solve accuracy, without changing the acceptance threshold or the numerical inputs.
+At solver threshold 1e-9, all 410,200 coefficient entries passed the same comparison tolerance. Maximum absolute R/Python coefficient difference decreased to 5.64e-7, and coefficient signs agreed at every path position. The maximum independently evaluated R KKT residual was 9.91e-10, with all R fits certified converged. Thus the tested full-path discrepancy was reduced by increasing solve accuracy, without changing the acceptance threshold or the numerical inputs.
 
 :::table 1
 Full-data Cox path comparison at two solver thresholds.
@@ -55,7 +55,7 @@ Full-data Cox path comparison at two solver thresholds.
 |---|---:|---:|
 | Lambda values | 100 | 100 |
 | Coefficient entries | 410,200 | 410,200 |
-| Maximum absolute difference | 3.97e-5 | 5.65e-7 |
+| Maximum absolute difference | 3.96e-5 | 5.64e-7 |
 | Entries beyond atol=1e-5 + rtol=1e-4 | 3,092 | 0 |
 | Independent R maximum KKT residual | Not re-summarized here | 9.91e-10 |
 | New ten-fold CV run at this threshold | Existing original run | No |

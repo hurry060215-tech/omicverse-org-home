@@ -18,5 +18,5 @@ links:
   code: https://github.com/omicverse/py-SPATA2
 thumbnail: fig1
 status: draft
-release_decision: hold
-reviewed: 2026-11-11
+release_decision: awaiting-author-signoff
+reviewed: 2026-11-14

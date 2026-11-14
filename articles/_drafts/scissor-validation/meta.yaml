@@ -12,11 +12,11 @@ affiliations:
   2: Department of Genetics, Stanford University, Stanford, CA 94305, USA
   3: OmicVerse, Inc., San Francisco, CA 94114, USA
 abstract: >-
-  We compare real LUAD Scissor results under fixed inputs and distinguish official binomial from corrected Cox semantics. Selected models agree, while the original full Cox path exceeds its coefficient tolerance at 3,092 entries. Tightening the solver threshold from 1e-7 to 1e-9, without changing the comparison tolerance, reduces whole-path failures to zero and maximum coefficient difference to 5.65e-7. Independent R KKT certificates support convergence. Native-graph results and original cross-validation are reported separately; tighter-threshold CV was not rerun.
+  We compare real LUAD Scissor results under fixed inputs and distinguish official binomial from corrected Cox semantics. Selected models agree, while the original full Cox path exceeds its coefficient tolerance at 3,092 entries. Tightening the solver threshold from 1e-7 to 1e-9, without changing the comparison tolerance, reduces whole-path failures to zero and maximum coefficient difference to 5.64e-7. Independent R KKT certificates support convergence. Native-graph results and original cross-validation are reported separately; tighter-threshold CV was not rerun.
 keywords: [Scissor, LUAD, R, Python, validation]
 links:
   code: https://github.com/omicverse/py-Scissors
 thumbnail: fig1
 status: draft
-release_decision: hold
-reviewed: 2026-11-11
+release_decision: awaiting-author-signoff
+reviewed: 2026-11-14

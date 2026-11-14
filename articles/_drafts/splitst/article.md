@@ -10,9 +10,7 @@ Spatial expression measurements can contain contributions from more than one cel
 
 Let X be the cells-by-genes count matrix, W the cells-by-types weight matrix and R the types-by-genes reference. Weight rows are normalized. If p(i) denotes a cell's primary type, purification multiplies each observed count by the ratio between its primary-type contribution and total predicted expression. A small epsilon protects the denominator; the numerator receives epsilon divided by the number of nonzero weights. This convention follows the pinned R source rather than an independently chosen pseudocount.
 
-$$
-Y_{ig}=X_{ig}\frac{W_{i,p(i)}R_{p(i),g}+\epsilon/n_i}{\sum_c W_{ic}R_{cg}+\epsilon},\qquad \epsilon=10^{-10}.
-$$
+$$ Y_{ig}=X_{ig}\frac{W_{i,p(i)}R_{p(i),g}+\epsilon/n_i}{\sum_c W_{ic}R_{cg}+\epsilon},\qquad \epsilon=10^{-10}. \tag{1} $$
 
 Input identifiers are aligned before calculation. The Python implementation uses chunked calculations and preserves sparse output when supplied sparse counts. Primary labels can be provided or inferred from the maximum weight. The number of contributing types determines the initial purification status; selecting a profile later does not mean that a single-type cell has acquired a nonzero residual.
 
@@ -45,7 +43,7 @@ Measured spatial input and the effect of illustrative purification.
 
 ## Native R scoring and balancing
 
-The maximum secondary-type score difference was 5.55e-16. Across all eight threshold/swap conditions, retained-cell expression differed by at most 5.69e-13. Swap flags and purification statuses had zero disagreements on aligned retained cells after repair. Expression errors remain at floating-point scale even when swapped profiles use the residual rather than the original purified matrix.
+The maximum secondary-type score difference was 5.55e-16. Across all eight threshold/swap conditions, retained-cell expression differed by at most 5.68e-13. Swap flags and purification statuses had zero disagreements on aligned retained cells after repair. Expression errors remain at floating-point scale even when swapped profiles use the residual rather than the original purified matrix.
 
 The experiment detected errors that a simple purification scatter would miss. Previously, four controlled missing-class cases produced incorrect swap flags, and one single-type case received an incorrect purification status. The missing-class issue did not necessarily create a large expression difference because a raw cell can have no residual, illustrating why both metadata and numerical outputs must be tested. The profile-replacement error was corrected directly from the original R behavior and protected by a dedicated regression test.
 
@@ -54,8 +52,8 @@ Expanded original-R comparison on the shared spatial graph.
 | Quantity | Result | Interpretation |
 |---|---:|---|
 | Threshold/swap conditions | 8 | Four thresholds, two swap settings |
-| Maximum score difference | 5.56e-16 | Original R neighborhood functions |
-| Maximum expression difference | 5.69e-13 | Retained cells aligned by identifier |
+| Maximum score difference | 5.55e-16 | Original R neighborhood functions |
+| Maximum expression difference | 5.68e-13 | Retained cells aligned by identifier |
 | Swap disagreements | 0 | After missing-class repair |
 | Status disagreements | 0 | After single-type status repair |
 | R / Python stored observations | 234 / 240 | Explicit reject-row representation difference |
@@ -86,6 +84,8 @@ The object-model difference for rejected cells is particularly relevant downstre
 These experiments do not establish a speed advantage. The implementation is vectorized and sparse-aware, but matched repeated runtime and memory profiling over realistic sizes remains future work. The scientific conclusion is that exact branching semantics matter: labels, statuses and expression profiles must remain synchronized. A release should ship the new regression cases and maintain the same repairs in the embedded OmicVerse copy.
 
 #* Data and code availability
+
+The evaluated Python implementation is preserved at [the pinned repair revision](https://github.com/hurry060215-tech/py-SPLIT/commit/6f40edc67431b4d0215024ebfcc82beabeec65dc). The benchmark source hashes identify the exact tested files; inclusion in an upstream release is a separate status.
 
 Original SPLIT source is available at https://github.com/bdsc-tds/SPLIT and the Python package at https://github.com/omicverse/py-SPLIT. This report describes an internal revision. The experiment bundle includes `spatial_reference.R`, `spatial_compare.py`, shared CSV inputs, native R metadata and expression outputs, per-condition comparisons and `figures.py`. The initial fixture records the source count-matrix SHA-256. Input subset selection and fitted-weight construction are preserved in `prepare_spatial.py`; their constructed nature is essential to interpretation, not optional provenance.
 

@@ -45,7 +45,7 @@ Largest absolute differences across six real-data comparisons.
 |---|---:|---|
 | Detected counts | 0 | Both datasets, all sizes |
 | Ranks | 0 | Both datasets, all sizes |
-| Normalized score | 5.56e-16 | All finite scores |
+| Normalized score | 5.55e-16 | All finite scores |
 | GCS | 8.22e-15 | All retained cells |
 | Gene-score correlation | 3.89e-15 | Shared finite gene correlations |
 :::
@@ -77,6 +77,8 @@ The matrices come from the same upstream project's marrow examples and do not re
 The supported conclusion is specific: the implemented core agrees with original R on shared real matrices at the examined sizes, while gene restriction changes scores materially. Users should preserve the full measured input, choose its scale explicitly, retain identifiers and document whether scoring concerns the full cohort or a subset. Releases should keep the numerical fixtures and integration tests, and name unsupported modes instead of claiming unrestricted replacement of the R package.
 
 #* Data and code availability
+
+The evaluated Python implementation is preserved at [the pinned repair revision](https://github.com/hurry060215-tech/py-CytoTRACE/commit/62b59509dee90147a24073ede4f17cd5883ac58f). The benchmark source hashes identify the exact tested files; inclusion in an upstream release is a separate status.
 
 Inputs and original R code are available at https://github.com/gunsagargulati/CytoTRACE; Python code is at https://github.com/omicverse/py-CytoTRACE. This report describes an internal revision, not a released version. `cyto_reference.R`, `cyto_compare.py` and `figures.py` in the attached experiment bundle generate the input exports, score tables, metrics and figures. Input matrices, timings and R session information are retained. Experiments used an Intel Core Ultra 9 285K Windows workstation. Each plot is saved as a raster preview and vector PDF.
 
