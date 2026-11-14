@@ -58,3 +58,16 @@ Raw output tables are retained even when results fail an earlier tolerance.
 The HTML review pages omit nonexistent article-PDF download controls. Vector
 PDFs for each figure are provided; complete articles have not been typeset as
 publication PDFs. Public src/dist trees remain unchanged.
+
+## Complete author-review papers (2026-11-14)
+
+The four manuscript folders now include `review.pdf`: six pages each, compiled with the repository's OmicVerse LaTeX template. All 24 pages were visually inspected; no overfull boxes or missing glyphs remain. These are explicitly unpublished author-review copies. `final-review.json` records the scoped technical assessment; author/coauthor approval and maintainer publication remain separate.
+
+Regenerate the PDFs using an existing template checkout and Tectonic executable:
+
+```text
+python articles/_drafts/benchmark/build_review_pdfs.py --template /path/to/template --tectonic /path/to/tectonic --output /path/to/review-output
+python articles/_drafts/benchmark/build_report_review.py --output /path/to/html-review
+```
+
+`latex-review-source.zip` contains the generated TeX, template class/license and figures. Long identifiers are breakable and a footer macro handles the older fancyhdr bundled by Tectonic. The scientific body, figures and source hashes remain the inputs; no public article directory is created by these review commands. Numeric text was rounded consistently to the saved CSV/JSON values without changing data or acceptance tolerances.
