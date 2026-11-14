@@ -1,0 +1,34 @@
+# Article metadata. The body lives in article.md; figures in figures/.
+# Build: python3 scripts/build_articles.py --pdf   (see docs/ARTICLES.md)
+# Numbers come from py-decontx/report (scripts/01-05, figures/numbers.tex).
+slug: pydecontx
+type: Technical Report
+title: "pydecontx: a Python implementation of decontX for ambient RNA removal in single-cell RNA-seq data"
+short_title: pydecontx
+published: 2026-11-12
+version: 1
+authors:
+  - {group: OmicVerse Team, affiliations: [2], email: contact@omicos.cn}   # group author; people are credited under contributors
+contributors:
+  - {name: Zehua Zeng, affiliations: [1, 2]}
+  - {name: Xu Meng, affiliations: [2, 3]}
+affiliations:
+  1: Department of Genetics, Stanford University, Stanford, CA 94305, USA
+  2: OmicVerse, Inc., San Francisco, CA 94114, USA
+  3: Hubei Key Laboratory of Agricultural Bioinformatics, College of Informatics, Huazhong Agricultural University, Wuhan 430070, China
+abstract: >-
+  We present pydecontx, a Python implementation of decontX, which estimates and removes ambient RNA
+  contamination in each cell of a droplet-based single-cell RNA-seq experiment with a Bayesian mixture model
+  fitted by variational inference. pydecontx follows decontX's code paths, including the random initialisation,
+  which it draws with ports of R's random number generator and beta sampler, so that the same seed gives the
+  same result as in R; its updates are vectorised and can use several threads. On five human–mouse mixtures from
+  10x Genomics (37,494 cells), in which counts from the other species reveal each cell's ambient RNA, pydecontx
+  ran the same number of iterations as decontX 1.8.0 in every mixture, and its per-cell contamination estimates
+  differed from decontX's by at most 3 × 10⁻¹⁴ and its decontaminated counts by at most 4 × 10⁻¹¹. It ran 1.5–4.1
+  times faster than decontX on one thread and 2.7–6.1 times faster with eight threads. pydecontx is used by
+  OmicVerse for ambient RNA removal and is released at https://github.com/omicverse/py-decontx and on PyPI.
+keywords: [decontX, ambient RNA, contamination, single-cell RNA-seq, quality control, Python, reproducibility]
+links:
+  code: https://github.com/omicverse/py-decontx
+  api: ov.pp.ambient.remove_ambient
+thumbnail: fig1

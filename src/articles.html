@@ -10,9 +10,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=2026-11-09b" />
-  <script src="script.js?v=2026-11-09b" defer></script>
-  <script src="articles.js?v=2026-11-09b" defer></script>
+  <link rel="stylesheet" href="styles.css?v=2026-11-12b" />
+  <script src="script.js?v=2026-11-12b" defer></script>
+  <script src="articles.js?v=2026-11-12b" defer></script>
 </head>
 <body class="paper-page">
   <div class="bg-grid" aria-hidden="true"></div>
@@ -45,10 +45,73 @@
     </form>
     <ol class="ar-list" data-articles-list>
       <li class="ar-row" data-type="Technical Report" data-year="2026">
+        <div class="ar-meta"><span class="ar-type">Technical Report</span><time datetime="2026-11-13">13 Nov 2026</time></div>
+        <div class="ar-body">
+          <h2 class="ar-title"><a href="articles/pycopykat.html">pycopykat: a Python implementation of CopyKAT for copy-number inference and aneuploid cell detection from single-cell RNA-seq data</a></h2>
+          <p class="ar-authors">OmicVerse Team</p>
+          <p class="ar-abstract">We present pycopykat, a Python implementation of CopyKAT, which infers the copy numbers of single cells in 220 kb bins from their expression and calls each cell aneuploid or diploid without reference cells. pycopykat follows CopyKAT&#x27;s code path, …</p>
+        </div>
+        <a class="ar-thumb" href="articles/pycopykat.html" tabindex="-1" aria-hidden="true"><img src="assets/articles/pycopykat/fig1-thumb.jpg" alt="" loading="lazy" /></a>
+      </li>
+      <li class="ar-row" data-type="Technical Report" data-year="2026">
+        <div class="ar-meta"><span class="ar-type">Technical Report</span><time datetime="2026-11-12">12 Nov 2026</time></div>
+        <div class="ar-body">
+          <h2 class="ar-title"><a href="articles/pydecontx.html">pydecontx: a Python implementation of decontX for ambient RNA removal in single-cell RNA-seq data</a></h2>
+          <p class="ar-authors">OmicVerse Team</p>
+          <p class="ar-abstract">We present pydecontx, a Python implementation of decontX, which estimates and removes ambient RNA contamination in each cell of a droplet-based single-cell RNA-seq experiment with a Bayesian mixture model fitted by variational inference. pydecontx …</p>
+        </div>
+        <a class="ar-thumb" href="articles/pydecontx.html" tabindex="-1" aria-hidden="true"><img src="assets/articles/pydecontx/fig1-thumb.jpg" alt="" loading="lazy" /></a>
+      </li>
+      <li class="ar-row" data-type="Technical Report" data-year="2026">
+        <div class="ar-meta"><span class="ar-type">Technical Report</span><time datetime="2026-11-12">12 Nov 2026</time></div>
+        <div class="ar-body">
+          <h2 class="ar-title"><a href="articles/pyfastcar.html">pyfastcar: a Python implementation of FastCAR for ambient RNA correction in single-cell RNA-seq data</a></h2>
+          <p class="ar-authors">OmicVerse Team</p>
+          <p class="ar-abstract">We present pyfastcar, a Python implementation of FastCAR, which corrects droplet-based single-cell RNA-seq data for ambient RNA by subtracting, for each gene that is frequent in empty droplets, its highest count in an empty droplet from every cell. …</p>
+        </div>
+        <a class="ar-thumb" href="articles/pyfastcar.html" tabindex="-1" aria-hidden="true"><img src="assets/articles/pyfastcar/fig1-thumb.jpg" alt="" loading="lazy" /></a>
+      </li>
+      <li class="ar-row" data-type="Technical Report" data-year="2026">
+        <div class="ar-meta"><span class="ar-type">Technical Report</span><time datetime="2026-11-12">12 Nov 2026</time></div>
+        <div class="ar-body">
+          <h2 class="ar-title"><a href="articles/pyinfercnv.html">pyinfercnv: a Python implementation of inferCNV for copy-number inference from single-cell RNA-seq data</a></h2>
+          <p class="ar-authors">OmicVerse Team</p>
+          <p class="ar-abstract">We present pyinfercnv, a Python implementation of inferCNV, which infers copy-number alterations of single cells from their expression relative to reference cells and calls copy-number states with a hidden Markov model. pyinfercnv follows inferCNV&#x27;s …</p>
+        </div>
+        <a class="ar-thumb" href="articles/pyinfercnv.html" tabindex="-1" aria-hidden="true"><img src="assets/articles/pyinfercnv/fig1-thumb.jpg" alt="" loading="lazy" /></a>
+      </li>
+      <li class="ar-row" data-type="Technical Report" data-year="2026">
+        <div class="ar-meta"><span class="ar-type">Technical Report</span><time datetime="2026-11-12">12 Nov 2026</time></div>
+        <div class="ar-body">
+          <h2 class="ar-title"><a href="articles/pysccdc.html">pysccdc: a Python implementation of scCDC for gene-specific ambient RNA correction in single-cell RNA-seq data</a></h2>
+          <p class="ar-authors">OmicVerse Team</p>
+          <p class="ar-abstract">We present pysccdc, a Python implementation of scCDC, which detects the genes that contaminate droplet-based single-cell and single-nucleus RNA-seq data from the entropy of their counts within cell clusters and corrects only those genes. pysccdc …</p>
+        </div>
+        <a class="ar-thumb" href="articles/pysccdc.html" tabindex="-1" aria-hidden="true"><img src="assets/articles/pysccdc/fig1-thumb.jpg" alt="" loading="lazy" /></a>
+      </li>
+      <li class="ar-row" data-type="Technical Report" data-year="2026">
+        <div class="ar-meta"><span class="ar-type">Technical Report</span><time datetime="2026-11-11">11 Nov 2026</time></div>
+        <div class="ar-body">
+          <h2 class="ar-title"><a href="articles/pydoubletfinder.html">pydoubletfinder: a Python implementation of DoubletFinder for doublet detection in single-cell RNA-seq data</a></h2>
+          <p class="ar-authors">OmicVerse Team</p>
+          <p class="ar-abstract">We present pydoubletfinder, a Python implementation of DoubletFinder for doublet detection in single-cell RNA-seq data, covering artificial-doublet generation, the proportion of artificial nearest neighbours (pANN), the pN–pK parameter sweep with …</p>
+        </div>
+        <a class="ar-thumb" href="articles/pydoubletfinder.html" tabindex="-1" aria-hidden="true"><img src="assets/articles/pydoubletfinder/fig1-thumb.jpg" alt="" loading="lazy" /></a>
+      </li>
+      <li class="ar-row" data-type="Technical Report" data-year="2026">
+        <div class="ar-meta"><span class="ar-type">Technical Report</span><time datetime="2026-11-11">11 Nov 2026</time></div>
+        <div class="ar-body">
+          <h2 class="ar-title"><a href="articles/pysoupx.html">pysoupx: a Python implementation of SoupX for ambient RNA removal in single-cell RNA-seq data</a></h2>
+          <p class="ar-authors">OmicVerse Team</p>
+          <p class="ar-abstract">We present pysoupx, a Python implementation of SoupX for removing ambient RNA contamination from droplet-based single-cell RNA-seq data, covering the estimation of the ambient (soup) profile from empty droplets, the automatic and gene-set-based …</p>
+        </div>
+        <a class="ar-thumb" href="articles/pysoupx.html" tabindex="-1" aria-hidden="true"><img src="assets/articles/pysoupx/fig1-thumb.jpg" alt="" loading="lazy" /></a>
+      </li>
+      <li class="ar-row" data-type="Technical Report" data-year="2026">
         <div class="ar-meta"><span class="ar-type">Technical Report</span><time datetime="2026-11-09">09 Nov 2026</time></div>
         <div class="ar-body">
           <h2 class="ar-title"><a href="articles/pyedger.html">pyedger: a Python implementation of edgeR for differential expression analysis</a></h2>
-          <p class="ar-authors">Zehua Zeng, Xu Meng</p>
+          <p class="ar-authors">OmicVerse Team</p>
           <p class="ar-abstract">We present pyedger, a Python implementation of the edgeR workflow for differential expression analysis of count data, covering TMM normalisation, filterByExpr, dispersion estimation, the quasi-likelihood (QL) F-test, the likelihood-ratio test and …</p>
         </div>
         <a class="ar-thumb" href="articles/pyedger.html" tabindex="-1" aria-hidden="true"><img src="assets/articles/pyedger/fig1-thumb.jpg" alt="" loading="lazy" /></a>
@@ -57,7 +120,7 @@
         <div class="ar-meta"><span class="ar-type">Technical Report</span><time datetime="2026-11-09">09 Nov 2026</time></div>
         <div class="ar-body">
           <h2 class="ar-title"><a href="articles/pylimma.html">pylimma: a Python implementation of limma for differential expression analysis</a></h2>
-          <p class="ar-authors">Zehua Zeng, Xu Meng</p>
+          <p class="ar-authors">OmicVerse Team</p>
           <p class="ar-abstract">We present pylimma, a Python implementation of limma&#x27;s linear-model workflow for differential expression analysis, covering voom precision weights, weighted linear model fits, empirical-Bayes moderated t- and F-statistics with the B-statistic, tests …</p>
         </div>
         <a class="ar-thumb" href="articles/pylimma.html" tabindex="-1" aria-hidden="true"><img src="assets/articles/pylimma/fig1-thumb.jpg" alt="" loading="lazy" /></a>
@@ -66,7 +129,7 @@
         <div class="ar-meta"><span class="ar-type">Technical Report</span><time datetime="2026-11-09">09 Nov 2026</time></div>
         <div class="ar-body">
           <h2 class="ar-title"><a href="articles/pyscdblfinder.html">pyscdblfinder: a Python implementation of scDblFinder for doublet detection in single-cell data</a></h2>
-          <p class="ar-authors">Zehua Zeng, Xu Meng</p>
+          <p class="ar-authors">OmicVerse Team</p>
           <p class="ar-abstract">We present pyscdblfinder, a Python implementation of scDblFinder for doublet detection in single-cell RNA-seq and ATAC-seq data, covering artificial-doublet generation, co-expression and nearest-neighbour features, the iterative gradient-boosted …</p>
         </div>
         <a class="ar-thumb" href="articles/pyscdblfinder.html" tabindex="-1" aria-hidden="true"><img src="assets/articles/pyscdblfinder/fig1-thumb.jpg" alt="" loading="lazy" /></a>

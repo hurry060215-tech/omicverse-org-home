@@ -1,0 +1,32 @@
+# Article metadata. The body lives in article.md; figures in figures/.
+# Build: python3 scripts/build_articles.py --pdf   (see docs/ARTICLES.md)
+# Numbers come from py-sccdc/report (scripts/01-05, figures/numbers.tex).
+slug: pysccdc
+type: Technical Report
+title: "pysccdc: a Python implementation of scCDC for gene-specific ambient RNA correction in single-cell RNA-seq data"
+short_title: pysccdc
+published: 2026-11-12
+version: 1
+authors:
+  - {group: OmicVerse Team, affiliations: [2], email: contact@omicos.cn}   # group author; people are credited under contributors
+contributors:
+  - {name: Zehua Zeng, affiliations: [1, 2]}
+  - {name: Xu Meng, affiliations: [2, 3]}
+affiliations:
+  1: Department of Genetics, Stanford University, Stanford, CA 94305, USA
+  2: OmicVerse, Inc., San Francisco, CA 94114, USA
+  3: Hubei Key Laboratory of Agricultural Bioinformatics, College of Informatics, Huazhong Agricultural University, Wuhan 430070, China
+abstract: >-
+  We present pysccdc, a Python implementation of scCDC, which detects the genes that contaminate droplet-based
+  single-cell and single-nucleus RNA-seq data from the entropy of their counts within cell clusters and corrects only
+  those genes. pysccdc ports the code path of scCDC, including R's random number generator and sampling, R's
+  smoothing spline and the ROC analysis used to set each gene's correction, so that it returns R's result. On four
+  human–mouse mixtures from 10x Genomics (26,038 cells), pysccdc detected the same 18 to 102 contaminating genes as
+  scCDC 1.4, in the same order, and returned identical corrected counts. It ran 11 to 50 times faster than scCDC on
+  one thread. pysccdc is used by OmicVerse for ambient RNA correction and is released at
+  https://github.com/omicverse/py-sccdc and on PyPI.
+keywords: [scCDC, ambient RNA, contamination, entropy, single-cell RNA-seq, Python, reproducibility]
+links:
+  code: https://github.com/omicverse/py-sccdc
+  api: ov.pp.ambient.remove_ambient
+thumbnail: fig1
